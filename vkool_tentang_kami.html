@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tentang V-KOOL: Tiga Puluh Tahun Teknologi yang Melindungi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --black:#0a0a0a;--dark:#111111;--mid:#1a1a1a;--line:#222222;--line2:#2e2e2e;
+  --gold:#CDB182;--gold2:#b89a6a;--gold-h:#b89a6a;--gold-dim:rgba(205,177,130,.08);
+  --ash:#EBEBEB;--muted:#888888;--dim:#555555;--white:#fff;
+  --radius:2px;--nav-h:68px;--pad:56px;--ease:cubic-bezier(.25,0,.1,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Roboto',sans-serif;background:var(--black);color:var(--ash);overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+a{text-decoration:none;color:inherit;}
+button{font-family:inherit;cursor:pointer;border:none;background:none;}
+a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offset:3px;}
+
+/* ─── TYPOGRAPHY ─── */
+.t-nav   { font-family:'Oswald',sans-serif; font-size:13px; letter-spacing:.10em; font-weight:400; text-transform:uppercase; }
+.t-label { font-family:'Oswald',sans-serif; font-size:11px; letter-spacing:.20em; text-transform:uppercase; font-weight:400; }
+.t-btn   { font-family:'Oswald',sans-serif; font-size:13px; letter-spacing:.10em; text-transform:uppercase; font-weight:400; }
+
+/* ── NAV (saved template) ── */
+.nav { position:fixed; top:0; left:0; right:0; z-index:200; height:var(--nav-h); display:flex; align-items:center; justify-content:space-between; padding:0 56px; background:rgba(10,10,10,0.97); border-bottom:0.5px solid var(--line); transition:background 0.4s var(--ease), border-color 0.4s var(--ease); }
+.nav.scrolled { background:rgba(10,10,10,1); border-bottom-color:var(--line2); }
+.nav-logo { font-family:'Oswald',sans-serif; font-size:17px; letter-spacing:.30em; font-weight:500; color:var(--gold); text-transform:uppercase; flex-shrink:0; text-decoration:none; }
+.nav-logo:hover { color:var(--gold); }
+.nav-links { display:flex; gap:36px; align-items:center; height:100%; }
+.nav-link { color:rgba(235,235,235,0.75); transition:color .25s; position:relative; padding-bottom:2px; white-space:nowrap; text-decoration:none; }
+.nav-link::after { content:''; position:absolute; bottom:-2px; left:0; right:100%; height:0.5px; background:var(--gold); transition:right .35s var(--ease); }
+.nav-link:hover { color:var(--white); }
+.nav-link:hover::after { right:0; }
+.nav-link.active { color:var(--gold); }
+.nav-link.active::after { right:0; }
+.nav-dropdown { position:relative; display:flex; align-items:center; height:100%; }
+.nav-dropdown-trigger { display:flex; align-items:center; gap:6px; color:rgba(235,235,235,0.75); font-family:'Oswald',sans-serif; font-size:13px; letter-spacing:.10em; font-weight:400; text-transform:uppercase; cursor:pointer; position:relative; padding-bottom:2px; white-space:nowrap; transition:color .25s; background:none; border:none; }
+.nav-dropdown-trigger::after { content:''; position:absolute; bottom:-2px; left:0; right:100%; height:0.5px; background:var(--gold); transition:right .35s var(--ease); }
+.nav-dropdown:hover .nav-dropdown-trigger { color:var(--white); }
+.nav-dropdown:hover .nav-dropdown-trigger::after { right:0; }
+.nav-dropdown-trigger.active { color:var(--gold) !important; }
+.nav-dropdown-trigger.active::after { right:0 !important; }
+.nav-chevron { width:10px; height:10px; stroke:currentColor; fill:none; stroke-width:2; flex-shrink:0; transition:transform .35s var(--ease); }
+.nav-dropdown:hover .nav-chevron { transform:rotate(180deg); }
+.nav-dropdown-panel { position:absolute; top:calc(var(--nav-h) - 1px); left:50%; transform:translateX(-50%) translateY(-8px); background:#0e0d0b; border:0.5px solid var(--line2); border-top:1px solid var(--gold); display:grid; gap:0; min-width:460px; opacity:0; visibility:hidden; pointer-events:none; transition:opacity .3s var(--ease), transform .3s var(--ease), visibility .3s; }
+.nav-dropdown:hover .nav-dropdown-panel { opacity:1; visibility:visible; pointer-events:auto; transform:translateX(-50%) translateY(0); }
+.nav-dropdown-panel.cols-1 { grid-template-columns:1fr; min-width:280px; left:auto; right:0; transform:translateY(-8px); }
+.nav-dropdown:hover .nav-dropdown-panel.cols-1 { transform:translateY(0); }
+.dd-item { display:flex; align-items:flex-start; gap:16px; padding:22px 24px; border-bottom:0.5px solid var(--line); border-right:0.5px solid var(--line); position:relative; cursor:pointer; transition:background .25s var(--ease); text-decoration:none; color:inherit; overflow:hidden; }
+.cols-1 .dd-item:last-child { border-bottom:none; }
+.cols-1 .dd-item { border-right:none; }
+.dd-item:hover { background:rgba(205,177,130,0.05); }
+.dd-item::before { content:''; position:absolute; left:0; top:0; bottom:0; width:2px; background:linear-gradient(to bottom, var(--gold), var(--gold2)); transform:scaleY(0); transform-origin:top center; transition:transform .35s var(--ease); }
+.dd-item:hover::before { transform:scaleY(1); }
+.dd-icon { width:34px; height:34px; flex-shrink:0; border:0.5px solid rgba(205,177,130,0.3); background:rgba(205,177,130,0.06); display:flex; align-items:center; justify-content:center; border-radius:2px; transition:border-color .25s, background .25s; }
+.dd-item:hover .dd-icon { border-color:rgba(205,177,130,0.7); background:rgba(205,177,130,0.12); }
+.dd-icon svg { width:15px; height:15px; stroke:var(--gold); fill:none; stroke-width:1.4; }
+.dd-text { display:flex; flex-direction:column; gap:4px; }
+.dd-title { font-family:'Oswald',sans-serif; font-size:13px; letter-spacing:.08em; font-weight:400; text-transform:uppercase; color:var(--ash); transition:color .25s; }
+.dd-item:hover .dd-title { color:var(--gold); }
+.dd-sub { font-size:11px; color:var(--dim); letter-spacing:.02em; font-weight:300; line-height:1.5; }
+.nav-right { display:flex; gap:12px; align-items:center; flex-shrink:0; }
+.nav-lang { display:flex; align-items:center; gap:6px; color:var(--dim); border:0.5px solid var(--line2); padding:5px 12px; border-radius:2px; font-size:11px; letter-spacing:.08em; cursor:pointer; transition:border-color .25s, color .25s; background:none; }
+.nav-lang svg { width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:1.5; }
+.nav-lang:hover { color:var(--ash); border-color:var(--dim); }
+.btn-gold-sm { background:var(--gold); color:var(--black); padding:9px 20px; border-radius:2px; font-family:'Oswald',sans-serif; font-size:12px; letter-spacing:.10em; text-transform:uppercase; font-weight:400; transition:background .25s; min-height:44px; display:flex; align-items:center; border:none; cursor:pointer; }
+.btn-gold-sm:hover { background:var(--gold2); }
+
+/* ── SHARED ── */
+.fade-up{opacity:0;transform:translateY(22px);transition:opacity .7s var(--ease),transform .7s var(--ease);}
+.fade-up.visible{opacity:1;transform:translateY(0);}
+
+/* ═══════════════════════════════════════
+   HERO — Full viewport image hero
+   Same structure as other V-KOOL pages
+═══════════════════════════════════════ */
+.hero{
+  position:relative;width:100%;
+  height:100svh;min-height:600px;max-height:940px;
+  margin-top:var(--nav-h);
+  display:flex;align-items:flex-end;
+  overflow:hidden;
+}
+.hero-bg{
+  position:absolute;inset:0;
+  background:url('images/vkool-showroom.jpg') center/cover no-repeat;
+}
+/* Uniform dark overlay — same 45% veil used on homepage */
+.hero-overlay{
+  position:absolute;inset:0;
+  background:rgba(10,10,10,0.52);
+}
+/* Left gradient to make text crisp */
+.hero-grad{
+  position:absolute;inset:0;
+  background:linear-gradient(to right, rgba(10,10,10,0.88) 0%, rgba(10,10,10,0.55) 45%, rgba(10,10,10,0.15) 100%);
+}
+/* The "30" as a structural typographic object */
+.hero-year-obj{
+  font-family:'Oswald',sans-serif;
+  font-size:clamp(120px,18vw,240px);
+  font-weight:200;
+  color:rgba(205,177,130,.07);
+  letter-spacing:-.04em;
+  line-height:.9;
+  position:absolute;
+  top:calc(var(--nav-h) + 24px);
+  left:calc(var(--pad) - 8px);
+  pointer-events:none;
+  user-select:none;
+  z-index:2;
+}
+/* Left column content */
+.hero-left{
+  position:relative;z-index:3;
+  padding:0 var(--pad) 180px;
+  max-width:680px;
+  width:100%;
+}
+.hero-eyebrow{
+  display:flex;align-items:center;gap:12px;
+  margin-bottom:18px;
+}
+.hero-ey-line{width:20px;height:.5px;background:var(--gold);}
+.hero-ey-txt{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:.24em;color:var(--gold);text-transform:uppercase;font-weight:300;}
+.hero-title{
+  font-family:'Oswald',sans-serif;
+  font-size:clamp(36px,5.5vw,68px);
+  font-weight:400;letter-spacing:.04em;
+  text-transform:uppercase;
+  color:var(--white);line-height:1.0;
+  max-width:660px;
+  text-shadow:0 2px 24px rgba(0,0,0,.7);
+  margin-bottom:0;
+}
+/* Bottom panel */
+.hero-bottom{
+  position:absolute;bottom:0;left:0;right:0;
+  z-index:3;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  border-top:.5px solid rgba(205,177,130,.12);
+  background:rgba(10,10,10,0.75);
+  backdrop-filter:blur(4px);
+}
+.hero-bottom-left{
+  padding:28px var(--pad);
+  border-right:.5px solid rgba(205,177,130,.12);
+}
+.hero-quote{
+  font-family:'Oswald',sans-serif;
+  font-size:clamp(15px,1.6vw,19px);
+  font-weight:200;
+  color:rgba(235,235,235,.55);
+  line-height:1.6;
+  letter-spacing:.01em;
+  max-width:52ch;
+}
+.hero-quote em{
+  color:var(--gold);
+  font-style:normal;
+  font-weight:300;
+}
+.hero-bottom-right{
+  padding:28px var(--pad);
+  display:flex;align-items:center;justify-content:flex-end;gap:32px;
+  flex-wrap:wrap;
+}
+.hero-stat{text-align:right;}
+.hero-stat-val{font-family:'Oswald',sans-serif;font-size:clamp(22px,2.5vw,30px);color:var(--gold);font-weight:300;letter-spacing:.02em;line-height:1;}
+.hero-stat-lbl{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:.16em;color:var(--dim);text-transform:uppercase;margin-top:4px;}
+.hero-stat-sep{width:.5px;height:28px;background:var(--line2);}
+
+/* ═══════════════════════════════════════
+   BRAND MANIFESTO — Not an intro section.
+   A single bold editorial statement that
+   earns attention before the story.
+   Human design: editorial magazines do this.
+═══════════════════════════════════════ */
+.manifesto{
+  background:var(--dark);
+  padding:96px var(--pad);
+  border-bottom:.5px solid var(--line);
+}
+.manifesto-inner{
+  display:grid;
+  grid-template-columns:200px 1fr;
+  gap:80px;
+  align-items:start;
+  max-width:1100px;
+}
+/* Left: the vertical label — Swiss modernism influence */
+.manifesto-label{
+  display:flex;flex-direction:column;align-items:flex-start;gap:16px;
+  padding-top:6px;
+}
+.manifesto-label-line{width:.5px;height:48px;background:rgba(205,177,130,.3);}
+.manifesto-label-txt{
+  font-family:'Oswald',sans-serif;
+  font-size:10px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--dim);font-weight:300;
+  writing-mode:vertical-rl;text-orientation:mixed;
+  transform:rotate(180deg);
+}
+/* Right: the actual story — generous line height, constrained width */
+.manifesto-body{display:flex;flex-direction:column;gap:32px;}
+.manifesto-lead{
+  font-family:'Oswald',sans-serif;
+  font-size:clamp(22px,2.8vw,34px);
+  letter-spacing:.03em;font-weight:300;
+  color:var(--white);line-height:1.3;
+  max-width:680px;
+}
+/* Gold accent word — the human touch: one word in gold */
+.manifesto-lead strong{color:var(--gold);font-weight:400;}
+.manifesto-body-text{
+  font-size:15px;color:var(--muted);line-height:1.85;font-weight:300;
+  max-width:56ch;
+  /* web-typography: optimal line length */
+}
+.manifesto-body-text + .manifesto-body-text{margin-top:-12px;}
+
+/* ═══════════════════════════════════════
+   TIMELINE — Horizontal scroll, year as
+   the design element. Not a centered
+   vertical line with alternating cards.
+   This is how museum exhibits present
+   chronological narratives.
+═══════════════════════════════════════ */
+.milestones{
+  background:var(--black);
+  padding:96px 0 0;
+  overflow:hidden;
+}
+.milestones-header{
+  padding:0 var(--pad) 64px;
+  display:flex;align-items:flex-end;justify-content:space-between;gap:32px;
+}
+.milestones-header-left{}
+.ms-eyebrow{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.ms-ey-line{width:20px;height:.5px;background:var(--gold);}
+.ms-ey-txt{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:.22em;color:var(--gold);text-transform:uppercase;font-weight:300;}
+.ms-heading{
+  font-family:'Oswald',sans-serif;
+  font-size:clamp(24px,3.2vw,44px);
+  letter-spacing:.06em;font-weight:400;
+  text-transform:uppercase;color:var(--white);line-height:1.0;
+}
+.ms-header-right{
+  font-size:13px;color:var(--dim);font-weight:300;
+  max-width:320px;line-height:1.65;text-align:right;flex-shrink:0;
+}
+
+/* The horizontal scroll rail */
+.ms-rail-wrap{
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+  cursor:grab;
+  padding-bottom:0;
+}
+.ms-rail-wrap::-webkit-scrollbar{display:none;}
+.ms-rail-wrap.grabbing{cursor:grabbing;}
+.ms-rail{
+  display:flex;
+  gap:0;
+  width:max-content;
+  border-top:.5px solid var(--line);
+}
+/* Each milestone card — varied widths for non-AI feel */
+.ms-card{
+  flex-shrink:0;
+  width:320px;
+  padding:52px 40px 40px;
+  border-right:.5px solid var(--line);
+  position:relative;
+  transition:background .3s var(--ease);
+  background:var(--black);
+}
+.ms-card:hover{background:rgba(205,177,130,.02);}
+.ms-card:first-child{width:360px;} /* Feature the first */
+.ms-card:last-child{border-right:none;}
+
+/* Year as architectural element — the whole card title visually */
+.ms-year{
+  font-family:'Oswald',sans-serif;
+  font-size:88px;
+  font-weight:200;
+  color:rgba(205,177,130,.08);
+  letter-spacing:-.04em;
+  line-height:.85;
+  position:absolute;
+  top:24px;right:24px;
+  pointer-events:none;
+  /* Deliberately oversized — bleeds toward edge */
+}
+.ms-card:first-child .ms-year{color:rgba(205,177,130,.12);}/* first is slightly brighter */
+.ms-num{
+  font-family:'Oswald',sans-serif;
+  font-size:9px;letter-spacing:.22em;color:var(--gold);
+  text-transform:uppercase;font-weight:300;
+  margin-bottom:32px;
+  display:flex;align-items:center;gap:8px;
+}
+.ms-num-dot{width:4px;height:4px;border-radius:50%;background:var(--gold);}
+.ms-card-year-label{
+  font-family:'Oswald',sans-serif;
+  font-size:16px;letter-spacing:.12em;
+  color:rgba(235,235,235,.35);font-weight:300;
+  margin-bottom:10px;
+  text-transform:uppercase;
+}
+.ms-card-title{
+  font-family:'Oswald',sans-serif;
+  font-size:clamp(17px,1.8vw,21px);
+  letter-spacing:.04em;font-weight:400;
+  text-transform:uppercase;color:var(--white);
+  margin-bottom:14px;line-height:1.2;
+}
+.ms-card-text{
+  font-size:13px;color:var(--muted);line-height:1.7;font-weight:300;
+  max-width:38ch;
+}
+/* Bottom scroll indicator */
+.ms-scroll-hint{
+  padding:24px var(--pad);
+  border-top:.5px solid var(--line);
+  display:flex;align-items:center;gap:16px;
+  font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:.18em;
+  color:var(--dim);text-transform:uppercase;
+}
+.ms-scroll-track{
+  flex:1;max-width:200px;height:.5px;
+  background:var(--line2);position:relative;overflow:hidden;
+}
+.ms-scroll-thumb{
+  height:100%;background:var(--gold);
+  width:0%;transition:width .1s;
+}
+
+/* ═══════════════════════════════════════
+   AWARDS — NOT a table. Varied visual
+   weight. Featured award gets full width.
+   Others in a 3-col compact grid.
+   This is editorial design thinking.
+═══════════════════════════════════════ */
+.awards{
+  background:var(--dark);
+  padding:96px var(--pad);
+}
+.awards-header{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  gap:32px;margin-bottom:72px;
+}
+.aw-eyebrow{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.aw-ey-line{width:20px;height:.5px;background:var(--gold);}
+.aw-ey-txt{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:.22em;color:var(--gold);text-transform:uppercase;font-weight:300;}
+.aw-heading{
+  font-family:'Oswald',sans-serif;
+  font-size:clamp(24px,3.2vw,44px);
+  letter-spacing:.06em;font-weight:400;
+  text-transform:uppercase;color:var(--white);line-height:1.0;
+}
+.aw-header-right{
+  font-size:13px;color:var(--dim);font-weight:300;
+  max-width:280px;line-height:1.65;text-align:right;flex-shrink:0;
+}
+/* Featured award — full width, editorial */
+.award-featured{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:0;
+  border:.5px solid var(--line);
+  margin-bottom:1px;
+  transition:background .3s;
+}
+.award-featured:hover{background:rgba(205,177,130,.02);}
+.award-featured-body{
+  padding:52px 48px;
+  border-right:.5px solid var(--line);
+  position:relative;
+}
+/* Running editorial number — the "01/06" format designers use */
+.award-running-num{
+  font-family:'Oswald',sans-serif;
+  font-size:9px;letter-spacing:.22em;
+  color:var(--dim);text-transform:uppercase;
+  margin-bottom:32px;
+  display:flex;align-items:center;gap:8px;
+}
+.award-running-num-accent{color:var(--gold);}
+.award-feat-title{
+  font-family:'Oswald',sans-serif;
+  font-size:clamp(20px,2.2vw,28px);
+  letter-spacing:.04em;font-weight:400;
+  text-transform:uppercase;color:var(--white);
+  margin-bottom:16px;line-height:1.15;
+  max-width:16ch;
+}
+.award-feat-text{
+  font-size:15px;color:var(--muted);line-height:1.8;font-weight:300;
+  max-width:54ch;
+}
+/* The "98%" highlight inside featured body */
+.award-feat-stat{
+  display:inline-flex;align-items:baseline;gap:4px;
+  margin-top:28px;padding-top:28px;
+  border-top:.5px solid var(--line);
+}
+.award-feat-stat-val{
+  font-family:'Oswald',sans-serif;
+  font-size:44px;color:var(--gold);font-weight:200;letter-spacing:-.02em;line-height:1;
+}
+.award-feat-stat-unit{
+  font-family:'Oswald',sans-serif;
+  font-size:11px;color:var(--dim);letter-spacing:.12em;text-transform:uppercase;
+}
+.award-featured-visual{
+  background:var(--mid);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;min-height:320px;
+}
+.award-featured-visual::before,.award-featured-visual::after{
+  content:'';position:absolute;width:20px;height:20px;opacity:.2;
+}
+.award-featured-visual::before{top:16px;left:16px;border-top:.5px solid var(--gold);border-left:.5px solid var(--gold);}
+.award-featured-visual::after{bottom:16px;right:16px;border-bottom:.5px solid var(--gold);border-right:.5px solid var(--gold);}
+.award-feat-icon{
+  display:flex;flex-direction:column;align-items:center;gap:16px;
+}
+.award-feat-icon-box{
+  width:64px;height:64px;border:.5px solid rgba(205,177,130,.3);
+  background:rgba(205,177,130,.06);
+  display:flex;align-items:center;justify-content:center;
+}
+.award-feat-icon-box svg{width:28px;height:28px;stroke:var(--gold);fill:none;stroke-width:1;}
+.award-feat-icon-lbl{
+  font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:.18em;
+  color:var(--dim);text-transform:uppercase;
+}
+/* Compact awards grid — 3 col, different from the featured */
+.awards-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:0;
+  border:.5px solid var(--line);
+  border-top:none;
+}
+.award-compact{
+  padding:36px 32px;
+  border-right:.5px solid var(--line);
+  transition:background .3s;
+  position:relative;
+}
+.award-compact:nth-child(3n){border-right:none;}
+.award-compact:nth-child(n+4){border-top:.5px solid var(--line);}
+.award-compact:hover{background:rgba(205,177,130,.02);}
+.award-compact-num{
+  font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:.20em;
+  color:var(--dim);text-transform:uppercase;margin-bottom:20px;
+  display:flex;align-items:center;gap:6px;
+}
+.award-compact-num span{color:var(--gold);}
+.award-compact-icon{
+  width:36px;height:36px;
+  border:.5px solid rgba(205,177,130,.2);background:rgba(205,177,130,.04);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:18px;
+}
+.award-compact-icon svg{width:16px;height:16px;stroke:var(--gold);fill:none;stroke-width:1.3;}
+.award-compact-title{
+  font-family:'Oswald',sans-serif;font-size:14px;letter-spacing:.05em;
+  font-weight:400;text-transform:uppercase;color:var(--white);
+  margin-bottom:10px;line-height:1.3;
+}
+.award-compact-text{font-size:13px;color:var(--muted);line-height:1.65;font-weight:300;}
+
+/* ═══════════════════════════════════════
+   CLOSING STATEMENT — Apple-style ending.
+   No gold banner. No buttons.
+   Just one massive, confident sentence
+   and two text links. This is restraint.
+   Human designers know when to stop.
+═══════════════════════════════════════ */
+.closing{
+  background:var(--black);
+  padding:120px var(--pad) 100px;
+  border-top:.5px solid var(--line);
+  position:relative;overflow:hidden;
+}
+/* Faint geometric accent — not centered, slightly off-right */
+.closing::before{
+  content:'';position:absolute;
+  right:-60px;top:50%;transform:translateY(-50%);
+  width:400px;height:400px;
+  border:.5px solid rgba(205,177,130,.04);
+  border-radius:50%;
+  pointer-events:none;
+}
+.closing::after{
+  content:'';position:absolute;
+  right:-20px;top:50%;transform:translateY(-50%);
+  width:240px;height:240px;
+  border:.5px solid rgba(205,177,130,.06);
+  border-radius:50%;
+  pointer-events:none;
+}
+.closing-inner{max-width:860px;}
+.closing-eyebrow{
+  font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:.22em;
+  color:rgba(205,177,130,.4);text-transform:uppercase;font-weight:300;
+  margin-bottom:32px;display:flex;align-items:center;gap:12px;
+}
+.closing-ey-line{width:20px;height:.5px;background:rgba(205,177,130,.3);}
+/* The closing statement — massive, simple, human */
+.closing-statement{
+  font-family:'Oswald',sans-serif;
+  font-size:clamp(32px,5vw,72px);
+  font-weight:300;letter-spacing:.03em;
+  line-height:1.05;
+  color:var(--white);
+  margin-bottom:48px;
+}
+/* One word per line on desktop — intentional */
+.closing-statement strong{
+  color:var(--gold);font-weight:400;
+  display:inline;
+}
+.closing-actions{
+  display:flex;align-items:center;gap:36px;flex-wrap:wrap;
+}
+/* Text links only — no filled buttons. This is restraint. */
+.closing-link{
+  font-family:'Oswald',sans-serif;font-size:13px;letter-spacing:.12em;
+  text-transform:uppercase;font-weight:400;
+  color:var(--ash);display:flex;align-items:center;gap:10px;
+  transition:color .25s,gap .25s;text-decoration:none;min-height:44px;
+}
+.closing-link:hover{color:var(--gold);gap:16px;}
+.closing-link svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.5;}
+.closing-link-sep{width:.5px;height:16px;background:var(--line2);}
+
+/* ── FOOTER ── */
+.footer{background:var(--black);border-top:.5px solid var(--line);padding:64px var(--pad) 32px;}
+.footer-top{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:56px;margin-bottom:56px;}
+.footer-logo{font-family:'Oswald',sans-serif;font-size:15px;letter-spacing:.28em;color:var(--gold);font-weight:400;margin-bottom:14px;}
+.footer-tagline{font-size:13px;color:var(--dim);line-height:1.65;max-width:220px;font-weight:300;}
+.footer-col-title{font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:.16em;color:var(--ash);text-transform:uppercase;font-weight:400;margin-bottom:18px;}
+.footer-link{font-size:13px;color:var(--dim);display:block;margin-bottom:17px;transition:color .25s;font-weight:300;text-decoration:none;}
+.footer-link:hover,.footer-link.active{color:var(--gold);}
+.footer-bottom{border-top:.5px solid var(--line);padding-top:24px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;}
+.footer-copy{font-size:12px;color:#555555;font-weight:300;}
+.footer-social{display:flex;gap:10px;}
+.social-btn{width:34px;height:34px;border-radius:50%;border:.5px solid var(--line2);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:border-color .25s;}
+.social-btn:hover{border-color:var(--gold);}
+.social-btn svg{width:13px;height:13px;stroke:var(--dim);fill:none;stroke-width:1.5;transition:stroke .25s;}
+.social-btn:hover svg{stroke:var(--gold);}
+
+/* ── STICKY BAR ── */
+.sticky-bar{position:fixed;bottom:0;left:0;right:0;z-index:150;height:64px;background:rgba(10,10,10,.97);border-top:.5px solid var(--line2);display:flex;align-items:center;justify-content:space-between;padding:0 var(--pad);transform:translateY(100%);transition:transform .4s var(--ease);}
+.sticky-bar.visible{transform:translateY(0);}
+.sticky-bar-text{font-family:'Oswald',sans-serif;font-size:13px;letter-spacing:.08em;color:var(--muted);font-weight:300;}
+.sticky-bar-text strong{color:var(--gold);font-weight:400;}
+.sticky-bar-actions{display:flex;gap:10px;align-items:center;}
+.sticky-btn-wa{font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:.10em;text-transform:uppercase;font-weight:300;background:transparent;color:var(--ash);border:.5px solid rgba(235,235,235,.2);padding:9px 20px;border-radius:2px;min-height:40px;display:flex;align-items:center;gap:8px;transition:border-color .25s;text-decoration:none;}
+.sticky-btn-wa:hover{border-color:rgba(235,235,235,.5);}
+.sticky-btn-wa svg{width:14px;height:14px;stroke:var(--ash);fill:none;stroke-width:1.5;}
+.sticky-btn-gold{font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:.10em;text-transform:uppercase;font-weight:400;background:var(--gold);color:var(--black);padding:10px 22px;border-radius:2px;min-height:40px;display:flex;align-items:center;gap:8px;transition:background .25s;text-decoration:none;}
+.sticky-btn-gold:hover{background:var(--gold-h);}
+.sticky-btn-gold svg{width:13px;height:13px;stroke:var(--black);fill:none;stroke-width:1.5;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1023px){
+  :root{--pad:32px;}
+  .nav-links,.nav-right{display:none;}
+  .nav-hamburger{display:flex;}
+  .nav-drawer{display:flex;}
+  .hero-bottom{grid-template-columns:1fr;}
+  .hero-bottom-left{border-right:none;border-bottom:.5px solid rgba(205,177,130,.12);}
+  .hero-bottom-right{justify-content:flex-start;}
+  .hero-left{padding-bottom:260px;}
+  .manifesto-inner{grid-template-columns:1fr;gap:32px;}
+  .manifesto-label{flex-direction:row;align-items:center;}
+  .manifesto-label-txt{writing-mode:horizontal-tb;transform:none;}
+  .manifesto-label-line{width:24px;height:.5px;}
+  .awards-header{flex-direction:column;align-items:flex-start;gap:12px;}
+  .aw-header-right{text-align:left;}
+  .award-featured{grid-template-columns:1fr;}
+  .award-featured-body{border-right:none;border-bottom:.5px solid var(--line);}
+  .award-featured-visual{min-height:180px;}
+  .awards-grid{grid-template-columns:1fr 1fr;}
+  .award-compact:nth-child(3n){border-right:.5px solid var(--line);}
+  .award-compact:nth-child(2n){border-right:none;}
+  .award-compact:nth-child(n+3){border-top:.5px solid var(--line);}
+  .milestones-header{flex-direction:column;align-items:flex-start;gap:12px;}
+  .ms-header-right{text-align:left;max-width:100%;}
+  .closing-statement{font-size:clamp(28px,6vw,52px);}
+  .footer-top{grid-template-columns:1fr 1fr;gap:40px;}
+  .footer-bottom{flex-direction:column;align-items:flex-start;gap:20px;}
+  .sticky-bar-text{display:none;}
+}
+@media(max-width:640px){
+  :root{--pad:20px;--nav-h:56px;}
+  .nav{padding:0 20px;}
+  .nav-logo{font-size:14px;letter-spacing:.22em;}
+  .hero{height:auto;min-height:100svh;}
+  .hero-year-obj{font-size:clamp(80px,22vw,140px);}
+  .hero-left{padding:60px var(--pad) 40px;}
+  .hero-bottom-right{gap:20px;}
+  .ms-card{width:260px;}
+  .ms-card:first-child{width:280px;}
+  .awards-grid{grid-template-columns:1fr;}
+  .award-compact{border-right:none;}
+  .award-compact:nth-child(n+2){border-top:.5px solid var(--line);}
+  .closing{padding:72px var(--pad) 56px;}
+  .closing-statement{font-size:clamp(26px,7vw,40px);}
+  .closing-actions{flex-direction:column;align-items:flex-start;gap:20px;}
+  .closing-link-sep{display:none;}
+  .footer{padding:48px var(--pad) 80px;}
+  .footer-top{grid-template-columns:1fr;gap:32px;}
+  .footer-bottom{flex-direction:column;align-items:flex-start;gap:20px;}
+  .sticky-bar{padding:0 20px;height:56px;}
+  .sticky-bar-actions{width:100%;}
+  .sticky-btn-wa,.sticky-btn-gold{flex:1;justify-content:center;}
+  .drawer-link{font-size:20px;padding:16px var(--pad);}
+  .drawer-ctas{padding:24px 20px;}
+}
+</style>
+</head>
+<body data-page="tentang">
+
+<!-- ══ NAV (saved template) ══ -->
+<div id="nav-placeholder"></div>
+
+<!-- ═══════════════════════════
+  HERO — "30" as typographic object
+  Pull-quote in bottom panel
+  No image — the type IS the visual
+═══════════════════════════ -->
+<section class="hero" aria-label="Tentang V-KOOL">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-overlay" aria-hidden="true"></div>
+  <div class="hero-grad" aria-hidden="true"></div>
+
+  <div class="hero-year-obj" aria-hidden="true">30</div>
+
+  <div class="hero-left">
+    <div class="hero-eyebrow" aria-hidden="true">
+      <span class="hero-ey-line"></span>
+      <span class="hero-ey-txt">PT V-KOOL Indo Lestari</span>
+    </div>
+    <h1 class="hero-title">Tiga Puluh<br>Tahun Kami<br>Melindungi</h1>
+  </div>
+
+  <div class="hero-bottom">
+    <div class="hero-bottom-left">
+      <blockquote class="hero-quote">
+        "Dari Silicon Valley ke setiap kendaraan di Indonesia. <em>Teknologi bukan sekadar fitur, ia adalah kepercayaan</em> yang terbentuk selama tiga dekade."
+      </blockquote>
+    </div>
+    <div class="hero-bottom-right">
+      <div class="hero-stat">
+        <div class="hero-stat-val">1995</div>
+        <div class="hero-stat-lbl">Berdiri di Indonesia</div>
+      </div>
+      <div class="hero-stat-sep" aria-hidden="true"></div>
+      <div class="hero-stat">
+        <div class="hero-stat-val">80+</div>
+        <div class="hero-stat-lbl">Dealer Resmi</div>
+      </div>
+      <div class="hero-stat-sep" aria-hidden="true"></div>
+      <div class="hero-stat">
+        <div class="hero-stat-val">6</div>
+        <div class="hero-stat-lbl">Penghargaan Nasional</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════
+  BRAND MANIFESTO
+  Vertical Swiss-style label + editorial lead
+═══════════════════════════ -->
+<section class="manifesto fade-up" aria-labelledby="manifesto-h">
+  <div class="manifesto-inner">
+    <div class="manifesto-label" aria-hidden="true">
+      <div class="manifesto-label-line"></div>
+      <div class="manifesto-label-txt">Tentang Kami</div>
+    </div>
+    <div class="manifesto-body">
+      <p class="manifesto-lead" id="manifesto-h">
+        V-KOOL adalah pilihan mereka yang menolak kompromi.
+        Kaca film yang lahir dari <strong>teknologi Silicon Valley</strong>,
+        disempurnakan di Dresden, dan dipercaya oleh jutaan pengguna.
+      </p>
+      <p class="manifesto-body-text">V-KOOL adalah merek kaca film premium dari Eastman Chemical Company, yang diakui secara global sebagai pemimpin dalam teknologi kaca film <em>sputtered spectrally-selective</em>. Teknologi XIR® adalah proses sputtering eksklusif yang dikembangkan di Silicon Valley untuk menghadirkan performa penolakan panas unggul dengan kejernihan visual maksimal, tanpa warna cermin yang mengganggu.</p>
+      <p class="manifesto-body-text">Di Indonesia, V-KOOL hadir melalui PT V-KOOL Indo Lestari sejak 1995 sebagai distributor eksklusif. Tiga puluh tahun kemudian, komitmen pada kualitas, inovasi, dan pelayanan purna jual kami belum pernah berubah; hanya terus berkembang.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════
+  TIMELINE — Horizontal scroll rail
+  Year as architectural element
+═══════════════════════════ -->
+<section class="milestones" aria-labelledby="ms-h">
+  <div class="milestones-header fade-up">
+    <div class="milestones-header-left">
+      <div class="ms-eyebrow"><span class="ms-ey-line"></span><span class="ms-ey-txt">Perjalanan</span></div>
+      <h2 class="ms-heading" id="ms-h">Perjalanan<br>Tiga Dekade</h2>
+    </div>
+    <p class="ms-header-right">Dari satu produk yang memukau publik di IIMS 1996, hingga teknologi Tetrashield PPF yang kami hadirkan hari ini: tiga dekade inovasi tanpa henti.</p>
+  </div>
+
+  <div class="ms-rail-wrap" id="msRail" role="region" aria-label="Timeline milestones V-KOOL, geser ke kanan">
+    <div class="ms-rail">
+
+      <div class="ms-card fade-up">
+        <div class="ms-year" aria-hidden="true">1995</div>
+        <div class="ms-num"><span class="ms-num-dot"></span>01 / 12</div>
+        <div class="ms-card-year-label">1995</div>
+        <h3 class="ms-card-title">Awal dari Sebuah Terobosan</h3>
+        <p class="ms-card-text">V-KOOL resmi hadir di Indonesia dari sebuah kantor sederhana di Karang Anyar, Jakarta Pusat, dengan 10 staf yang menanamkan fondasi revolusi kaca film berteknologi tinggi.</p>
+      </div>
+
+      <div class="ms-card fade-up">
+        <div class="ms-year" aria-hidden="true">1996</div>
+        <div class="ms-num"><span class="ms-num-dot"></span>02 / 12</div>
+        <div class="ms-card-year-label">1996</div>
+        <h3 class="ms-card-title">Momen yang Mengubah Persepsi</h3>
+        <p class="ms-card-text">Melalui debut di IIMS Jakarta, V-KOOL memperkenalkan kaca film bening tahan panas yang memukau publik dan melahirkan julukan legendaris "kaca film ajaib".</p>
+      </div>
+
+      <div class="ms-card fade-up">
+        <div class="ms-year" aria-hidden="true">2003</div>
+        <div class="ms-num"><span class="ms-num-dot"></span>03 / 12</div>
+        <div class="ms-card-year-label">2003</div>
+        <h3 class="ms-card-title">Berdiri Tegak dengan Identitas Sendiri</h3>
+        <p class="ms-card-text">V-KOOL menempati Gedung V-KOOL di Gunung Sahari sebagai simbol kematangan brand dan kepercayaan industri.</p>
+      </div>
+
+      <div class="ms-card fade-up">
+        <div class="ms-year" aria-hidden="true">2014</div>
+        <div class="ms-num"><span class="ms-num-dot"></span>04 / 12</div>
+        <div class="ms-card-year-label">2014</div>
+        <h3 class="ms-card-title">Rekor Dunia: MURI</h3>
+        <p class="ms-card-text">Museum Rekor Indonesia menobatkan V-KOOL sebagai kaca film berlapis emas pertama di dunia dengan daya tolak inframerah tertinggi. Bukan klaim, ini terukur.</p>
+      </div>
+
+      <div class="ms-card fade-up">
+        <div class="ms-year" aria-hidden="true">2015</div>
+        <div class="ms-num"><span class="ms-num-dot"></span>05 / 12</div>
+        <div class="ms-card-year-label">2015</div>
+        <h3 class="ms-card-title">Edukasi Menjadi Kekuatan</h3>
+        <p class="ms-card-text">V-KOOL memperluas edukasi dari pameran otomotif ke pusat perbelanjaan untuk menjangkau konsumen yang lebih luas di seluruh Indonesia.</p>
+      </div>
+
+      <div class="ms-card fade-up">
+        <div class="ms-year" aria-hidden="true">2016</div>
+        <div class="ms-num"><span class="ms-num-dot"></span>06 / 12</div>
+        <div class="ms-card-year-label">2016</div>
+        <h3 class="ms-card-title">Memperluas Akses Nasional</h3>
+        <p class="ms-card-text">Kolaborasi strategis dengan Ace Hardware mempercepat ekspansi outlet V-KOOL ke berbagai kota di Indonesia.</p>
+      </div>
+
+      <div class="ms-card fade-up">
+        <div class="ms-year" aria-hidden="true">2017</div>
+        <div class="ms-num"><span class="ms-num-dot"></span>07 / 12</div>
+        <div class="ms-card-year-label">2017</div>
+        <h3 class="ms-card-title">Pengalaman yang Tak Terlupakan</h3>
+        <p class="ms-card-text">Melalui booth "Experience Gold" dan Demo Heat Tunnel, V-KOOL menghadirkan pengalaman langsung performa kaca film kepada pengunjung pameran.</p>
+      </div>
+
+      <div class="ms-card fade-up">
+        <div class="ms-year" aria-hidden="true">2018</div>
+        <div class="ms-num"><span class="ms-num-dot"></span>08 / 12</div>
+        <div class="ms-card-year-label">2018</div>
+        <h3 class="ms-card-title">Evolusi Teknologi</h3>
+        <p class="ms-card-text">V-KOOL meluncurkan PPF premium, kaca film infra-red non-metal, serta meresmikan dealer Bekasi bersama PT Bahagia Motor untuk memperluas jaringan.</p>
+      </div>
+
+      <div class="ms-card fade-up">
+        <div class="ms-year" aria-hidden="true">2019</div>
+        <div class="ms-num"><span class="ms-num-dot"></span>09 / 12</div>
+        <div class="ms-card-year-label">2019</div>
+        <h3 class="ms-card-title">Standar Baru di Kelas Premium</h3>
+        <p class="ms-card-text">Peluncuran V-KOOL Ultimate Solitaire dengan TSER hingga 74% menetapkan standar tertinggi di segmen kaca film premium.</p>
+      </div>
+
+      <div class="ms-card fade-up">
+        <div class="ms-year" aria-hidden="true">2022</div>
+        <div class="ms-num"><span class="ms-num-dot"></span>10 / 12</div>
+        <div class="ms-card-year-label">2022</div>
+        <h3 class="ms-card-title">Memasuki Era Perlindungan Menyeluruh</h3>
+        <p class="ms-card-text">V-KOOL memperkenalkan New Black Series dengan Nano Technology dan PPF Interior, menegaskan kepemimpinan teknologi perlindungan kendaraan.</p>
+      </div>
+
+      <div class="ms-card fade-up">
+        <div class="ms-year" aria-hidden="true">2023</div>
+        <div class="ms-num"><span class="ms-num-dot"></span>11 / 12</div>
+        <div class="ms-card-year-label">2023</div>
+        <h3 class="ms-card-title">Transformasi Digital</h3>
+        <p class="ms-card-text">V-KOOL melangkah ke era digital melalui peluncuran Tokopedia Discovery Page di IIMS 2023.</p>
+      </div>
+
+      <div class="ms-card fade-up">
+        <div class="ms-year" aria-hidden="true">2024</div>
+        <div class="ms-num"><span class="ms-num-dot"></span>12 / 12</div>
+        <div class="ms-card-year-label">2024–2026</div>
+        <h3 class="ms-card-title">Own Your Drive → Protection Reinvented</h3>
+        <p class="ms-card-text">Kampanye "Own Your Drive" di GIIAS memperkuat edukasi dan branding. Pada 2026, V-KOOL memperkenalkan generasi terbaru PPF dengan teknologi Tetrashield, mendefinisikan ulang standar perlindungan kendaraan.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="ms-scroll-hint">
+    <div class="ms-scroll-track"><div class="ms-scroll-thumb" id="msThumb"></div></div>
+    <span>Geser untuk melihat selengkapnya</span>
+  </div>
+</section>
+
+<!-- ═══════════════════════════
+  AWARDS — Varied visual weight
+  MURI featured full-width
+  5 others in compact 3-col grid
+═══════════════════════════ -->
+<section class="awards fade-up" aria-labelledby="aw-h">
+  <div class="awards-header">
+    <div>
+      <div class="aw-eyebrow"><span class="aw-ey-line"></span><span class="aw-ey-txt">Penghargaan</span></div>
+      <h2 class="aw-heading" id="aw-h">Pengakuan<br>Industri</h2>
+    </div>
+    <p class="aw-header-right">Enam penghargaan dari institusi independen, bukan self-proclaimed, melainkan dibuktikan oleh riset dan suara konsumen nyata.</p>
+  </div>
+
+  <!-- FEATURED: MURI — the most significant, full editorial treatment -->
+  <div class="award-featured" role="article" aria-label="Penghargaan MURI 2014">
+    <div class="award-featured-body">
+      <div class="award-running-num"><span class="award-running-num-accent">01</span> / 06 &nbsp;·&nbsp; Penghargaan Utama</div>
+      <h3 class="award-feat-title">Museum Rekor Indonesia (MURI) 2014</h3>
+      <p class="award-feat-text">V-KOOL dianugerahi MURI sebagai kaca film berlapis emas pertama di dunia dengan daya tolak inframerah tertinggi. Teknologi sputtering logam mulia kami mencapai heat rejection yang tidak tertandingi, dibuktikan dan bukan sekadar diklaim.</p>
+
+    </div>
+    <div class="award-featured-visual" aria-hidden="true" style="background:url('https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=900&q=80') center/cover no-repeat;">
+      <div style="position:absolute;inset:0;background:rgba(10,10,10,0.55);"></div>
+      <div class="award-feat-icon" style="position:relative;z-index:1;">
+        <div class="award-feat-icon-box">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+        </div>
+        <span class="award-feat-icon-lbl">MURI Award 2014</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMPACT GRID: remaining 5 awards -->
+  <div class="awards-grid" role="list">
+
+    <div class="award-compact" role="listitem">
+      <div class="award-compact-num"><span>02</span> / 06</div>
+      <div class="award-compact-icon"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+      <h3 class="award-compact-title">Popular Science Top 100</h3>
+      <p class="award-compact-text">Masuk daftar bergengsi 100 produk paling inovatif di dunia berkat terobosan manajemen energi surya.</p>
+    </div>
+
+    <div class="award-compact" role="listitem">
+      <div class="award-compact-num"><span>03</span> / 06</div>
+      <div class="award-compact-icon"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+      <h3 class="award-compact-title">Top Brand Award</h3>
+      <p class="award-compact-text">Verifikasi independen Frontier Consulting Group atas kepercayaan konsumen di ribuan responden kota besar Indonesia.</p>
+    </div>
+
+    <div class="award-compact" role="listitem">
+      <div class="award-compact-num"><span>04</span> / 06</div>
+      <div class="award-compact-icon"><svg viewBox="0 0 24 24"><path d="M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v5a2 2 0 0 1-2 2h-2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg></div>
+      <h3 class="award-compact-title">OCA: Favorit Window Film</h3>
+      <p class="award-compact-text">OTOMOTIF Choice Award sebagai kaca film pilihan konsumen di segmen aftermarket otomotif Indonesia.</p>
+    </div>
+
+    <div class="award-compact" role="listitem">
+      <div class="award-compact-num"><span>05</span> / 06</div>
+      <div class="award-compact-icon"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+      <h3 class="award-compact-title">Reader's Choice Auto Bild</h3>
+      <p class="award-compact-text">Terpilih langsung oleh pembaca setia majalah Auto Bild Indonesia, mencerminkan loyalitas pengguna nyata.</p>
+    </div>
+
+    <div class="award-compact" role="listitem">
+      <div class="award-compact-num"><span>06</span> / 06</div>
+      <div class="award-compact-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+      <h3 class="award-compact-title">CSS: Auto Bild Indonesia</h3>
+      <p class="award-compact-text">Customer Satisfaction Survey dengan kepuasan konsumen tertinggi di antara seluruh merek kaca film yang disurvei.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════
+  CLOSING — Apple-style restraint.
+  One massive statement. Two text links.
+  No gold banner. No filled buttons.
+  The whitespace IS the message.
+═══════════════════════════ -->
+<div class="closing fade-up">
+  <div class="closing-inner">
+    <div class="closing-eyebrow">
+      <span class="closing-ey-line"></span>
+      Mulai Sekarang
+    </div>
+    <p class="closing-statement">
+      Satu keputusan.<br>
+      Tiga puluh tahun<br>
+      <strong>kepercayaan</strong> kami jaga.
+    </p>
+    <div class="closing-actions">
+      <a class="closing-link" href="https://wa.me/6221000000" target="_blank" rel="noopener">
+        Konsultasi Gratis
+        <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+      <span class="closing-link-sep" aria-hidden="true"></span>
+      <a class="closing-link" href="#">
+        Temukan Dealer
+        <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+      <span class="closing-link-sep" aria-hidden="true"></span>
+      <a class="closing-link" href="#">
+        Cek Harga
+        <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+    </div>
+  </div>
+</div>
+
+<div id="footer-placeholder"></div>
+
+<div class="sticky-bar" id="stickyBar">
+  <p class="sticky-bar-text">30 tahun inovasi. <strong>Konsultasi &amp; dealer gratis</strong></p>
+  <div class="sticky-bar-actions">
+    <a class="sticky-btn-wa" href="https://wa.me/6221000000" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" fill="none" stroke-width="1.5"/></svg>WhatsApp</a>
+    <a class="sticky-btn-gold" href="#"><svg viewBox="0 0 24 24"><circle cx="12" cy="10" r="3"/><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg>Dealer Terdekat</a>
+  </div>
+</div>
+
+<script>
+(function(){
+  /* Timeline rail — drag to scroll */
+  const rail=document.getElementById('msRail');
+  const thumb=document.getElementById('msThumb');
+  const sticky=document.getElementById('stickyBar');
+  const hero=document.querySelector('.hero');
+  function onScroll(){const y=scrollY;if(hero&&sticky)sticky.classList.toggle('visible',y>hero.offsetTop+hero.offsetHeight-100);}
+  window.addEventListener('scroll',onScroll,{passive:true});onScroll();
+  if(rail){
+    let isDown=false,startX,scrollLeft;
+    rail.addEventListener('mousedown',e=>{isDown=true;rail.classList.add('grabbing');startX=e.pageX-rail.offsetLeft;scrollLeft=rail.scrollLeft;});
+    rail.addEventListener('mouseleave',()=>{isDown=false;rail.classList.remove('grabbing');});
+    rail.addEventListener('mouseup',()=>{isDown=false;rail.classList.remove('grabbing');});
+    rail.addEventListener('mousemove',e=>{if(!isDown)return;e.preventDefault();const x=e.pageX-rail.offsetLeft;const walk=(x-startX)*1.2;rail.scrollLeft=scrollLeft-walk;});
+    /* Update thumb */
+    rail.addEventListener('scroll',()=>{
+      const pct=(rail.scrollLeft/(rail.scrollWidth-rail.clientWidth))*100;
+      if(thumb)thumb.style.width=Math.min(pct,100)+'%';
+    },{passive:true});
+    /* Touch */
+    rail.addEventListener('touchstart',e=>{startX=e.touches[0].pageX;scrollLeft=rail.scrollLeft;},{passive:true});
+    rail.addEventListener('touchmove',e=>{const x=e.touches[0].pageX;rail.scrollLeft=scrollLeft-(x-startX);},{passive:true});
+  }
+
+  /* Fade up */
+  const io=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target);}});
+  },{threshold:.06,rootMargin:'0px 0px -20px 0px'});
+  document.querySelectorAll('.fade-up').forEach(el=>io.observe(el));
+  if(window.matchMedia('(prefers-reduced-motion:reduce)').matches){
+    document.querySelectorAll('.fade-up').forEach(el=>{el.style.transition='none';el.classList.add('visible');});
+  }
+})();
+</script>
+<script src="nav-footer.js"></script>
+</body>
+</html>
