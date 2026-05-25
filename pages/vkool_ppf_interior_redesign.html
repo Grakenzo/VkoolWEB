@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1440">
+<title>V-KOOL PPF Interior — Paint Protection Film Interior</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+
+/* ══ RESET ══ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Roboto', sans-serif;
+  background: #0a0a0a;
+  color: #EBEBEB;
+  -webkit-font-smoothing: antialiased;
+  min-width: 1440px;
+}
+a { text-decoration: none; color: inherit; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+/* ══ TOKENS ══ */
+:root {
+  --black:  #0a0a0a;
+  --dark:   #111111;
+  --mid:    #1a1a1a;
+  --line:   #222222;
+  --line2:  #2e2e2e;
+  --gold:   #CDB182;
+  --gold2:  #b89a6a;
+  --gold-h: #b89a6a;
+  --ash:    #EBEBEB;
+  --muted:  #888888;
+  --dim:    #555555;
+  --white:  #FFFFFF;
+  --radius: 2px;
+  --nav-h:  68px;
+  --pad:    56px;
+  --ease:   cubic-bezier(0.25, 0, 0.1, 1);
+}
+
+/* ══ NAV ══ */
+.nav {
+  width: 100%; height: var(--nav-h);
+  .nav.scrolled { background:rgba(10,10,10,1); border-bottom-color:var(--line2); }
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 var(--pad);
+  background: rgba(10,10,10,0.97);
+  border-bottom: 0.5px solid var(--line);
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  transition: background 0.4s var(--ease), border-color 0.4s var(--ease);
+}
+.nav-logo { font-family:'Oswald',sans-serif; font-size:17px; letter-spacing:.30em; font-weight:500; color:var(--gold); text-transform:uppercase; flex-shrink:0; text-decoration:none; }
+.nav-logo:hover { color:var(--gold); }
+.nav.scrolled { background:rgba(10,10,10,1); border-bottom-color:var(--line2); }
+.nav-links { display:flex; gap:36px; align-items:center; height:100%; }
+.nav-link {
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px; letter-spacing: .10em; text-transform: uppercase; font-weight: 400;
+  color: rgba(235,235,235,0.75);
+  position: relative; padding-bottom: 3px;
+  transition: color .25s;
+}
+.nav-link::after {
+  content: ''; position: absolute; bottom: -1px; left: 0; right: 100%;
+  height: 0.5px; background: var(--gold);
+  transition: right .3s var(--ease);
+}
+.nav-link:hover { color: var(--white); }
+.nav-link:hover::after { right: 0; }
+.nav-link.active { color: var(--gold); }
+.nav-link.active::after { right: 0; }
+/* ─── TYPOGRAPHY ─── */
+.t-nav   { font-family:'Oswald',sans-serif; font-size:13px; letter-spacing:.10em; font-weight:400; text-transform:uppercase; }
+.t-label { font-family:'Oswald',sans-serif; font-size:11px; letter-spacing:.20em; text-transform:uppercase; font-weight:400; }
+.t-btn   { font-family:'Oswald',sans-serif; font-size:13px; letter-spacing:.10em; text-transform:uppercase; font-weight:400; }
+
+/* ─── DROPDOWN ─── */
+.nav-dropdown { position:relative; display:flex; align-items:center; height:100%; }
+.nav-dropdown-trigger { display:flex; align-items:center; gap:6px; color:rgba(235,235,235,0.75); font-family:'Oswald',sans-serif; font-size:13px; letter-spacing:.10em; font-weight:400; text-transform:uppercase; cursor:pointer; position:relative; padding-bottom:2px; white-space:nowrap; transition:color .25s; background:none; border:none; }
+.nav-dropdown-trigger::after { content:''; position:absolute; bottom:-2px; left:0; right:100%; height:0.5px; background:var(--gold); transition:right .35s var(--ease); }
+.nav-dropdown:hover .nav-dropdown-trigger { color:var(--white); }
+.nav-dropdown:hover .nav-dropdown-trigger::after { right:0; }
+.nav-dropdown-trigger.active { color:var(--gold) !important; }
+.nav-dropdown-trigger.active::after { right:0 !important; }
+.nav-chevron { width:10px; height:10px; stroke:currentColor; fill:none; stroke-width:2; flex-shrink:0; transition:transform .35s var(--ease); }
+.nav-dropdown:hover .nav-chevron { transform:rotate(180deg); }
+.nav-dropdown-panel { position:absolute; top:calc(var(--nav-h) - 1px); left:50%; transform:translateX(-50%) translateY(-8px); background:#0e0d0b; border:0.5px solid var(--line2); border-top:1px solid var(--gold); display:grid; gap:0; min-width:460px; opacity:0; visibility:hidden; pointer-events:none; transition:opacity .3s var(--ease), transform .3s var(--ease), visibility .3s; }
+.nav-dropdown:hover .nav-dropdown-panel { opacity:1; visibility:visible; pointer-events:auto; transform:translateX(-50%) translateY(0); }
+.nav-dropdown-panel.cols-1 { grid-template-columns:1fr; min-width:280px; left:auto; right:0; transform:translateY(-8px); }
+.nav-dropdown:hover .nav-dropdown-panel.cols-1 { transform:translateY(0); }
+.dd-item { display:flex; align-items:flex-start; gap:16px; padding:22px 24px; border-bottom:0.5px solid var(--line); border-right:0.5px solid var(--line); position:relative; cursor:pointer; transition:background .25s var(--ease); text-decoration:none; color:inherit; overflow:hidden; }
+.cols-1 .dd-item:last-child { border-bottom:none; }
+.cols-1 .dd-item { border-right:none; }
+.dd-item:hover { background:rgba(205,177,130,0.05); }
+.dd-item::before { content:''; position:absolute; left:0; top:0; bottom:0; width:2px; background:linear-gradient(to bottom, var(--gold), var(--gold2)); transform:scaleY(0); transform-origin:top center; transition:transform .35s var(--ease); }
+.dd-item:hover::before { transform:scaleY(1); }
+.dd-icon { width:34px; height:34px; flex-shrink:0; border:0.5px solid rgba(205,177,130,0.3); background:rgba(205,177,130,0.06); display:flex; align-items:center; justify-content:center; border-radius:2px; transition:border-color .25s, background .25s; }
+.dd-item:hover .dd-icon { border-color:rgba(205,177,130,0.7); background:rgba(205,177,130,0.12); }
+.dd-icon svg { width:15px; height:15px; stroke:var(--gold); fill:none; stroke-width:1.4; }
+.dd-text { display:flex; flex-direction:column; gap:4px; }
+.dd-title { font-family:'Oswald',sans-serif; font-size:13px; letter-spacing:.08em; font-weight:400; text-transform:uppercase; color:var(--ash); transition:color .25s; }
+.dd-item:hover .dd-title { color:var(--gold); }
+.dd-sub { font-size:11px; color:var(--dim); letter-spacing:.02em; font-weight:300; line-height:1.5; }
+.nav-right { display:flex; gap:12px; align-items:center; flex-shrink:0; }
+.nav-lang { display:flex; align-items:center; gap:6px; color:var(--dim); border:0.5px solid var(--line2); padding:5px 12px; border-radius:2px; font-size:11px; letter-spacing:.08em; cursor:pointer; transition:border-color .25s, color .25s; background:none; }
+.nav-lang svg { width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:1.5; }
+.nav-lang:hover { color:var(--ash); border-color:var(--dim); }
+.btn-gold-sm { background:var(--gold); color:var(--black); padding:9px 20px; border-radius:2px; font-family:'Oswald',sans-serif; font-size:12px; letter-spacing:.10em; text-transform:uppercase; font-weight:400; transition:background .25s; min-height:44px; display:flex; align-items:center; border:none; cursor:pointer; }
+.btn-gold-sm:hover { background:var(--gold2); }
+
+/* ══════════════════════════════════════════
+   SECTION 1 — HERO (SPLIT PANEL)
+   Left: content | Right: full-bleed image
+   ══════════════════════════════════════════ */
+/* ══ HERO (full-width like other pages) ══ */
+.hero {
+  position: relative;
+  width: 100%; height: 100vh; min-height: 600px; max-height: 860px;
+  margin-top: var(--nav-h);
+  display: flex; align-items: flex-end;
+  overflow: hidden;
+}
+.hero-bg {
+  position: absolute; inset: 0;
+  background: url('https://images.unsplash.com/photo-1555215695-3004980ad54e?w=1600&q=80') center/cover no-repeat;
+}
+.hero-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to right, rgba(10,10,10,0.92) 0%, rgba(10,10,10,0.65) 45%, rgba(10,10,10,0.25) 100%);
+}
+.hero-content {
+  position: relative; z-index: 2;
+  padding: 0 var(--pad) 72px;
+  max-width: 660px;
+}
+.hero-eyebrow {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
+}
+.hero-eyebrow-line { width: 24px; height: 0.5px; background: var(--gold); flex-shrink: 0; }
+.hero-eyebrow-text {
+  font-family: 'Oswald', sans-serif;
+  font-size: 11px; letter-spacing: .22em; color: var(--gold);
+  text-transform: uppercase; font-weight: 400;
+}
+.hero-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(36px,4.5vw,56px); letter-spacing: .05em; font-weight: 400; text-transform: uppercase;
+  color: var(--white); line-height: 1.0; margin-bottom: 20px;
+  text-shadow: 0 2px 24px rgba(0,0,0,0.6);
+}
+.hero-subtitle {
+  font-size: 15px; color: rgba(235,235,235,0.72); line-height: 1.8;
+  font-weight: 300; margin-bottom: 40px; max-width: 460px;
+  text-shadow: 0 1px 12px rgba(0,0,0,0.5);
+}
+.hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; }
+/* Homepage-style hero buttons */
+.btn-primary { background:var(--gold); color:var(--black); padding:16px 32px; border-radius:2px; font-family:'Oswald',sans-serif; font-size:13px; letter-spacing:.12em; text-transform:uppercase; font-weight:400; min-height:52px; display:inline-flex; align-items:center; gap:10px; transition:background .25s, transform .2s; cursor:pointer; text-decoration:none; border:none; }
+.btn-primary:hover { background:var(--gold2); transform:translateY(-1px); }
+.btn-secondary { background:transparent; color:var(--ash); padding:15px 32px; border-radius:2px; font-family:'Oswald',sans-serif; font-size:13px; letter-spacing:.12em; text-transform:uppercase; font-weight:300; border:0.5px solid rgba(235,235,235,0.3); min-height:52px; display:inline-flex; align-items:center; transition:border-color .25s, color .25s; cursor:pointer; text-decoration:none; }
+.btn-secondary:hover { border-color:var(--ash); color:var(--white); }
+
+
+.hero-right-lbl {
+  font-family: 'Oswald', sans-serif;
+  font-size: 10px; letter-spacing: .18em; color: #222; text-transform: uppercase;
+  text-align: center; line-height: 2;
+}
+/* Lexus corner accents on hero image */
+.hero-right::before, .hero-right::after {
+  content: ''; position: absolute; width: 28px; height: 28px; z-index: 2;
+}
+.hero-right::before { top: 20px; left: 20px; border-top: 0.5px solid var(--gold); border-left: 0.5px solid var(--gold); opacity: .4; }
+.hero-right::after  { bottom: 20px; right: 20px; border-bottom: 0.5px solid var(--gold); border-right: 0.5px solid var(--gold); opacity: .4; }
+
+/* ══════════════════════════════════════════
+   SECTION 2 — WHY (EDITORIAL ASYMMETRIC)
+   Tall image left, 2 stacked features right
+   ══════════════════════════════════════════ */
+.why {
+  width: 100%;
+  background: var(--dark);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 680px;
+}
+
+/* Left — sticky large image */
+.why-image-col {
+  position: relative; overflow: hidden;
+  background: linear-gradient(160deg, #181818 0%, #0d0d0d 100%);
+  display: flex; align-items: center; justify-content: center;
+  min-height: 680px;
+}
+.why-image-lbl {
+  font-family: 'Oswald', sans-serif;
+  font-size: 10px; letter-spacing: .18em; color: #222; text-transform: uppercase;
+  text-align: center; line-height: 2;
+}
+/* Corner accents */
+.why-image-col::before, .why-image-col::after {
+  content: ''; position: absolute; width: 24px; height: 24px; z-index: 2;
+}
+.why-image-col::before { top: 20px; left: 20px; border-top: 0.5px solid var(--gold); border-left: 0.5px solid var(--gold); opacity: .35; }
+.why-image-col::after  { bottom: 20px; right: 20px; border-bottom: 0.5px solid var(--gold); border-right: 0.5px solid var(--gold); opacity: .35; }
+
+/* Right — stacked text features */
+.why-content-col {
+  display: flex; flex-direction: column;
+  border-left: 0.5px solid var(--line);
+}
+
+/* Section heading strip */
+.why-heading-strip {
+  padding: 48px 64px 40px;
+  border-bottom: 0.5px solid var(--line);
+}
+.why-section-label {
+  display: flex; align-items: center; gap: 12px;
+  color: var(--gold); margin-bottom: 16px;
+}
+.why-section-label-line { width: 20px; height: 0.5px; background: var(--gold); }
+.why-section-label-text {
+  font-family: 'Oswald', sans-serif;
+  font-size: 11px; letter-spacing: .22em; text-transform: uppercase; font-weight: 400;
+}
+.why-heading {
+  font-family: 'Oswald', sans-serif;
+  font-size: 30px; letter-spacing: .05em; font-weight: 400; text-transform: uppercase;
+  color: var(--white); line-height: 1.1;
+}
+
+/* Individual feature block */
+.why-feature {
+  flex: 1; padding: 48px 64px;
+  border-bottom: 0.5px solid var(--line);
+  position: relative;
+}
+.why-feature:last-child { border-bottom: none; }
+.why-feature-num {
+  font-family: 'Oswald', sans-serif;
+  font-size: 11px; letter-spacing: .18em; color: var(--gold); text-transform: uppercase;
+  font-weight: 300; margin-bottom: 16px;
+  display: flex; align-items: center; gap: 10px;
+}
+.why-feature-num-line { width: 16px; height: 0.5px; background: var(--gold); }
+.why-feature-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 26px; letter-spacing: .04em; font-weight: 400;
+  color: var(--white); line-height: 1.15; margin-bottom: 16px;
+  font-style: italic;
+}
+.why-feature-text {
+  font-size: 15px; color: var(--muted); line-height: 1.8; font-weight: 300; max-width: 420px;
+}
+
+/* ══════════════════════════════════════════
+   SECTION 3 — AREA PELINDUNGAN
+   Sidebar tabs LEFT | B/A slider RIGHT
+   ══════════════════════════════════════════ */
+.area {
+  width: 100%;
+  background: var(--black);
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  min-height: 680px;
+  border-top: 0.5px solid var(--line);
+}
+
+/* Sidebar */
+.area-sidebar {
+  background: var(--dark);
+  border-right: 0.5px solid var(--line);
+  display: flex; flex-direction: column;
+}
+.area-sidebar-header {
+  padding: 48px 36px 32px;
+  border-bottom: 0.5px solid var(--line);
+}
+.area-sidebar-eyebrow {
+  display: flex; align-items: center; gap: 10px;
+  color: var(--gold); margin-bottom: 14px;
+}
+.area-sidebar-eyebrow-line { width: 16px; height: 0.5px; background: var(--gold); }
+.area-sidebar-eyebrow-text {
+  font-family: 'Oswald', sans-serif;
+  font-size: 10px; letter-spacing: .22em; text-transform: uppercase; font-weight: 400;
+}
+.area-sidebar-heading {
+  font-family: 'Oswald', sans-serif;
+  font-size: 22px; letter-spacing: .05em; font-weight: 400; text-transform: uppercase;
+  color: var(--white); line-height: 1.2; margin-bottom: 10px;
+}
+.area-sidebar-sub {
+  font-size: 13px; color: var(--muted); font-weight: 300; line-height: 1.65;
+}
+
+/* Tab items in sidebar */
+.area-tabs { flex: 1; display: flex; flex-direction: column; }
+.area-tab {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 22px 36px;
+  border-bottom: 0.5px solid var(--line);
+  cursor: pointer;
+  position: relative;
+  transition: background .25s;
+  background: none; border-left: none; border-right: none; border-top: none;
+  text-align: left;
+  /* active indicator */
+}
+.area-tab::before {
+  content: '';
+  position: absolute; left: 0; top: 0; bottom: 0;
+  width: 2px; background: var(--gold);
+  opacity: 0;
+  transition: opacity .25s;
+}
+.area-tab:hover { background: rgba(205,177,130,0.04); }
+.area-tab.active { background: rgba(205,177,130,0.06); }
+.area-tab.active::before { opacity: 1; }
+.area-tab-label {
+  font-family: 'Oswald', sans-serif;
+  font-size: 14px; letter-spacing: .08em; text-transform: uppercase; font-weight: 400;
+  color: var(--dim);
+  transition: color .25s;
+}
+.area-tab.active .area-tab-label { color: var(--gold); }
+.area-tab:hover .area-tab-label { color: var(--ash); }
+.area-tab-arrow {
+  width: 16px; height: 16px; flex-shrink: 0;
+  opacity: 0; transition: opacity .25s;
+}
+.area-tab-arrow svg { width: 16px; height: 16px; stroke: var(--gold); fill: none; stroke-width: 1.5; }
+.area-tab.active .area-tab-arrow { opacity: 1; }
+
+/* Tab number badge */
+.area-tab-num {
+  font-family: 'Oswald', sans-serif;
+  font-size: 10px; color: rgba(205,177,130,0.35); letter-spacing: .08em;
+  margin-right: 12px; font-weight: 300; flex-shrink: 0;
+}
+.area-tab-content { display: flex; align-items: center; gap: 0; flex: 1; }
+
+/* ── MAIN PANEL (B/A slider) ── */
+.area-main {
+  position: relative; overflow: hidden;
+  background: var(--black);
+  display: flex; flex-direction: column;
+}
+
+/* before/after wrap */
+.ba-wrap {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  height: 580px;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: ew-resize;
+}
+.ba-before {
+  position: absolute; inset: 0;
+  background: #111 url('../images/before-headunit.jpg') center/cover no-repeat;
+  display: flex; align-items: center; justify-content: center;
+}
+.ba-after {
+  position: absolute; inset: 0;
+  background: #111 url('../images/after-headunit.jpg') center/cover no-repeat;
+  display: flex; align-items: center; justify-content: center;
+  clip-path: inset(0 50% 0 0);
+}
+.ba-placeholder {
+  font-family: 'Oswald', sans-serif;
+  font-size: 10px; letter-spacing: .18em; color: #252525; text-transform: uppercase;
+  text-align: center; line-height: 2; pointer-events: none;
+}
+.ba-placeholder.gold { color: rgba(205,177,130,0.2); }
+
+/* divider */
+.ba-divider {
+  position: absolute; top: 0; bottom: 0;
+  left: 50%;
+  width: 1px; background: var(--gold);
+  transform: translateX(-50%);
+  pointer-events: none; z-index: 5;
+}
+
+/* handle */
+.ba-handle {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 52px; height: 52px;
+  background: var(--gold); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: ew-resize; z-index: 10;
+  box-shadow: 0 0 0 5px rgba(205,177,130,0.2);
+  transition: box-shadow .2s;
+}
+.ba-handle:hover { box-shadow: 0 0 0 10px rgba(205,177,130,0.15); }
+.ba-handle svg { width: 22px; height: 22px; stroke: var(--black); fill: none; stroke-width: 2.5; }
+
+/* labels */
+.ba-label {
+  position: absolute; bottom: 28px;
+  font-family: 'Oswald', sans-serif;
+  font-size: 10px; letter-spacing: .16em; text-transform: uppercase;
+  padding: 5px 14px; border-radius: 2px; pointer-events: none; z-index: 6;
+}
+.ba-label-before {
+  left: 28px;
+  background: rgba(10,10,10,0.8);
+  border: 0.5px solid var(--line2);
+  color: var(--muted);
+}
+.ba-label-after {
+  right: 28px;
+  background: rgba(205,177,130,0.12);
+  border: 0.5px solid rgba(205,177,130,0.35);
+  color: var(--gold);
+}
+
+/* drag hint */
+.ba-hint {
+  position: absolute; top: 28px; left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Oswald', sans-serif;
+  font-size: 9px; letter-spacing: .18em; text-transform: uppercase;
+  color: rgba(205,177,130,0.45);
+  display: flex; align-items: center; gap: 8px;
+  pointer-events: none; z-index: 6;
+  transition: opacity .5s;
+}
+.ba-hint.hidden { opacity: 0; }
+.ba-hint svg { width: 10px; height: 10px; stroke: rgba(205,177,130,0.45); fill: none; stroke-width: 1.5; }
+
+/* dot indicators */
+.ba-dots {
+  display: flex; justify-content: center; gap: 8px;
+  padding: 20px 28px;
+  border-top: 0.5px solid var(--line);
+  background: var(--dark);
+}
+.ba-dot {
+  width: 28px; height: 2px; background: var(--line2); border-radius: 1px;
+  cursor: pointer; transition: background .25s;
+}
+.ba-dot.active { background: var(--gold); }
+
+/* ══ FOOTER ══ */
+.footer {
+  width: 100%; background: var(--black);
+  border-top: 0.5px solid var(--line);
+  padding: 56px var(--pad) 32px;
+}
+.footer-top {
+  display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  gap: 56px; margin-bottom: 48px;
+}
+.footer-logo {
+  font-family: 'Oswald', sans-serif;
+  font-size: 14px; letter-spacing: .28em; color: var(--gold); font-weight: 400; margin-bottom: 12px;
+}
+.footer-tagline { font-size: 13px; color: var(--dim); line-height: 1.65; max-width: 220px; font-weight: 300; }
+.footer-col-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 12px; letter-spacing: .15em; color: var(--ash); text-transform: uppercase;
+  font-weight: 400; margin-bottom: 16px;
+}
+.footer-link { font-size: 13px; color: var(--dim); display: block; margin-bottom: 17px; font-weight: 300; transition: color .25s; text-decoration:none; }
+.footer-link:hover { color: var(--gold); }
+.footer-link.active { color: var(--gold); }
+.footer-bottom {
+  border-top: 0.5px solid var(--line); padding-top: 24px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.footer-copy { font-size: 12px; color: #555555; font-weight: 300; }
+.footer-socials { display: flex; gap: 10px; }
+.social-btn {
+  width: 32px; height: 32px; border-radius: 50%;
+  border: 0.5px solid var(--line2);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: border-color .25s;
+}
+.social-btn:hover { border-color: var(--gold); }
+.social-btn svg { width: 12px; height: 12px; stroke: var(--dim); fill: none; stroke-width: 1.5; transition: stroke .25s; }
+.social-btn:hover svg { stroke: var(--gold); }
+
+/* ══ NUDGE ANIMATION ══ */
+@keyframes nudge {
+  0%,100% { transform: translate(-50%,-50%) translateX(0); }
+  20%      { transform: translate(-50%,-50%) translateX(-14px); }
+  40%      { transform: translate(-50%,-50%) translateX(14px); }
+  60%      { transform: translate(-50%,-50%) translateX(-7px); }
+  80%      { transform: translate(-50%,-50%) translateX(7px); }
+}
+.ba-handle.nudge { animation: nudge 1.1s var(--ease) forwards; }
+
+/* ══ FOCUS ══ */
+a:focus-visible, button:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+
+/* ══ FOOTER (saved template) ══ */
+.footer { background:var(--black); border-top:0.5px solid var(--line); padding:64px 56px 32px; }
+.footer-top { display:grid; grid-template-columns:1.6fr 1fr 1fr 1fr; gap:56px; margin-bottom:56px; }
+.footer-logo { font-family:'Oswald',sans-serif; font-size:15px; letter-spacing:.28em; color:var(--gold); font-weight:400; margin-bottom:14px; }
+.footer-tagline { font-size:13px; color:var(--dim); line-height:1.65; max-width:220px; font-weight:300; }
+.footer-col-title { font-family:'Oswald',sans-serif; font-size:11px; letter-spacing:.16em; color:var(--ash); text-transform:uppercase; font-weight:400; margin-bottom:18px; }
+.footer-link { font-size:13px; color:var(--dim); display:block; margin-bottom:17px; transition:color .25s; font-weight:300; text-decoration:none; }
+.footer-link:hover, .footer-link.active { color:var(--gold); }
+.footer-bottom { border-top:0.5px solid var(--line); padding-top:24px; display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; }
+.footer-copy { font-size:12px; color:#555555; font-weight:300; }
+.footer-social { display:flex; gap:10px; }
+.social-btn { width:34px; height:34px; border-radius:50%; border:0.5px solid var(--line2); display:flex; align-items:center; justify-content:center; cursor:pointer; transition:border-color .25s; background:none; }
+.social-btn:hover { border-color:var(--gold); }
+.social-btn svg { width:13px; height:13px; stroke:var(--dim); fill:none; stroke-width:1.5; transition:stroke .25s, fill .25s; }
+.social-btn:hover svg { stroke:var(--gold); }
+.social-btn svg path[fill="currentColor"] { fill:var(--dim); stroke:none; }
+.social-btn:hover svg path[fill="currentColor"] { fill:var(--gold); stroke:none; }
+
+</style>
+</head>
+<body>
+
+<!-- ══ NAV (saved template) ══ -->
+<nav class="nav" id="nav" role="navigation" aria-label="Main navigation">
+  <a class="nav-logo" href="vkool_homepage_v2.html" aria-label="V-KOOL Indonesia">V-KOOL</a>
+  <div class="nav-links">
+    <a class="nav-link t-nav" href="vkool_otomotif.html">Otomotif</a>
+    <a class="nav-link t-nav" href="vkool_bangunan.html">Bangunan</a>
+    <div class="nav-dropdown" aria-label="PPF menu">
+      <button class="nav-dropdown-trigger t-nav active" aria-haspopup="true" aria-expanded="false">
+        PPF
+        <svg class="nav-chevron" viewBox="0 0 24 24" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="nav-dropdown-panel cols-1" style="left:50%;right:auto;transform:translateX(-50%) translateY(-8px);min-width:300px;" role="menu">
+        <a class="dd-item" href="vkool_ppf_final.html" role="menuitem">
+          <div class="dd-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+          <div class="dd-text"><span class="dd-title">PPF</span><span class="dd-sub">Eksterior — paint protection film</span></div>
+        </a>
+        <span class="dd-item active-item" role="menuitem" style="cursor:default;">
+          <div class="dd-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+          <div class="dd-text"><span class="dd-title" style="color:var(--gold);">PPF Interior</span><span class="dd-sub">Proteksi panel kabin premium</span></div>
+        </span>
+      </div>
+    </div>
+    <a class="nav-link t-nav" href="#">Tentang Kami</a>
+    <a class="nav-link t-nav" href="#">Dealers</a>
+    <div class="nav-dropdown" aria-label="Selengkapnya menu">
+      <button class="nav-dropdown-trigger t-nav" aria-haspopup="true" aria-expanded="false">
+        Selengkapnya
+        <svg class="nav-chevron" viewBox="0 0 24 24" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="nav-dropdown-panel cols-1" role="menu">
+        <a class="dd-item" href="#" role="menuitem">
+          <div class="dd-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+          <div class="dd-text"><span class="dd-title">Artikel</span><span class="dd-sub">Berita &amp; panduan produk</span></div>
+        </a>
+        <a class="dd-item" href="#" role="menuitem">
+          <div class="dd-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg></div>
+          <div class="dd-text"><span class="dd-title">Videos</span><span class="dd-sub">Lihat instalasi &amp; review</span></div>
+        </a>
+        <a class="dd-item" href="#" role="menuitem">
+          <div class="dd-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+          <div class="dd-text"><span class="dd-title">Cek Garansi</span><span class="dd-sub">Verifikasi status garansi produk</span></div>
+        </a>
+        <a class="dd-item" href="#" role="menuitem">
+          <div class="dd-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+          <div class="dd-text"><span class="dd-title">FAQ</span><span class="dd-sub">Pertanyaan yang sering diajukan</span></div>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="nav-right">
+    <button class="nav-lang t-label" aria-label="Switch language">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      IND
+    </button>
+    <button class="btn-gold-sm t-btn" aria-label="Cek Harga">Cek Harga</button>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════
+     HERO — SPLIT PANEL
+     ══════════════════════════════════ -->
+<section class="hero" aria-label="PPF Interior Hero">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-overlay" aria-hidden="true"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow" aria-hidden="true">
+      <span class="hero-eyebrow-line"></span>
+      <span class="hero-eyebrow-text">Paint Protection Film Interior</span>
+    </div>
+    <h1 class="hero-title">V-KOOL Paint<br>Protection Film<br>Interior</h1>
+    <p class="hero-subtitle">Lindungi komponen interior mewah kendaraan Anda dari goresan dan kerusakan dengan teknologi PPF interior premium.</p>
+    <div class="hero-ctas">
+      <button class="btn-primary">Jadwalkan Konsultasi
+        <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </button>
+      <button class="btn-secondary">Dealer Terdekat</button>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     WHY — EDITORIAL SPLIT
+     Large image left | 2 features right
+     ══════════════════════════════════ -->
+<section class="why" aria-labelledby="why-heading">
+
+  <!-- LEFT: large sticky image -->
+  <div class="why-image-col" aria-hidden="true" style="background:url('https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=1200&q=80') center/cover no-repeat;"></div>
+
+  <!-- RIGHT: content column -->
+  <div class="why-content-col">
+
+    <!-- Section heading -->
+    <div class="why-heading-strip">
+      <div class="why-section-label" aria-hidden="true">
+        <span class="why-section-label-line"></span>
+        <span class="why-section-label-text">Keunggulan</span>
+      </div>
+      <h2 class="why-heading" id="why-heading">Kenapa harus pakai<br>V-KOOL PPF Interior?</h2>
+    </div>
+
+    <!-- Feature 1 -->
+    <div class="why-feature">
+      <div class="why-feature-num" aria-hidden="true">
+        <span class="why-feature-num-line"></span>
+        01
+      </div>
+      <h3 class="why-feature-title">Preserved in Silence</h3>
+      <p class="why-feature-text">Pemasangan V-KOOL PPF Interior memberikan lapisan proteksi transparan yang mampu mempertahankan kilau asli material kabin Anda agar suasana di dalam kabin selalu terasa mewah.</p>
+    </div>
+
+    <!-- Feature 2 -->
+    <div class="why-feature">
+      <div class="why-feature-num" aria-hidden="true">
+        <span class="why-feature-num-line"></span>
+        02
+      </div>
+      <h3 class="why-feature-title">Crafted to Be Admired</h3>
+      <p class="why-feature-text">Bagian interior mobil seperti panel piano black pada konsol tengah, layar head unit, hingga panel instrumen digital sangat rentan terhadap goresan halus dari kuku maupun debu yang sulit dibersihkan.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     AREA PELINDUNGAN
+     Sidebar nav LEFT | B/A slider RIGHT
+     ══════════════════════════════════ -->
+<section class="area" aria-labelledby="area-heading">
+
+  <!-- SIDEBAR -->
+  <aside class="area-sidebar" aria-label="Pilih area pelindungan">
+    <div class="area-sidebar-header">
+      <div class="area-sidebar-eyebrow" aria-hidden="true">
+        <span class="area-sidebar-eyebrow-line"></span>
+        <span class="area-sidebar-eyebrow-text">Area Pelindungan</span>
+      </div>
+      <h2 class="area-sidebar-heading" id="area-heading">Lindungi Setiap<br>Area Interior</h2>
+      <p class="area-sidebar-sub">Pilih area untuk melihat perbedaan sebelum dan sesudah pemasangan PPF.</p>
+    </div>
+
+    <div class="area-tabs" role="tablist" aria-label="Pilih area interior">
+      <button class="area-tab active" role="tab" aria-selected="true"  data-tab="0">
+        <div class="area-tab-content">
+          <span class="area-tab-num">01</span>
+          <span class="area-tab-label">Headunit &amp; MID</span>
+        </div>
+        <span class="area-tab-arrow" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </span>
+      </button>
+      <button class="area-tab" role="tab" aria-selected="false" data-tab="1">
+        <div class="area-tab-content">
+          <span class="area-tab-num">02</span>
+          <span class="area-tab-label">Setir</span>
+        </div>
+        <span class="area-tab-arrow" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </span>
+      </button>
+      <button class="area-tab" role="tab" aria-selected="false" data-tab="2">
+        <div class="area-tab-content">
+          <span class="area-tab-num">03</span>
+          <span class="area-tab-label">Door Cup</span>
+        </div>
+        <span class="area-tab-arrow" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </span>
+      </button>
+      <button class="area-tab" role="tab" aria-selected="false" data-tab="3">
+        <div class="area-tab-content">
+          <span class="area-tab-num">04</span>
+          <span class="area-tab-label">Frame AC</span>
+        </div>
+        <span class="area-tab-arrow" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </span>
+      </button>
+      <button class="area-tab" role="tab" aria-selected="false" data-tab="4">
+        <div class="area-tab-content">
+          <span class="area-tab-num">05</span>
+          <span class="area-tab-label">Konsol</span>
+        </div>
+        <span class="area-tab-arrow" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN: Before/After slider -->
+  <div class="area-main">
+    <div class="ba-wrap" id="baWrap" aria-label="Geser untuk membandingkan sebelum dan sesudah PPF">
+
+      <!-- Hint -->
+      <div class="ba-hint" id="baHint" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><polyline points="9 18 3 12 9 6"/></svg>
+        Geser untuk membandingkan
+        <svg viewBox="0 0 24 24"><polyline points="15 6 21 12 15 18"/></svg>
+      </div>
+
+      <div class="ba-before" id="baBefore" aria-hidden="true"></div>
+      <div class="ba-after"  id="baAfter"  aria-hidden="true"></div>
+
+      <!-- Divider -->
+      <div class="ba-divider" id="baDivider" aria-hidden="true"></div>
+
+      <!-- Handle -->
+      <div class="ba-handle" id="baHandle"
+           role="slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"
+           aria-label="Geser untuk membandingkan"
+           tabindex="0">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <polyline points="9 18 3 12 9 6"/>
+          <polyline points="15 6 21 12 15 18"/>
+        </svg>
+      </div>
+
+      <!-- Labels -->
+      <span class="ba-label ba-label-before" aria-hidden="true">Before</span>
+      <span class="ba-label ba-label-after"  aria-hidden="true">After</span>
+
+    </div><!-- /.ba-wrap -->
+
+    <!-- Dot nav -->
+    <div class="ba-dots" aria-label="Navigasi area" role="tablist">
+      <div class="ba-dot active" data-dot="0" role="tab" tabindex="0" aria-label="Headunit & MID"></div>
+      <div class="ba-dot"        data-dot="1" role="tab" tabindex="0" aria-label="Setir"></div>
+      <div class="ba-dot"        data-dot="2" role="tab" tabindex="0" aria-label="Door Cup"></div>
+      <div class="ba-dot"        data-dot="3" role="tab" tabindex="0" aria-label="Frame AC"></div>
+      <div class="ba-dot"        data-dot="4" role="tab" tabindex="0" aria-label="Konsol"></div>
+    </div>
+  </div><!-- /.area-main -->
+
+</section>
+
+<!-- ══ FOOTER (saved template) ══ -->
+<footer class="footer" role="contentinfo">
+  <div class="footer-top">
+    <div>
+      <div class="footer-logo">V-KOOL</div>
+      <p class="footer-tagline">Solusi premium kaca film dan PPF untuk kendaraan dan bangunan Anda di seluruh Indonesia.</p>
+    </div>
+    <div>
+      <div class="footer-col-title">Products</div>
+      <a class="footer-link" href="vkool_otomotif.html">Otomotif</a>
+      <a class="footer-link" href="vkool_bangunan.html">Bangunan</a>
+      <a class="footer-link" href="vkool_ppf_final.html">PPF</a>
+      <a class="footer-link" href="#">Portfolio</a>
+      <a class="footer-link" href="#">Cek Harga</a>
+    </div>
+    <div>
+      <div class="footer-col-title">About Us</div>
+      <a class="footer-link" href="#">Tentang V-KOOL</a>
+      <a class="footer-link" href="#">FAQ</a>
+      <a class="footer-link" href="#">Videos</a>
+      <a class="footer-link" href="#">Berita &amp; Events</a>
+      <a class="footer-link" href="#">Lokasi</a>
+    </div>
+    <div>
+      <div class="footer-col-title">Contact</div>
+      <a class="footer-link" href="#">Enquiry</a>
+      <a class="footer-link" href="#">Garansi Elektronik</a>
+      <a class="footer-link" href="#">Contact Us</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy" id="footer-year">Copyright © 2025 V-KOOL INDONESIA — Legal &amp; Privacy Policy</span>
+    <div class="footer-social" aria-label="Social media">
+      <button class="social-btn" aria-label="Instagram"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></button>
+      <button class="social-btn" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20.06 12 20.06 12 20.06s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="var(--dim)"/></svg></button>
+      <button class="social-btn" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></button>
+      <button class="social-btn" aria-label="X (Twitter)"><svg viewBox="0 0 24 24" fill="none"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L2.25 2.25h6.988l4.265 5.632zm-1.161 17.52h1.833L7.084 4.126H5.117z" fill="currentColor" stroke="none"/></svg></button>
+    </div>
+  </div>
+</footer>
+
+<!-- ══ JS ══ -->
+<script>
+(function () {
+  'use strict';
+
+  /* ── Nav scroll ── */
+  const nav = document.getElementById('nav');
+  if(nav) window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 40), {passive:true});
+
+  /* ── Dropdown aria-expanded sync ── */
+  document.querySelectorAll('.nav-dropdown').forEach(dd => {
+    const trigger = dd.querySelector('.nav-dropdown-trigger');
+    dd.addEventListener('mouseenter', () => { if(trigger) trigger.setAttribute('aria-expanded','true'); });
+    dd.addEventListener('mouseleave', () => { if(trigger) trigger.setAttribute('aria-expanded','false'); });
+  });
+
+  /* ── Dynamic footer year ── */
+  const fyEl = document.getElementById('footer-year');
+  if(fyEl) fyEl.textContent = `Copyright © ${new Date().getFullYear()} V-KOOL INDONESIA — Legal & Privacy Policy`;
+
+  /* ── Before/After Slider ── */
+  const wrap    = document.getElementById('baWrap');
+  const after   = document.getElementById('baAfter');
+  const divider = document.getElementById('baDivider');
+  const handle  = document.getElementById('baHandle');
+  const hint    = document.getElementById('baHint');
+
+  let pct = 50;
+  let dragging = false;
+  let hintDismissed = false;
+
+  function setPos(x) {
+    const r = wrap.getBoundingClientRect();
+    let p = ((x - r.left) / r.width) * 100;
+    p = Math.min(Math.max(p, 2), 98);
+    pct = p;
+    apply();
+    if (!hintDismissed) { hintDismissed = true; hint.classList.add('hidden'); }
+  }
+
+  function apply() {
+    after.style.clipPath = `inset(0 ${100 - pct}% 0 0)`;
+    divider.style.left = pct + '%';
+    handle.style.left  = pct + '%';
+    handle.setAttribute('aria-valuenow', Math.round(pct));
+  }
+
+  /* mouse */
+  handle.addEventListener('mousedown', e => { dragging = true; e.preventDefault(); });
+  window.addEventListener('mousemove', e => { if (dragging) setPos(e.clientX); });
+  window.addEventListener('mouseup',   () => { dragging = false; });
+  wrap.addEventListener('click', e => {
+    if (e.target === handle || handle.contains(e.target)) return;
+    setPos(e.clientX);
+  });
+
+  /* touch */
+  handle.addEventListener('touchstart', e => { dragging = true; e.preventDefault(); }, { passive: false });
+  window.addEventListener('touchmove',  e => { if (dragging) setPos(e.touches[0].clientX); }, { passive: true });
+  window.addEventListener('touchend',   () => { dragging = false; });
+
+  /* keyboard */
+  handle.addEventListener('keydown', e => {
+    if (e.key === 'ArrowLeft')  { pct = Math.max(pct - 2, 2);  apply(); }
+    if (e.key === 'ArrowRight') { pct = Math.min(pct + 2, 98); apply(); }
+  });
+
+  /* nudge on load */
+  setTimeout(() => {
+    handle.classList.add('nudge');
+    handle.addEventListener('animationend', () => handle.classList.remove('nudge'), { once: true });
+  }, 900);
+
+  apply();
+
+  /* ── Tabs + Dots ── */
+  const tabs = document.querySelectorAll('.area-tab');
+  const dots = document.querySelectorAll('.ba-dot');
+
+  function activateArea(idx) {
+    tabs.forEach((t, i) => {
+      t.classList.toggle('active', i === idx);
+      t.setAttribute('aria-selected', i === idx ? 'true' : 'false');
+    });
+    dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+    /* reset slider */
+    pct = 50; apply();
+    hintDismissed = false;
+    hint.classList.remove('hidden');
+    /* re-nudge */
+    setTimeout(() => {
+      handle.classList.add('nudge');
+      handle.addEventListener('animationend', () => handle.classList.remove('nudge'), { once: true });
+    }, 400);
+    /* Local image files — keep all in same folder as HTML */
+    const areaImgs = [
+      { before: '../images/before-headunit.jpg',  after: '../images/after-headunit.jpg'  },
+      { before: '../images/before-setir.jpg',     after: '../images/after-setir.jpg'     },
+      { before: '../images/before-doorcup.jpg',   after: '../images/after-doorcup.jpg'   },
+      { before: '../images/before-frameac.jpg',   after: '../images/after-frameac.jpg'   },
+      { before: '../images/before-konsol.jpg',    after: '../images/after-konsol.jpg'    }
+    ];
+    const bBefore = document.getElementById('baBefore');
+    const bAfter  = document.getElementById('baAfter');
+    if (bBefore && areaImgs[idx]) {
+      bBefore.style.backgroundImage = `url('${areaImgs[idx].before}')`;
+      bBefore.style.backgroundSize = 'cover';
+      bBefore.style.backgroundPosition = 'center';
+    }
+    if (bAfter && areaImgs[idx]) {
+      bAfter.style.backgroundImage = `url('${areaImgs[idx].after}')`;
+      bAfter.style.backgroundSize = 'cover';
+      bAfter.style.backgroundPosition = 'center';
+    }
+  }
+
+  tabs.forEach((tab, i) => {
+    tab.addEventListener('click', () => activateArea(i));
+    tab.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activateArea(i); }
+      if (e.key === 'ArrowDown') { e.preventDefault(); activateArea(Math.min(i + 1, tabs.length - 1)); }
+      if (e.key === 'ArrowUp')   { e.preventDefault(); activateArea(Math.max(i - 1, 0)); }
+    });
+  });
+
+  dots.forEach((dot, i) => {
+    dot.addEventListener('click', () => activateArea(i));
+    dot.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activateArea(i); }
+    });
+  });
+
+})();
+</script>
+</body>
+</html>
