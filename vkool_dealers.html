@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>V-KOOL Dealers — Temukan Dealer Terdekat di Indonesia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--black:#0a0a0a;--dark:#111111;--mid:#1a1a1a;--line:#222222;--line2:#2e2e2e;--gold:#CDB182;--gold2:#b89a6a;--gold-h:#b89a6a;--ash:#EBEBEB;--muted:#888888;--dim:#555555;--white:#FFFFFF;--radius:2px;--nav-h:68px;--pad:56px;--ease:cubic-bezier(0.25,0,0.1,1);}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Roboto',sans-serif;background:var(--black);color:var(--ash);overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+a{text-decoration:none;color:inherit;}
+button{font-family:inherit;cursor:pointer;border:none;background:none;}
+
+/* ─── TYPOGRAPHY ─── */
+.t-nav{font-family:'Oswald',sans-serif;font-size:13px;letter-spacing:.10em;font-weight:400;text-transform:uppercase;}
+.t-label{font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:.20em;text-transform:uppercase;font-weight:400;}
+.t-btn{font-family:'Oswald',sans-serif;font-size:13px;letter-spacing:.10em;text-transform:uppercase;font-weight:400;}
+a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offset:3px;}
+
+/* PAGE HEADER */
+.page-header{width:100%;background:var(--black);padding:calc(var(--nav-h) + 72px) var(--pad) 64px;border-bottom:.5px solid var(--line);position:relative;overflow:hidden;}
+.page-header::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(205,177,130,.025) .5px,transparent .5px),linear-gradient(90deg,rgba(205,177,130,.025) .5px,transparent .5px);background-size:80px 80px;pointer-events:none;}
+.header-inner{position:relative;z-index:1;}
+.page-breadcrumb{display:flex;align-items:center;gap:10px;margin-bottom:28px;}
+.breadcrumb-item{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:.14em;color:var(--dim);text-transform:uppercase;}
+.breadcrumb-sep{color:var(--line2);font-size:10px;}
+.breadcrumb-current{color:var(--gold);}
+.page-title{font-family:'Oswald',sans-serif;font-size:clamp(36px,5.5vw,72px);letter-spacing:.08em;font-weight:400;text-transform:uppercase;color:var(--white);line-height:1.0;margin-bottom:18px;}
+.page-sub{font-size:15px;color:var(--muted);font-weight:300;line-height:1.7;max-width:580px;margin-bottom:36px;}
+.page-stats{display:flex;align-items:center;gap:40px;flex-wrap:wrap;}
+.page-stat{display:flex;flex-direction:column;gap:3px;}
+.stat-val{font-family:'Oswald',sans-serif;font-size:28px;color:var(--gold);font-weight:300;letter-spacing:.02em;line-height:1;}
+.stat-label{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:.18em;color:var(--dim);text-transform:uppercase;font-weight:300;}
+.stat-sep{width:.5px;height:32px;background:var(--line2);flex-shrink:0;}
+
+/* FILTER BAR */
+.filter-bar{width:100%;background:var(--dark);border-bottom:.5px solid var(--line);padding:0 var(--pad);display:flex;align-items:center;gap:12px;position:sticky;top:var(--nav-h);z-index:100;}
+.filter-btn{font-family:'Oswald',sans-serif;font-size:13px;letter-spacing:.10em;text-transform:uppercase;font-weight:400;color:var(--muted);padding:18px 0;display:flex;align-items:center;gap:10px;cursor:pointer;border:none;background:none;position:relative;border-bottom:1px solid transparent;transition:color .25s,border-color .25s;white-space:nowrap;}
+.filter-btn:hover{color:var(--ash);}
+.filter-btn.active{color:var(--gold);border-bottom-color:var(--gold);}
+.filter-btn-label{font-size:11px;color:var(--gold);letter-spacing:.06em;font-family:'Roboto',sans-serif;font-weight:400;}
+.filter-btn svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2;transition:transform .25s var(--ease);flex-shrink:0;}
+.filter-btn.open svg{transform:rotate(180deg);}
+.filter-sep{width:.5px;height:20px;background:var(--line2);flex-shrink:0;}
+.filter-result{margin-left:auto;font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:.12em;color:var(--dim);text-transform:uppercase;font-weight:300;}
+.filter-result span{color:var(--gold);}
+.filter-dropdown{position:absolute;top:calc(100% + .5px);left:0;background:var(--dark);border:.5px solid var(--line2);border-top:none;min-width:220px;z-index:300;display:none;flex-direction:column;overflow:hidden;}
+.filter-dropdown.open{display:flex;}
+.filter-option{font-family:'Oswald',sans-serif;font-size:13px;letter-spacing:.08em;text-transform:uppercase;font-weight:300;color:var(--muted);padding:14px 20px;cursor:pointer;transition:background .2s,color .2s;display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:.5px solid var(--line);}
+.filter-option:last-child{border-bottom:none;}
+.filter-option:hover{background:rgba(205,177,130,.05);color:var(--ash);}
+.filter-option.selected{color:var(--gold);background:rgba(205,177,130,.04);}
+.filter-option-check{width:14px;height:14px;flex-shrink:0;}
+.filter-option-check svg{width:14px;height:14px;stroke:var(--gold);fill:none;stroke-width:2.5;display:none;}
+.filter-option.selected .filter-option-check svg{display:block;}
+.filter-tag{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:.12em;color:var(--gold);text-transform:uppercase;background:rgba(205,177,130,.1);border:.5px solid rgba(205,177,130,.3);padding:3px 10px;border-radius:2px;display:none;}
+.filter-tag.visible{display:block;}
+
+/* DEALER GRID */
+.dealers-wrap{width:100%;background:var(--black);padding:56px var(--pad) 96px;}
+.dealers-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);}
+
+/* DEALER CARD */
+.dealer-card{background:var(--dark);overflow:hidden;position:relative;transition:background .3s var(--ease);display:flex;flex-direction:column;}
+.dealer-card:hover{background:#131313;}
+.dealer-card.hidden{display:none;}
+.dealer-photo{width:100%;aspect-ratio:16/10;background:#0f0f0f;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+.dealer-photo::before,.dealer-photo::after{content:'';position:absolute;width:18px;height:18px;z-index:2;}
+.dealer-photo::before{top:12px;left:12px;border-top:.5px solid var(--gold);border-left:.5px solid var(--gold);opacity:0;transition:opacity .3s;}
+.dealer-photo::after{bottom:12px;right:12px;border-bottom:.5px solid var(--gold);border-right:.5px solid var(--gold);opacity:0;transition:opacity .3s;}
+.dealer-card:hover .dealer-photo::before,.dealer-card:hover .dealer-photo::after{opacity:.5;}
+.dealer-photo-img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s var(--ease);}
+.dealer-card:hover .dealer-photo-img{transform:scale(1.04);}
+.dealer-photo-placeholder{width:100%;height:100%;background:linear-gradient(160deg,#181818 0%,#0e0e0e 100%);display:flex;align-items:center;justify-content:center;}
+.dealer-photo-lbl{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:.18em;color:#252525;text-transform:uppercase;}
+.dealer-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.7) 0%,transparent 55%);opacity:0;transition:opacity .3s;z-index:1;}
+.dealer-card:hover .dealer-overlay{opacity:1;}
+.dealer-badge{position:absolute;top:14px;left:14px;z-index:3;font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:.14em;text-transform:uppercase;background:rgba(10,10,10,.85);color:var(--gold);border:.5px solid rgba(205,177,130,.35);padding:4px 10px;}
+.dealer-badge.flagship{background:rgba(205,177,130,.15);border-color:var(--gold);}
+
+/* Card body */
+.dealer-body{padding:24px 26px 0;flex:1;}
+.dealer-name{font-family:'Oswald',sans-serif;font-size:19px;letter-spacing:.05em;font-weight:400;text-transform:uppercase;color:var(--white);margin-bottom:18px;line-height:1.1;}
+.dealer-info{display:flex;flex-direction:column;}
+.dealer-info-row{display:flex;align-items:flex-start;gap:10px;padding:11px 0;border-bottom:.5px solid var(--line);}
+.dealer-info-row:first-child{border-top:.5px solid var(--line);}
+.dealer-info-icon{width:28px;height:28px;flex-shrink:0;border:.5px solid var(--line2);background:rgba(205,177,130,.04);display:flex;align-items:center;justify-content:center;margin-top:1px;transition:border-color .25s,background .25s;}
+.dealer-card:hover .dealer-info-icon{border-color:rgba(205,177,130,.25);background:rgba(205,177,130,.07);}
+.dealer-info-icon svg{width:12px;height:12px;stroke:var(--gold);fill:none;stroke-width:1.5;}
+.dealer-info-block{display:flex;flex-direction:column;gap:2px;min-width:0;}
+.dealer-info-label{font-family:'Oswald',sans-serif;font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);font-weight:300;}
+.dealer-info-val{font-size:13px;color:var(--muted);font-weight:300;line-height:1.5;}
+.dealer-info-val a{color:var(--muted);transition:color .2s;}
+.dealer-info-val a:hover{color:var(--gold);}
+
+/* Card footer */
+.dealer-footer{display:flex;align-items:center;justify-content:space-between;padding:16px 26px 24px;margin-top:auto;}
+.btn-lokasi{font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:400;color:var(--gold);display:inline-flex;align-items:center;gap:8px;transition:gap .25s var(--ease);text-decoration:none;background:none;border:none;cursor:pointer;padding:0;}
+.dealer-card:hover .btn-lokasi{gap:12px;}
+.btn-lokasi svg{width:12px;height:12px;stroke:var(--gold);fill:none;stroke-width:2;}
+.btn-whatsapp{width:32px;height:32px;border:.5px solid var(--line2);background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:border-color .25s,background .25s;text-decoration:none;}
+.btn-whatsapp:hover{border-color:rgba(205,177,130,.5);background:rgba(205,177,130,.08);}
+.btn-whatsapp svg{width:13px;height:13px;stroke:var(--dim);fill:none;stroke-width:1.5;transition:stroke .25s;}
+.btn-whatsapp:hover svg{stroke:var(--gold);}
+
+/* Empty state */
+.empty-state{width:100%;padding:80px 0;text-align:center;display:none;}
+.empty-state.visible{display:block;}
+.empty-icon{width:48px;height:48px;margin:0 auto 20px;opacity:.3;}
+.empty-icon svg{width:48px;height:48px;stroke:var(--gold);fill:none;stroke-width:1;}
+.empty-title{font-family:'Oswald',sans-serif;font-size:18px;letter-spacing:.06em;color:var(--muted);text-transform:uppercase;margin-bottom:8px;}
+.empty-text{font-size:14px;color:var(--dim);font-weight:300;}
+
+/* Load more */
+.load-more-wrap{text-align:center;margin-top:56px;}
+.btn-load-more{font-family:'Oswald',sans-serif;font-size:13px;letter-spacing:.12em;text-transform:uppercase;font-weight:400;background:transparent;color:var(--gold);padding:16px 40px;border-radius:2px;min-height:52px;border:.5px solid rgba(205,177,130,.4);display:inline-flex;align-items:center;gap:10px;transition:background .25s,border-color .25s;}
+.btn-load-more:hover{background:rgba(205,177,130,.06);border-color:var(--gold);}
+.btn-load-more svg{width:14px;height:14px;stroke:var(--gold);fill:none;stroke-width:1.5;}
+.btn-load-more.hidden{display:none;}
+
+/* CTA STRIP */
+.cta-strip{background:var(--gold);padding:52px var(--pad);display:flex;align-items:center;justify-content:space-between;gap:32px;flex-wrap:wrap;}
+.cta-strip-ey{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(10,10,10,.55);margin-bottom:8px;}
+.cta-strip-title{font-family:'Oswald',sans-serif;font-size:clamp(20px,2.5vw,28px);letter-spacing:.06em;text-transform:uppercase;color:var(--black);font-weight:400;line-height:1.1;}
+.cta-strip-btns{display:flex;gap:12px;flex-shrink:0;flex-wrap:wrap;}
+.btn-strip-dark{font-family:'Oswald',sans-serif;font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:400;background:var(--black);color:var(--gold);padding:15px 28px;border-radius:2px;min-height:50px;display:inline-flex;align-items:center;gap:8px;transition:background .25s;text-decoration:none;}
+.btn-strip-dark:hover{background:#111;}
+.btn-strip-dark svg{width:14px;height:14px;stroke:var(--gold);fill:none;stroke-width:1.5;}
+.btn-strip-outline{font-family:'Oswald',sans-serif;font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:300;background:transparent;color:var(--black);padding:14px 24px;border-radius:2px;min-height:50px;display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(10,10,10,.3);transition:border-color .25s;}
+.btn-strip-outline:hover{border-color:rgba(10,10,10,.7);}
+
+/* FOOTER */
+.footer{background:var(--black);border-top:.5px solid var(--line);padding:64px var(--pad) 32px;}
+.footer-top{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:56px;margin-bottom:56px;}
+.footer-logo{font-family:'Oswald',sans-serif;font-size:15px;letter-spacing:.28em;color:var(--gold);font-weight:400;margin-bottom:14px;}
+.footer-tagline{font-size:13px;color:var(--dim);line-height:1.65;max-width:220px;font-weight:300;}
+.footer-col-title{font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:.16em;color:var(--ash);text-transform:uppercase;font-weight:400;margin-bottom:18px;}
+.footer-link{font-size:13px;color:var(--dim);display:block;margin-bottom:17px;transition:color .25s;font-weight:300;text-decoration:none;}
+.footer-link:hover,.footer-link.active{color:var(--gold);}
+.footer-bottom{border-top:.5px solid var(--line);padding-top:24px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;}
+.footer-copy{font-size:12px;color:#555555;font-weight:300;}
+.footer-social{display:flex;gap:10px;}
+.social-btn{width:34px;height:34px;border-radius:50%;border:.5px solid var(--line2);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:border-color .25s;}
+.social-btn:hover{border-color:var(--gold);}
+.social-btn svg{width:13px;height:13px;stroke:var(--dim);fill:none;stroke-width:1.5;transition:stroke .25s;}
+.social-btn:hover svg{stroke:var(--gold);}
+
+/* RESPONSIVE */
+@media(max-width:1023px){
+  :root{--pad:32px;}
+  .nav-links,.nav-right{display:none;}
+  .nav-hamburger{display:flex;}
+  .nav-drawer{display:flex;}
+  .dealers-grid{grid-template-columns:repeat(2,1fr);}
+  .footer-top{grid-template-columns:1fr 1fr;gap:40px;}
+  .footer-bottom{flex-direction:column;align-items:flex-start;gap:20px;}
+  .filter-result{display:none;}
+  .cta-strip{flex-direction:column;align-items:flex-start;}
+}
+@media(max-width:640px){
+  :root{--pad:20px;--nav-h:56px;}
+  .nav{padding:0 20px;}
+  .nav-logo{font-size:14px;letter-spacing:.22em;}
+  .dealers-grid{grid-template-columns:1fr;}
+  .page-stats{gap:24px;}
+  .footer-top{grid-template-columns:1fr;gap:32px;}
+  .footer-bottom{flex-direction:column;align-items:flex-start;gap:20px;}
+  .cta-strip-btns{flex-direction:column;width:100%;}
+  .btn-strip-dark,.btn-strip-outline{width:100%;justify-content:center;}
+  .drawer-link{font-size:20px;padding:16px var(--pad);}
+  .drawer-ctas{padding:24px 20px;}
+}
+</style>
+</head>
+<body data-page="dealers">
+
+<div id="nav-placeholder"></div>
+
+<!-- PAGE HEADER -->
+<header class="page-header">
+  <div class="header-inner">
+    <nav class="page-breadcrumb" aria-label="Breadcrumb">
+      <span class="breadcrumb-item">Home</span>
+      <span class="breadcrumb-sep">/</span>
+      <span class="breadcrumb-item breadcrumb-current">Dealers</span>
+    </nav>
+    <h1 class="page-title">V-KOOL<br>Dealers</h1>
+    <p class="page-sub">Dengan didukung oleh lebih dari 80 dealer yang tersebar di Indonesia, kami mempunyai sistem penanganan klaim dan servis purna jual yang sudah terstandarisasi untuk memudahkan Anda.</p>
+    <div class="page-stats">
+      <div class="page-stat"><span class="stat-val">80+</span><span class="stat-label">Dealer Indonesia</span></div>
+      <div class="stat-sep"></div>
+      <div class="page-stat"><span class="stat-val">30+</span><span class="stat-label">Kota Besar</span></div>
+      <div class="stat-sep"></div>
+      <div class="page-stat"><span class="stat-val">1</span><span class="stat-label">Flagship Outlet</span></div>
+    </div>
+  </div>
+</header>
+
+<!-- FILTER BAR -->
+<div class="filter-bar" role="toolbar">
+  <div style="position:relative;">
+    <button class="filter-btn" id="btnKota" aria-haspopup="listbox" aria-expanded="false">
+      <span>Semua Lokasi</span><span class="filter-btn-label" id="labelKota" style="display:none;"></span>
+      <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+    <div class="filter-dropdown" id="dropKota" role="listbox">
+      <div class="filter-option selected" data-val="all">Semua Lokasi<span class="filter-option-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+      <div class="filter-option" data-val="Jakarta Pusat">Jakarta Pusat<span class="filter-option-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+      <div class="filter-option" data-val="Jakarta Utara">Jakarta Utara<span class="filter-option-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+      <div class="filter-option" data-val="Bandung">Bandung<span class="filter-option-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+      <div class="filter-option" data-val="Surabaya">Surabaya<span class="filter-option-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+      <div class="filter-option" data-val="Medan">Medan<span class="filter-option-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+      <div class="filter-option" data-val="Makassar">Makassar<span class="filter-option-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+      <div class="filter-option" data-val="Denpasar">Denpasar<span class="filter-option-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+      <div class="filter-option" data-val="Semarang">Semarang<span class="filter-option-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+    </div>
+  </div>
+  <div class="filter-sep"></div>
+  <div style="position:relative;">
+    <button class="filter-btn" id="btnTipe" aria-haspopup="listbox" aria-expanded="false">
+      <span>Semua Tipe</span><span class="filter-btn-label" id="labelTipe" style="display:none;"></span>
+      <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+    <div class="filter-dropdown" id="dropTipe" role="listbox">
+      <div class="filter-option selected" data-val="all">Semua Tipe<span class="filter-option-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+      <div class="filter-option" data-val="Dealer Resmi">Dealer Resmi<span class="filter-option-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+      <div class="filter-option" data-val="Flagship">Flagship Outlet<span class="filter-option-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+      <div class="filter-option" data-val="Kantor Pusat">Kantor Pusat<span class="filter-option-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+    </div>
+  </div>
+  <span class="filter-tag" id="filterTag"></span>
+  <div class="filter-result"><span id="countLabel">6</span> dealer</div>
+</div>
+
+<!-- DEALER GRID -->
+<main class="dealers-wrap" id="mainTop">
+  <div class="dealers-grid" id="dealerGrid">
+
+<!-- helper macros as inline HTML — each card follows the same structure -->
+<!-- ═══ CARD 1 ═══ -->
+<article class="dealer-card" data-kota="Jakarta Pusat" data-tipe="Kantor Pusat">
+  <div class="dealer-photo">
+    <img class="dealer-photo-img" src="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=800&q=80" alt="Kantor Pusat V-KOOL — dealer photography" loading="lazy">
+    <div class="dealer-overlay"></div>
+    <span class="dealer-badge">Kantor Pusat</span>
+  </div>
+  <div class="dealer-body">
+    <h2 class="dealer-name">Kantor Pusat<br>PT V-KOOL Indo Lestari</h2>
+    <div class="dealer-info">
+      <div class="dealer-info-row">
+        <div class="dealer-info-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="10" r="3"/><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg></div>
+        <div class="dealer-info-block"><span class="dealer-info-label">Lokasi</span><span class="dealer-info-val">Gunung Sahari Raya No. 20, Jakarta Pusat</span></div>
+      </div>
+      <div class="dealer-info-row">
+        <div class="dealer-info-icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.77a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16z"/></svg></div>
+        <div class="dealer-info-block"><span class="dealer-info-label">Nomor HP</span><span class="dealer-info-val"><a href="tel:02162613333">021-6261333</a> / <a href="tel:02165954540">021-6595454</a></span></div>
+      </div>
+      <div class="dealer-info-row">
+        <div class="dealer-info-icon"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2 8 12 13 22 8"/></svg></div>
+        <div class="dealer-info-block"><span class="dealer-info-label">Nomor Fax</span><span class="dealer-info-val">6267088</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="dealer-footer">
+    <a class="btn-lokasi" href="https://maps.google.com/?q=Gunung+Sahari+Raya+No+20+Jakarta+Pusat" target="_blank" rel="noopener">Lihat Lokasi<svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+    <a class="btn-whatsapp" href="https://wa.me/6221000000" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></a>
+  </div>
+</article>
+
+<!-- ═══ CARD 2 ═══ -->
+<article class="dealer-card" data-kota="Jakarta Pusat" data-tipe="Dealer Resmi">
+  <div class="dealer-photo">
+    <img class="dealer-photo-img" src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800&q=80" alt="Merapin Megah Abadi — dealer photography" loading="lazy">
+    <div class="dealer-overlay"></div>
+    <span class="dealer-badge">Dealer Resmi</span>
+  </div>
+  <div class="dealer-body">
+    <h2 class="dealer-name">Merapin<br>Megah Abadi</h2>
+    <div class="dealer-info">
+      <div class="dealer-info-row">
+        <div class="dealer-info-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="10" r="3"/><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg></div>
+        <div class="dealer-info-block"><span class="dealer-info-label">Lokasi</span><span class="dealer-info-val">Krekot Jaya Bl. H No. 12, Jakarta Pusat</span></div>
+      </div>
+      <div class="dealer-info-row">
+        <div class="dealer-info-icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.77a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16z"/></svg></div>
+        <div class="dealer-info-block"><span class="dealer-info-label">Nomor HP</span><span class="dealer-info-val"><a href="tel:0213858795">021-3858795</a></span></div>
+      </div>
+      <div class="dealer-info-row">
+        <div class="dealer-info-icon"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2 8 12 13 22 8"/></svg></div>
+        <div class="dealer-info-block"><span class="dealer-info-label">Nomor Fax</span><span class="dealer-info-val">021-3440876</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="dealer-footer">
+    <a class="btn-lokasi" href="https://maps.google.com/?q=Krekot+Jaya+Jakarta+Pusat" target="_blank" rel="noopener">Lihat Lokasi<svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+    <a class="btn-whatsapp" href="https://wa.me/6221000000" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></a>
+  </div>
+</article>
+
+<!-- ═══ CARD 3 ═══ -->
+<article class="dealer-card" data-kota="Jakarta Pusat" data-tipe="Dealer Resmi">
+  <div class="dealer-photo">
+    <img class="dealer-photo-img" src="https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=800&q=80" alt="Indo Motor Lestari — dealer photography" loading="lazy">
+    <div class="dealer-overlay"></div>
+    <span class="dealer-badge">Dealer Resmi</span>
+  </div>
+  <div class="dealer-body">
+    <h2 class="dealer-name">Indo Motor<br>Lestari</h2>
+    <div class="dealer-info">
+      <div class="dealer-info-row">
+        <div class="dealer-info-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="10" r="3"/><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg></div>
+        <div class="dealer-info-block"><span class="dealer-info-label">Lokasi</span><span class="dealer-info-val">Pecenongan Raya No. 88, Jakarta Pusat</span></div>
+      </div>
+      <div class="dealer-info-row">
+        <div class="dealer-info-icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.77a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16z"/></svg></div>
+        <div class="dealer-info-block"><span class="dealer-info-label">Nomor HP</span><span class="dealer-info-val"><a href="tel:0213440229">021-3440229</a> / <a href="tel:0213440239">021-3440239</a></span></div>
+      </div>
+      <div class="dealer-info-row">
+        <div class="dealer-info-icon"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2 8 12 13 22 8"/></svg></div>
+        <div class="dealer-info-block"><span class="dealer-info-label">Nomor Fax</span><span class="dealer-info-val">021-3440589</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="dealer-footer">
+    <a class="btn-lokasi" href="https://maps.google.com/?q=Pecenongan+Raya+88+Jakarta+Pusat" target="_blank" rel="noopener">Lihat Lokasi<svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+    <a class="btn-whatsapp" href="https://wa.me/6221000000" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></a>
+  </div>
+</article>
+
+<!-- ═══ CARD 4 ═══ -->
+<article class="dealer-card" data-kota="Jakarta Pusat" data-tipe="Dealer Resmi">
+  <div class="dealer-photo">
+    <img class="dealer-photo-img" src="https://images.unsplash.com/photo-1555215695-3004980ad54e?w=800&q=80" alt="Wijaya Motor — dealer photography" loading="lazy">
+    <div class="dealer-overlay"></div>
+    <span class="dealer-badge">Dealer Resmi</span>
+  </div>
+  <div class="dealer-body">
+    <h2 class="dealer-name">Wijaya Motor</h2>
+    <div class="dealer-info">
+      <div class="dealer-info-row">
+        <div class="dealer-info-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="10" r="3"/><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg></div>
+        <div class="dealer-info-block"><span class="dealer-info-label">Lokasi</span><span class="dealer-info-val">Sukarjo Wiryopranoto No. 4D, Jakarta Pusat</span></div>
+      </div>
+      <div class="dealer-info-row">
+        <div class="dealer-info-icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.77a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16z"/></svg></div>
+        <div class="dealer-info-block"><span class="dealer-info-label">Nomor HP</span><span class="dealer-info-val"><a href="tel:0213453467">021-3453467</a></span></div>
+      </div>
+      <div class="dealer-info-row">
+        <div class="dealer-info-icon"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2 8 12 13 22 8"/></svg></div>
+        <div class="dealer-info-block"><span class="dealer-info-label">Nomor Fax</span><span class="dealer-info-val">021-3849484</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="dealer-footer">
+    <a class="btn-lokasi" href="https://maps.google.com/?q=Sukarjo+Wiryopranoto+4D+Jakarta+Pusat" target="_blank" rel="noopener">Lihat Lokasi<svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+    <a class="btn-whatsapp" href="https://wa.me/6221000000" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></a>
+  </div>
+</article>
+
+<!-- ═══ CARD 5 ═══ -->
+<article class="dealer-card" data-kota="Jakarta Pusat" data-tipe="Dealer Resmi">
+  <div class="dealer-photo">
+    <img class="dealer-photo-img" src="https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=800&q=80" alt="Maju Mandiri — dealer photography" loading="lazy">
+    <div class="dealer-overlay"></div>
+    <span class="dealer-badge">Dealer Resmi</span>
+  </div>
+  <div class="dealer-body">
+    <h2 class="dealer-name">Maju Mandiri</h2>
+    <div class="dealer-info">
+      <div class="dealer-info-row">
+        <div class="dealer-info-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="10" r="3"/><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg></div>
+        <div class="dealer-info-block"><span class="dealer-info-label">Lokasi</span><span class="dealer-info-val">Jl. Sukarjo Wiryopranoto No. 47 B, Sawah Besar, Jakarta Pusat</span></div>
+      </div>
+      <div class="dealer-info-row">
+        <div class="dealer-info-icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.77a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16z"/></svg></div>
+        <div class="dealer-info-block"><span class="dealer-info-label">Nomor HP</span><span class="dealer-info-val"><a href="tel:0213453467">021-3453467</a></span></div>
+      </div>
+      <div class="dealer-info-row">
+        <div class="dealer-info-icon"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2 8 12 13 22 8"/></svg></div>
+        <div class="dealer-info-block"><span class="dealer-info-label">Nomor Fax</span><span class="dealer-info-val">021-6283480</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="dealer-footer">
+    <a class="btn-lokasi" href="https://maps.google.com/?q=Sukarjo+Wiryopranoto+47B+Jakarta" target="_blank" rel="noopener">Lihat Lokasi<svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+    <a class="btn-whatsapp" href="https://wa.me/6221000000" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></a>
+  </div>
+</article>
+
+<!-- ═══ CARD 6 — FLAGSHIP ═══ -->
+<article class="dealer-card" data-kota="Jakarta Utara" data-tipe="Flagship">
+  <div class="dealer-photo">
+    <img class="dealer-photo-img" src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&q=80" alt="V-KOOL Flagship Outlet — dealer photography" loading="lazy">
+    <div class="dealer-overlay"></div>
+    <span class="dealer-badge flagship">★ Flagship Outlet</span>
+  </div>
+  <div class="dealer-body">
+    <h2 class="dealer-name">V-KOOL<br>Flagship Outlet</h2>
+    <div class="dealer-info">
+      <div class="dealer-info-row">
+        <div class="dealer-info-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="10" r="3"/><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg></div>
+        <div class="dealer-info-block"><span class="dealer-info-label">Lokasi</span><span class="dealer-info-val">Ruko The LINQ Jl. Trembesi No. 817, Kemayoran, Jakarta Utara 14410</span></div>
+      </div>
+      <div class="dealer-info-row">
+        <div class="dealer-info-icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.77a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16z"/></svg></div>
+        <div class="dealer-info-block"><span class="dealer-info-label">Nomor HP</span><span class="dealer-info-val"><a href="tel:02126050065">021 26050065</a> / <a href="tel:02126050066">021 26050066</a> / <a href="tel:02126050067">021 26050067</a></span></div>
+      </div>
+      <div class="dealer-info-row">
+        <div class="dealer-info-icon"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2 8 12 13 22 8"/></svg></div>
+        <div class="dealer-info-block"><span class="dealer-info-label">Nomor Fax</span><span class="dealer-info-val">021 29620915</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="dealer-footer">
+    <a class="btn-lokasi" href="https://maps.google.com/?q=Ruko+The+LINQ+Jl+Trembesi+817+Jakarta+Utara" target="_blank" rel="noopener">Lihat Lokasi<svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+    <a class="btn-whatsapp" href="https://wa.me/6221000000" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></a>
+  </div>
+</article>
+
+  </div>
+
+  <!-- ═══ HIDDEN CARDS — revealed by "Lihat Lebih Banyak" ═══ -->
+  <div id="extraCards" style="display:none;">
+  <div class="dealers-grid" style="border-top:1px solid var(--line);">
+
+  <!-- Extra Card 1 — Bandung -->
+  <article class="dealer-card" data-kota="Bandung" data-tipe="Dealer Resmi">
+    <div class="dealer-photo"><img class="dealer-photo-img" src="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=800&q=80" alt="Bandung dealer" loading="lazy"><div class="dealer-overlay"></div><span class="dealer-badge">Dealer Resmi</span></div>
+    <div class="dealer-body">
+      <h2 class="dealer-name">Auto Glass<br>Bandung</h2>
+      <div class="dealer-info">
+        <div class="dealer-info-row"><div class="dealer-info-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="10" r="3"/><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg></div><div class="dealer-info-block"><span class="dealer-info-label">Lokasi</span><span class="dealer-info-val">Jl. Soekarno Hatta No. 123, Bandung</span></div></div>
+        <div class="dealer-info-row"><div class="dealer-info-icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.77a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16z"/></svg></div><div class="dealer-info-block"><span class="dealer-info-label">Nomor HP</span><span class="dealer-info-val"><a href="tel:0222034567">022-2034567</a></span></div></div>
+      </div>
+    </div>
+    <div class="dealer-footer"><a class="btn-lokasi" href="https://maps.google.com/?q=Soekarno+Hatta+123+Bandung" target="_blank" rel="noopener">Lihat Lokasi<svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a><a class="btn-whatsapp" href="https://wa.me/62220000000" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></a></div>
+  </article>
+
+  <!-- Extra Card 2 — Surabaya -->
+  <article class="dealer-card" data-kota="Surabaya" data-tipe="Dealer Resmi">
+    <div class="dealer-photo"><img class="dealer-photo-img" src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800&q=80" alt="Surabaya dealer" loading="lazy"><div class="dealer-overlay"></div><span class="dealer-badge">Dealer Resmi</span></div>
+    <div class="dealer-body">
+      <h2 class="dealer-name">V-KOOL<br>Surabaya</h2>
+      <div class="dealer-info">
+        <div class="dealer-info-row"><div class="dealer-info-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="10" r="3"/><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg></div><div class="dealer-info-block"><span class="dealer-info-label">Lokasi</span><span class="dealer-info-val">Jl. Raya Darmo No. 56, Surabaya</span></div></div>
+        <div class="dealer-info-row"><div class="dealer-info-icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.77a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16z"/></svg></div><div class="dealer-info-block"><span class="dealer-info-label">Nomor HP</span><span class="dealer-info-val"><a href="tel:0315678901">031-5678901</a></span></div></div>
+      </div>
+    </div>
+    <div class="dealer-footer"><a class="btn-lokasi" href="https://maps.google.com/?q=Raya+Darmo+56+Surabaya" target="_blank" rel="noopener">Lihat Lokasi<svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a><a class="btn-whatsapp" href="https://wa.me/62310000000" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></a></div>
+  </article>
+
+  <!-- Extra Card 3 — Medan -->
+  <article class="dealer-card" data-kota="Medan" data-tipe="Dealer Resmi">
+    <div class="dealer-photo"><img class="dealer-photo-img" src="https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=800&q=80" alt="Medan dealer" loading="lazy"><div class="dealer-overlay"></div><span class="dealer-badge">Dealer Resmi</span></div>
+    <div class="dealer-body">
+      <h2 class="dealer-name">Prima Motor<br>Medan</h2>
+      <div class="dealer-info">
+        <div class="dealer-info-row"><div class="dealer-info-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="10" r="3"/><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg></div><div class="dealer-info-block"><span class="dealer-info-label">Lokasi</span><span class="dealer-info-val">Jl. Gatot Subroto No. 78, Medan</span></div></div>
+        <div class="dealer-info-row"><div class="dealer-info-icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.77a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16z"/></svg></div><div class="dealer-info-block"><span class="dealer-info-label">Nomor HP</span><span class="dealer-info-val"><a href="tel:0618901234">061-8901234</a></span></div></div>
+      </div>
+    </div>
+    <div class="dealer-footer"><a class="btn-lokasi" href="https://maps.google.com/?q=Gatot+Subroto+78+Medan" target="_blank" rel="noopener">Lihat Lokasi<svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a><a class="btn-whatsapp" href="https://wa.me/62610000000" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></a></div>
+  </article>
+
+  <!-- Extra Card 4 — Makassar -->
+  <article class="dealer-card" data-kota="Makassar" data-tipe="Dealer Resmi">
+    <div class="dealer-photo"><img class="dealer-photo-img" src="https://images.unsplash.com/photo-1555215695-3004980ad54e?w=800&q=80" alt="Makassar dealer" loading="lazy"><div class="dealer-overlay"></div><span class="dealer-badge">Dealer Resmi</span></div>
+    <div class="dealer-body">
+      <h2 class="dealer-name">Makassar<br>Auto Film</h2>
+      <div class="dealer-info">
+        <div class="dealer-info-row"><div class="dealer-info-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="10" r="3"/><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg></div><div class="dealer-info-block"><span class="dealer-info-label">Lokasi</span><span class="dealer-info-val">Jl. Urip Sumoharjo No. 45, Makassar</span></div></div>
+        <div class="dealer-info-row"><div class="dealer-info-icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.77a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16z"/></svg></div><div class="dealer-info-block"><span class="dealer-info-label">Nomor HP</span><span class="dealer-info-val"><a href="tel:04113456789">0411-3456789</a></span></div></div>
+      </div>
+    </div>
+    <div class="dealer-footer"><a class="btn-lokasi" href="https://maps.google.com/?q=Urip+Sumoharjo+45+Makassar" target="_blank" rel="noopener">Lihat Lokasi<svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a><a class="btn-whatsapp" href="https://wa.me/624110000000" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></a></div>
+  </article>
+
+  <!-- Extra Card 5 — Denpasar -->
+  <article class="dealer-card" data-kota="Denpasar" data-tipe="Dealer Resmi">
+    <div class="dealer-photo"><img class="dealer-photo-img" src="https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=800&q=80" alt="Denpasar dealer" loading="lazy"><div class="dealer-overlay"></div><span class="dealer-badge">Dealer Resmi</span></div>
+    <div class="dealer-body">
+      <h2 class="dealer-name">Bali Auto<br>Protection</h2>
+      <div class="dealer-info">
+        <div class="dealer-info-row"><div class="dealer-info-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="10" r="3"/><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg></div><div class="dealer-info-block"><span class="dealer-info-label">Lokasi</span><span class="dealer-info-val">Jl. Teuku Umar No. 99, Denpasar, Bali</span></div></div>
+        <div class="dealer-info-row"><div class="dealer-info-icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.77a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16z"/></svg></div><div class="dealer-info-block"><span class="dealer-info-label">Nomor HP</span><span class="dealer-info-val"><a href="tel:03612345678">0361-2345678</a></span></div></div>
+      </div>
+    </div>
+    <div class="dealer-footer"><a class="btn-lokasi" href="https://maps.google.com/?q=Teuku+Umar+99+Denpasar+Bali" target="_blank" rel="noopener">Lihat Lokasi<svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a><a class="btn-whatsapp" href="https://wa.me/623610000000" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></a></div>
+  </article>
+
+  <!-- Extra Card 6 — Semarang -->
+  <article class="dealer-card" data-kota="Semarang" data-tipe="Dealer Resmi">
+    <div class="dealer-photo"><img class="dealer-photo-img" src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&q=80" alt="Semarang dealer" loading="lazy"><div class="dealer-overlay"></div><span class="dealer-badge">Dealer Resmi</span></div>
+    <div class="dealer-body">
+      <h2 class="dealer-name">Semarang<br>Glass Centre</h2>
+      <div class="dealer-info">
+        <div class="dealer-info-row"><div class="dealer-info-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="10" r="3"/><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg></div><div class="dealer-info-block"><span class="dealer-info-label">Lokasi</span><span class="dealer-info-val">Jl. Pandanaran No. 12, Semarang</span></div></div>
+        <div class="dealer-info-row"><div class="dealer-info-icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.77a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16z"/></svg></div><div class="dealer-info-block"><span class="dealer-info-label">Nomor HP</span><span class="dealer-info-val"><a href="tel:02476543210">024-76543210</a></span></div></div>
+      </div>
+    </div>
+    <div class="dealer-footer"><a class="btn-lokasi" href="https://maps.google.com/?q=Pandanaran+12+Semarang" target="_blank" rel="noopener">Lihat Lokasi<svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a><a class="btn-whatsapp" href="https://wa.me/62240000000" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></a></div>
+  </article>
+
+  </div>
+  </div><!-- end extraCards -->
+    <div class="empty-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="10" r="3"/><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg></div>
+    <p class="empty-title">Tidak Ada Dealer</p>
+    <p class="empty-text">Tidak ada dealer yang sesuai dengan filter yang dipilih.</p>
+  </div>
+  <div class="load-more-wrap">
+  <button class="btn-load-more" id="btnLoadMore">
+    Lihat Lebih Banyak
+    <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+  </button>
+</div>
+</main>
+
+    <h2 class="cta-strip-title">Tidak Menemukan<br>Dealer Terdekat?</h2>
+  </div>
+  <div class="cta-strip-btns">
+    <a class="btn-strip-dark" href="https://wa.me/6221000000" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:var(--gold);fill:none;stroke-width:1.5"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+      Hubungi Kami
+    </a>
+    <button class="btn-strip-outline">Jadwalkan Konsultasi</button>
+  </div>
+</div>
+
+<div id="footer-placeholder"></div>
+
+<script>
+(function(){
+  /* Filter */
+  let activeKota='all', activeTipe='all';
+  let extraShown = false;
+  const cards = Array.from(document.querySelectorAll('.dealer-card'));
+  const emptyState = document.getElementById('emptyState');
+  const countLabel = document.getElementById('countLabel');
+  const filterTag = document.getElementById('filterTag');
+  const btnLoadMore = document.getElementById('btnLoadMore');
+  const extraCards = document.getElementById('extraCards');
+
+  function applyFilters(){
+    // If extra cards shown, include them in filter
+    const allCards = extraShown
+      ? Array.from(document.querySelectorAll('.dealer-card'))
+      : cards;
+
+    let v = 0;
+    allCards.forEach(c => {
+      const show = (activeKota==='all' || c.dataset.kota===activeKota) &&
+                   (activeTipe==='all' || c.dataset.tipe===activeTipe);
+      c.classList.toggle('hidden', !show);
+      if(show) v++;
+    });
+    emptyState.classList.toggle('visible', v===0);
+    countLabel.textContent = v;
+    const parts = [];
+    if(activeKota!=='all') parts.push(activeKota);
+    if(activeTipe!=='all') parts.push(activeTipe);
+    filterTag.textContent = parts.join(' · ');
+    filterTag.classList.toggle('visible', parts.length>0);
+  }
+
+  function makeDropdown(btnId, dropId, labelId, onSelect){
+    const btn=document.getElementById(btnId), drop=document.getElementById(dropId), lbl=document.getElementById(labelId);
+    const opts=drop.querySelectorAll('.filter-option');
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const o=drop.classList.toggle('open'); btn.classList.toggle('open',o); btn.setAttribute('aria-expanded',o);
+      document.querySelectorAll('.filter-dropdown').forEach(d=>{if(d!==drop)d.classList.remove('open');});
+      document.querySelectorAll('.filter-btn').forEach(b=>{if(b!==btn){b.classList.remove('open');b.setAttribute('aria-expanded','false');}});
+    });
+    opts.forEach(opt => {
+      opt.addEventListener('click', () => {
+        opts.forEach(o=>{o.classList.remove('selected');o.setAttribute('aria-selected','false');});
+        opt.classList.add('selected'); opt.setAttribute('aria-selected','true');
+        const val=opt.dataset.val; onSelect(val);
+        if(val==='all'){btn.querySelector('span:first-child').style.display='';lbl.style.display='none';lbl.textContent='';btn.classList.remove('active');}
+        else{btn.querySelector('span:first-child').style.display='none';lbl.textContent=opt.textContent.trim().split(/\s+/).slice(0,3).join(' ');lbl.style.display='';btn.classList.add('active');}
+        drop.classList.remove('open'); btn.classList.remove('open'); btn.setAttribute('aria-expanded','false');
+        applyFilters();
+      });
+      opt.addEventListener('keydown', e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();opt.click();}});
+    });
+  }
+
+  makeDropdown('btnKota','dropKota','labelKota', val=>{activeKota=val;});
+  makeDropdown('btnTipe','dropTipe','labelTipe', val=>{activeTipe=val;});
+  document.addEventListener('click', ()=>{
+    document.querySelectorAll('.filter-dropdown').forEach(d=>d.classList.remove('open'));
+    document.querySelectorAll('.filter-btn').forEach(b=>{b.classList.remove('open');b.setAttribute('aria-expanded','false');});
+  });
+
+  /* Load More */
+  if(btnLoadMore){
+    btnLoadMore.addEventListener('click', ()=>{
+      extraShown = true;
+      extraCards.style.display = 'block';
+      btnLoadMore.style.display = 'none';
+      applyFilters();
+      // Smooth scroll to newly revealed cards
+      extraCards.scrollIntoView({behavior:'smooth', block:'start'});
+    });
+  }
+
+  applyFilters();
+})();
+</script>
+<script src="nav-footer.js"></script>
+</body>
+</html>
