@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>V-KOOL — Cek Harga PPF Kendaraan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--black:#0a0a0a;--dark:#111;--mid:#1a1a1a;--line:#222222;--line2:#2e2e2e;--gold:#CDB182;--gold2:#b89a6a;--gold-h:#b89a6a;--ash:#EBEBEB;--muted:#808080;--dim:#555;--white:#fff;--error:#D3585A;--nav-h:68px;--pad:56px;--ease:cubic-bezier(.25,0,.1,1);}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Roboto',sans-serif;background:var(--black);color:var(--ash);overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+a{text-decoration:none;color:inherit;}
+button{font-family:inherit;cursor:pointer;border:none;background:none;}
+input,select{font-family:inherit;}
+.hero{position:relative;width:100%;height:340px;display:flex;align-items:flex-end;overflow:hidden;margin-top:var(--nav-h);}
+.hero-photo{position:absolute;inset:0;background:linear-gradient(160deg,#181818 0%,#0d0d0d 100%);display:flex;align-items:center;justify-content:center;}
+.hero-photo-lbl{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:.18em;color:#222;text-transform:uppercase;}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,10,.97) 0%,rgba(10,10,10,.75) 50%,rgba(10,10,10,.25) 100%);}
+.hero-content{position:relative;z-index:2;padding:0 var(--pad) 52px;}
+.hero-eyebrow{display:flex;align-items:center;gap:14px;margin-bottom:14px;}
+.hero-eyebrow-line{width:28px;height:.5px;background:var(--gold);flex-shrink:0;}
+.hero-eyebrow-text{font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:.22em;color:var(--gold);text-transform:uppercase;font-weight:400;}
+.hero-title{font-family:'Oswald',sans-serif;font-size:clamp(28px,4.5vw,52px);letter-spacing:.06em;font-weight:400;text-transform:uppercase;color:var(--white);line-height:1;text-shadow:0 2px 20px rgba(0,0,0,.9);}
+.hero-sub{font-size:15px;color:rgba(235,235,235,.6);font-weight:300;margin-top:12px;max-width:520px;line-height:1.6;text-shadow:0 1px 12px rgba(0,0,0,.8);}
+.step-bar{width:100%;background:var(--dark);border-bottom:.5px solid var(--line);padding:0 var(--pad);}
+.step-bar-inner{display:flex;align-items:stretch;max-width:900px;}
+.step-bar-item{display:flex;align-items:center;gap:14px;padding:22px 0;flex:1;position:relative;}
+.step-bar-item:not(:last-child)::after{content:'';position:absolute;right:0;top:50%;transform:translateY(-50%);width:0;height:0;border-top:5px solid transparent;border-bottom:5px solid transparent;border-left:5px solid var(--line2);}
+.step-bar-num{width:30px;height:30px;border-radius:50%;border:.5px solid var(--line2);background:var(--mid);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Oswald',sans-serif;font-size:12px;color:var(--dim);transition:all .3s var(--ease);}
+.step-bar-item.active .step-bar-num{border-color:var(--gold);background:var(--gold);color:var(--black);}
+.step-bar-item.done .step-bar-num{border-color:var(--gold);background:rgba(205,177,130,.15);color:var(--gold);}
+.step-bar-item.done .num-n{display:none;}
+.step-bar-item.done .num-check{display:block;}
+.num-check{display:none;width:12px;height:12px;stroke:var(--gold);fill:none;stroke-width:2.5;}
+.step-bar-label{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin-bottom:3px;transition:color .3s;}
+.step-bar-item.active .step-bar-label{color:var(--gold);}
+.step-bar-item.done .step-bar-label{color:var(--muted);}
+.step-bar-title{font-family:'Oswald',sans-serif;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--dim);font-weight:400;transition:color .3s;}
+.step-bar-item.active .step-bar-title{color:var(--white);}
+.step-bar-item.done .step-bar-title{color:var(--muted);}
+.main{width:100%;background:var(--black);padding:64px var(--pad) 96px;min-height:50vh;}
+.form-wrap{max-width:680px;}
+.panel{display:none;}
+.panel.active{display:block;animation:slideIn .3s var(--ease) both;}
+.panel.back{animation:slideBack .3s var(--ease) both;}
+@keyframes slideIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+@keyframes slideBack{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
+.panel-eyebrow{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:.20em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;display:flex;align-items:center;gap:10px;}
+.panel-eyebrow-line{width:16px;height:.5px;background:var(--gold);flex-shrink:0;}
+.panel-title{font-family:'Oswald',sans-serif;font-size:clamp(22px,3vw,32px);letter-spacing:.06em;text-transform:uppercase;color:var(--white);font-weight:400;line-height:1.1;margin-bottom:8px;}
+.panel-sub{font-size:14px;color:var(--muted);font-weight:300;line-height:1.65;margin-bottom:36px;}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;}
+.field-row.single{grid-template-columns:1fr;}
+.field{display:flex;flex-direction:column;gap:6px;}
+.field-label{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:400;display:flex;align-items:center;gap:4px;}
+.req{color:var(--gold);font-size:13px;line-height:1;}
+.field-input,.field-select{background:var(--dark);border:.5px solid var(--line2);color:var(--ash);font-size:15px;font-weight:300;padding:14px 16px;border-radius:2px;width:100%;transition:border-color .25s,background .25s;appearance:none;-webkit-appearance:none;}
+.field-input::placeholder{color:var(--dim);}
+.field-input:hover,.field-select:hover{border-color:var(--dim);}
+.field-input:focus,.field-select:focus{outline:none;border-color:var(--gold);background:rgba(205,177,130,.04);}
+.field.err .field-input,.field.err .field-select,.field.err .tel-input{border-color:var(--error);}
+.field-err{font-size:11px;color:var(--error);font-weight:300;display:none;}
+.field.err .field-err{display:block;}
+.sel-wrap{position:relative;}
+.sel-wrap::after{content:'';position:absolute;right:14px;top:50%;transform:translateY(-50%);width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-top:5px solid var(--dim);pointer-events:none;}
+.sel-wrap .field-select{padding-right:36px;cursor:pointer;}
+.tel-row{display:flex;gap:8px;}
+.tel-prefix{background:var(--mid);border:.5px solid var(--line2);color:var(--muted);font-family:'Oswald',sans-serif;font-size:13px;padding:14px 16px;border-radius:2px;white-space:nowrap;display:flex;align-items:center;flex-shrink:0;}
+.tel-input{flex:1;background:var(--dark);border:.5px solid var(--line2);color:var(--ash);font-size:15px;font-weight:300;padding:14px 16px;border-radius:2px;transition:border-color .25s;}
+.tel-input::placeholder{color:var(--dim);}
+.tel-input:focus{outline:none;border-color:var(--gold);}
+
+/* PPF type cards */
+.ppf-types{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:.5px solid var(--line);margin-bottom:20px;}
+.ppf-type-card{background:var(--dark);padding:20px 18px;cursor:pointer;transition:background .2s;position:relative;border:2px solid transparent;}
+.ppf-type-card:hover{background:#131313;}
+.ppf-type-card.selected{background:rgba(205,177,130,.05);border-color:var(--gold);}
+.ppf-type-radio{position:absolute;top:0;left:0;right:0;bottom:0;opacity:0;cursor:pointer;z-index:1;}
+.ppf-type-check{width:18px;height:18px;border-radius:50%;border:.5px solid var(--line2);display:flex;align-items:center;justify-content:center;margin-bottom:14px;transition:border-color .2s,background .2s;}
+.ppf-type-card.selected .ppf-type-check{border-color:var(--gold);background:var(--gold);}
+.ppf-type-check svg{width:9px;height:9px;stroke:var(--black);fill:none;stroke-width:2.5;opacity:0;transition:opacity .2s;}
+.ppf-type-card.selected .ppf-type-check svg{opacity:1;}
+.ppf-type-name{font-family:'Oswald',sans-serif;font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:var(--white);font-weight:400;margin-bottom:6px;}
+.ppf-type-desc{font-size:12px;color:var(--dim);font-weight:300;line-height:1.5;margin-bottom:10px;}
+.ppf-type-price{font-family:'Oswald',sans-serif;font-size:12px;letter-spacing:.06em;color:var(--gold);font-weight:300;}
+
+.actions{display:flex;align-items:center;justify-content:space-between;margin-top:40px;gap:12px;}
+.btn-back{font-family:'Oswald',sans-serif;font-size:12px;letter-spacing:.10em;text-transform:uppercase;font-weight:300;color:var(--dim);display:flex;align-items:center;gap:8px;cursor:pointer;transition:color .25s;padding:12px 0;min-height:44px;}
+.btn-back:hover{color:var(--ash);}
+.btn-back svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.5;}
+.btn-next{font-family:'Oswald',sans-serif;font-size:13px;letter-spacing:.12em;text-transform:uppercase;font-weight:400;background:var(--gold);color:var(--black);padding:16px 40px;border-radius:2px;min-height:44px;display:inline-flex;align-items:center;gap:10px;transition:background .25s,opacity .2s;cursor:pointer;}
+.btn-next:hover:not(:disabled){background:var(--gold-h);}
+.btn-next:disabled{opacity:.5;cursor:not-allowed;}
+.btn-next svg{width:13px;height:13px;stroke:var(--black);fill:none;stroke-width:2;}
+.spinner{width:13px;height:13px;border:1.5px solid rgba(0,0,0,.25);border-top-color:var(--black);border-radius:50%;animation:spin .6s linear infinite;display:none;}
+.btn-next.loading .spinner{display:block;}
+.btn-next.loading .arrow-icon{display:none;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.result{display:none;animation:slideIn .4s var(--ease) both;}
+.result.show{display:block;}
+.result-card{background:var(--dark);border:.5px solid var(--line);overflow:hidden;margin-bottom:24px;}
+.result-head{background:var(--mid);padding:20px 28px;border-bottom:.5px solid var(--line);display:flex;align-items:center;gap:14px;}
+.result-head-icon svg{width:24px;height:24px;stroke:var(--gold);fill:none;stroke-width:1;}
+.result-head-text{font-family:'Oswald',sans-serif;font-size:12px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);font-weight:300;}
+.result-body{padding:32px 28px;display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;}
+.result-lbl{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);margin-bottom:10px;}
+.result-price{font-family:'Oswald',sans-serif;font-size:clamp(32px,5vw,52px);letter-spacing:.03em;color:var(--gold);font-weight:300;line-height:1;}
+.result-note{font-size:11px;color:var(--dim);font-weight:300;margin-top:8px;font-style:italic;}
+.result-tags{display:flex;flex-direction:column;gap:8px;align-items:flex-end;}
+.result-tag{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:.12em;text-transform:uppercase;background:rgba(205,177,130,.1);border:.5px solid rgba(205,177,130,.3);color:var(--gold);padding:5px 14px;white-space:nowrap;}
+.result-breakdown{background:var(--dark);border:.5px solid var(--line);border-top:none;padding:20px 28px;display:grid;grid-template-columns:repeat(3,1fr);gap:0;}
+.breakdown-cell{padding:14px 0;border-right:.5px solid var(--line);text-align:center;}
+.breakdown-cell:last-child{border-right:none;}
+.breakdown-pos{font-family:'Oswald',sans-serif;font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-bottom:5px;}
+.breakdown-val{font-family:'Oswald',sans-serif;font-size:13px;color:var(--ash);font-weight:400;letter-spacing:.04em;}
+.result-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px;}
+.btn-res-primary{font-family:'Oswald',sans-serif;font-size:13px;letter-spacing:.12em;text-transform:uppercase;font-weight:400;background:var(--gold);color:var(--black);padding:16px 32px;border-radius:2px;min-height:44px;display:inline-flex;align-items:center;gap:10px;transition:background .25s;text-decoration:none;cursor:pointer;}
+.btn-res-primary:hover{background:var(--gold-h);}
+.btn-res-primary svg{width:14px;height:14px;stroke:var(--black);fill:none;stroke-width:1.5;}
+.btn-res-secondary{font-family:'Oswald',sans-serif;font-size:13px;letter-spacing:.12em;text-transform:uppercase;font-weight:300;background:transparent;color:var(--ash);padding:15px 28px;border-radius:2px;min-height:44px;display:inline-flex;align-items:center;gap:10px;border:.5px solid rgba(235,235,235,.25);transition:border-color .25s;cursor:pointer;}
+.btn-res-secondary:hover{border-color:var(--ash);}
+.btn-recalc{font-family:'Oswald',sans-serif;font-size:12px;letter-spacing:.10em;text-transform:uppercase;font-weight:300;color:var(--dim);display:inline-flex;align-items:center;gap:7px;transition:color .25s;cursor:pointer;min-height:44px;padding:10px 0;}
+.btn-recalc:hover{color:var(--ash);}
+.btn-recalc svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2;}
+.fallback{background:var(--mid);border-top:.5px solid var(--line);padding:56px var(--pad);}
+.fallback-inner{display:flex;align-items:center;justify-content:space-between;gap:32px;flex-wrap:wrap;}
+.fallback-eyebrow{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:.20em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+.fallback-title{font-family:'Oswald',sans-serif;font-size:clamp(18px,2vw,24px);letter-spacing:.06em;text-transform:uppercase;color:var(--white);font-weight:400;margin-bottom:8px;}
+.fallback-sub{font-size:14px;color:var(--muted);font-weight:300;line-height:1.6;max-width:440px;}
+.fallback-btns{display:flex;gap:12px;flex-shrink:0;flex-wrap:wrap;}
+.btn-fb-primary{font-family:'Oswald',sans-serif;font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:400;background:var(--gold);color:var(--black);padding:14px 28px;border-radius:2px;min-height:44px;display:inline-flex;align-items:center;gap:8px;transition:background .25s;text-decoration:none;cursor:pointer;}
+.btn-fb-primary:hover{background:var(--gold-h);}
+.btn-fb-outline{font-family:'Oswald',sans-serif;font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:300;background:transparent;color:var(--ash);padding:13px 24px;border-radius:2px;min-height:44px;display:inline-flex;align-items:center;gap:8px;border:.5px solid rgba(235,235,235,.25);transition:border-color .25s;cursor:pointer;}
+.btn-fb-outline:hover{border-color:var(--ash);}
+.footer{background:var(--black);border-top:.5px solid var(--line);padding:64px var(--pad) 32px;}
+.footer-top{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:56px;margin-bottom:56px;}
+.footer-logo{font-family:'Oswald',sans-serif;font-size:15px;letter-spacing:.28em;color:var(--gold);font-weight:400;margin-bottom:14px;}
+.footer-tagline{font-size:13px;color:var(--dim);line-height:1.65;max-width:220px;font-weight:300;}
+.footer-col-title{font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:.16em;color:var(--ash);text-transform:uppercase;font-weight:400;margin-bottom:18px;}
+.footer-link{font-size:13px;color:var(--dim);display:block;margin-bottom:11px;transition:color .25s;font-weight:300;}
+.footer-link:hover,.footer-link.active{color:var(--gold);}
+.footer-bottom{border-top:.5px solid var(--line);padding-top:24px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;}
+.footer-copy{font-size:12px;color:#333;font-weight:300;}
+.footer-social{display:flex;gap:10px;}
+.social-btn{width:34px;height:34px;border-radius:50%;border:.5px solid var(--line2);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:border-color .25s;}
+.social-btn:hover{border-color:var(--gold);}
+.social-btn svg{width:13px;height:13px;stroke:var(--dim);fill:none;stroke-width:1.5;transition:stroke .25s;}
+.social-btn:hover svg{stroke:var(--gold);}
+@media(max-width:1023px){
+  :root{--pad:32px;}
+  .nav-links,.nav-right{display:none;}
+  
+  
+  .result-body{flex-direction:column;align-items:flex-start;}
+  .result-tags{align-items:flex-start;}
+  .result-breakdown{grid-template-columns:1fr 1fr 1fr;}
+  .footer-top{grid-template-columns:1fr 1fr;gap:40px;}
+  .footer-bottom{flex-direction:column;align-items:flex-start;gap:20px;}
+  .fallback-inner{flex-direction:column;align-items:flex-start;}
+  .step-bar-item:not(:last-child)::after{display:none;}
+}
+@media(max-width:640px){
+  :root{--pad:20px;--nav-h:56px;}
+  .nav{padding:0 20px;}
+  .nav-logo{font-size:14px;letter-spacing:.22em;}
+  .hero{height:260px;}
+  .field-row{grid-template-columns:1fr;}
+  .ppf-types{grid-template-columns:1fr;}
+  .step-bar-title{display:none;}
+  .actions{flex-direction:column;align-items:stretch;}
+  .btn-back{justify-content:center;}
+  .btn-next{width:100%;justify-content:center;}
+  .result-actions{flex-direction:column;}
+  .btn-res-primary,.btn-res-secondary{width:100%;justify-content:center;}
+  .fallback-btns{flex-direction:column;width:100%;}
+  .btn-fb-primary,.btn-fb-outline{width:100%;justify-content:center;}
+  .footer{padding:48px var(--pad) 32px;}
+  .footer-top{grid-template-columns:1fr;gap:32px;}
+  
+  
+}
+</style>
+</head>
+<body data-page="cek_harga">
+
+<div id="nav-placeholder"></div>
+
+<section class="hero">
+  <div class="hero-photo"><span class="hero-photo-lbl">PPF — premium car paint protection photography</span></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow"><span class="hero-eyebrow-line"></span><span class="hero-eyebrow-text">Estimasi Harga</span></div>
+    <h1 class="hero-title">Sesuaikan Perlindungan<br>PPF Kendaraan Anda</h1>
+    <p class="hero-sub">Lindungi cat kendaraan premium Anda dengan Paint Protection Film V-KOOL. Dapatkan estimasi harga dalam 2 langkah mudah.</p>
+  </div>
+</section>
+
+<div class="step-bar">
+  <div class="step-bar-inner">
+    <div class="step-bar-item active" id="sb1">
+      <div class="step-bar-num"><span class="num-n">1</span><svg class="num-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div><div class="step-bar-label">Langkah 1</div><div class="step-bar-title">Informasi Kontak</div></div>
+    </div>
+    <div class="step-bar-item" id="sb2">
+      <div class="step-bar-num"><span class="num-n">2</span><svg class="num-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div><div class="step-bar-label">Langkah 2</div><div class="step-bar-title">Kendaraan &amp; Tipe PPF</div></div>
+    </div>
+  </div>
+</div>
+
+<main class="main" id="mainTop">
+  <div class="form-wrap">
+
+    <!-- STEP 1 -->
+    <div class="panel active" id="p1">
+      <p class="panel-eyebrow"><span class="panel-eyebrow-line"></span>Langkah 1 dari 2</p>
+      <h2 class="panel-title">Informasi Kontak</h2>
+      <p class="panel-sub">Data Anda aman bersama kami dan hanya digunakan untuk keperluan estimasi harga.</p>
+
+      <div class="field-row single">
+        <div class="field" id="f-name">
+          <label class="field-label" for="inp-name">Nama Lengkap <span class="req">*</span></label>
+          <input class="field-input" type="text" id="inp-name" placeholder="Nama lengkap Anda" autocomplete="name">
+          <span class="field-err">Nama wajib diisi</span>
+        </div>
+      </div>
+      <div class="field-row single">
+        <div class="field" id="f-phone">
+          <label class="field-label" for="inp-phone">Nomor HP <span class="req">*</span></label>
+          <div class="tel-row">
+            <div class="tel-prefix">+62</div>
+            <input class="tel-input" type="tel" id="inp-phone" placeholder="812 3456 7890" autocomplete="tel">
+          </div>
+          <span class="field-err">Nomor HP tidak valid</span>
+        </div>
+      </div>
+
+      <div class="actions">
+        <a class="btn-back" href="vkool_ppf_final.html">
+          <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+          Kembali ke Pilihan
+        </a>
+        <button class="btn-next" id="n1">
+          Lanjutkan
+          <svg class="arrow-icon" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          <div class="spinner"></div>
+        </button>
+      </div>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="panel" id="p2">
+      <p class="panel-eyebrow"><span class="panel-eyebrow-line"></span>Langkah 2 dari 2</p>
+      <h2 class="panel-title">Kendaraan &amp; Tipe PPF</h2>
+      <p class="panel-sub">Pilih merek, tipe kendaraan, dan paket PPF yang sesuai untuk perlindungan cat optimal.</p>
+
+      <div class="field-row">
+        <div class="field" id="f-brand">
+          <label class="field-label" for="sel-brand">Merek Mobil <span class="req">*</span></label>
+          <div class="sel-wrap">
+            <select class="field-select" id="sel-brand">
+              <option value="" disabled selected>Pilih Merek Kendaraan</option>
+              <optgroup label="Luxury">
+                <option>BMW</option><option>Mercedes-Benz</option><option>Audi</option><option>Lexus</option><option>Porsche</option><option>Land Rover</option><option>Jaguar</option><option>Volvo</option>
+              </optgroup>
+              <optgroup label="Premium">
+                <option>Toyota</option><option>Honda</option><option>Mitsubishi</option><option>Nissan</option><option>Mazda</option><option>Hyundai</option>
+              </optgroup>
+              <optgroup label="Lainnya"><option value="Lainnya">Merek Lainnya</option></optgroup>
+            </select>
+          </div>
+          <span class="field-err">Pilih merek kendaraan</span>
+        </div>
+        <div class="field" id="f-model">
+          <label class="field-label" for="sel-model">Tipe Kendaraan <span class="req">*</span></label>
+          <div class="sel-wrap">
+            <select class="field-select" id="sel-model">
+              <option value="" disabled selected>Pilih Tipe Kendaraan</option>
+              <option value="Sedan" data-mult="1.0">Sedan</option>
+              <option value="SUV" data-mult="1.35">SUV</option>
+              <option value="MPV" data-mult="1.2">MPV</option>
+              <option value="Coupe" data-mult="1.05">Coupe</option>
+              <option value="Hatchback" data-mult="0.9">Hatchback</option>
+            </select>
+          </div>
+          <span class="field-err">Pilih tipe kendaraan</span>
+        </div>
+      </div>
+
+      <!-- PPF type selection cards -->
+      <div class="field">
+        <div class="field-label" style="margin-bottom:12px;">Tipe PPF <span class="req">*</span></div>
+        <div class="ppf-types" id="ppf-types" role="radiogroup" aria-label="Pilih tipe PPF">
+
+          <label class="ppf-type-card" id="ppf-card-0">
+            <input type="radio" name="ppf" value="PPF Glossy — Full Body" data-base="25000000" class="ppf-type-radio">
+            <div class="ppf-type-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <div class="ppf-type-name">Glossy — Full Body</div>
+            <div class="ppf-type-desc">Perlindungan menyeluruh seluruh bodi dengan hasil akhir kilap premium</div>
+            <div class="ppf-type-price">Mulai dari Rp 25.000.000</div>
+          </label>
+
+          <label class="ppf-type-card" id="ppf-card-1">
+            <input type="radio" name="ppf" value="PPF Matte — Full Body" data-base="28000000" class="ppf-type-radio">
+            <div class="ppf-type-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <div class="ppf-type-name">Matte — Full Body</div>
+            <div class="ppf-type-desc">Tampilan matte eksklusif dengan perlindungan penuh seluruh permukaan cat</div>
+            <div class="ppf-type-price">Mulai dari Rp 28.000.000</div>
+          </label>
+
+          <label class="ppf-type-card" id="ppf-card-2">
+            <input type="radio" name="ppf" value="PPF Glossy — Partial" data-base="12000000" class="ppf-type-radio">
+            <div class="ppf-type-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <div class="ppf-type-name">Glossy — Partial</div>
+            <div class="ppf-type-desc">Proteksi area rentan: hood, bumper, dan fender dengan kilap optimal</div>
+            <div class="ppf-type-price">Mulai dari Rp 12.000.000</div>
+          </label>
+
+          <label class="ppf-type-card" id="ppf-card-3">
+            <input type="radio" name="ppf" value="PPF Matte — Partial" data-base="14000000" class="ppf-type-radio">
+            <div class="ppf-type-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <div class="ppf-type-name">Matte — Partial</div>
+            <div class="ppf-type-desc">Proteksi area rentan dengan tampilan matte premium yang elegan</div>
+            <div class="ppf-type-price">Mulai dari Rp 14.000.000</div>
+          </label>
+
+        </div>
+        <span class="field-err" id="ppf-type-err" style="display:none;">Pilih tipe PPF</span>
+      </div>
+
+      <div class="actions">
+        <button class="btn-back" id="b2">
+          <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+          Kembali
+        </button>
+        <button class="btn-next" id="n2">
+          Hitung Estimasi
+          <svg class="arrow-icon" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          <div class="spinner"></div>
+        </button>
+      </div>
+    </div>
+
+    <!-- RESULT -->
+    <div class="result" id="result">
+      <p class="panel-eyebrow"><span class="panel-eyebrow-line"></span>Estimasi Selesai</p>
+      <h2 class="panel-title">Harga Estimasi PPF Kendaraan</h2>
+
+      <div class="result-card">
+        <div class="result-head">
+          <div class="result-head-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+          <span class="result-head-text">PPF Kendaraan — <span id="r-car"></span></span>
+        </div>
+        <div class="result-body">
+          <div>
+            <div class="result-lbl">Harga Estimasi</div>
+            <div class="result-price" id="r-price">Rp 0</div>
+            <div class="result-note">*Belum termasuk pajak &amp; biaya instalasi.</div>
+          </div>
+          <div class="result-tags">
+            <span class="result-tag" id="r-type-tag">—</span>
+            <span class="result-tag" id="r-scope-tag">—</span>
+          </div>
+        </div>
+        <div class="result-breakdown">
+          <div class="breakdown-cell"><div class="breakdown-pos">Merek</div><div class="breakdown-val" id="r-brand">—</div></div>
+          <div class="breakdown-cell"><div class="breakdown-pos">Tipe Kendaraan</div><div class="breakdown-val" id="r-vehicle">—</div></div>
+          <div class="breakdown-cell"><div class="breakdown-pos">Paket PPF</div><div class="breakdown-val" id="r-pkg">—</div></div>
+        </div>
+      </div>
+
+      <div class="result-actions">
+        <a class="btn-res-primary" href="https://wa.me/6221000000?text=Halo%20V-KOOL%2C%20saya%20ingin%20konsultasi%20PPF%20kendaraan" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" fill="none" stroke-width="1.5"/></svg>
+          Konsultasi via WhatsApp
+        </a>
+        <button class="btn-res-secondary">Jadwalkan Instalasi</button>
+        <button class="btn-recalc" id="recalc">
+          <svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.75"/></svg>
+          Hitung Ulang
+        </button>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<div class="fallback">
+  <div class="fallback-inner">
+    <div>
+      <div class="fallback-eyebrow">Butuh Bantuan?</div>
+      <h2 class="fallback-title">Tidak Menemukan Estimasi yang Tepat?</h2>
+      <p class="fallback-sub">Tim spesialis PPF V-KOOL kami siap memberikan konsultasi dan penawaran terbaik untuk kendaraan premium Anda.</p>
+    </div>
+    <div class="fallback-btns">
+      <a class="btn-fb-primary" href="https://wa.me/6221000000" target="_blank" rel="noopener">Contact Us</a>
+      <button class="btn-fb-outline">Jadwalkan Konsultasi</button>
+    </div>
+  </div>
+</div>
+
+<div id="footer-placeholder"></div>
+
+<script>
+
+</script>
+<script src="nav-footer.js"></script>
+</body>
+</html>
