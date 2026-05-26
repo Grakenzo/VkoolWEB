@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>V-KOOL Portfolio Bangunan — Instalasi Premium di Seluruh Indonesia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+
+/* ══ TOKENS ══ */
+:root {
+  --black:  #0a0a0a;
+  --dark:   #111111;
+  --mid:    #1a1a1a;
+  --line:   #222222;
+  --line2:  #2e2e2e;
+  --gold:   #CDB182;
+  --gold2:  #b89a6a;
+  --gold-h: #b89a6a;
+  --ash:    #EBEBEB;
+  --muted:  #999999;
+  --dim:    #555555;
+  --white:  #FFFFFF;
+  --nav-h:  68px;
+  --pad:    56px;
+  --ease:   cubic-bezier(0.25, 0, 0.1, 1);
+}
+
+/* ══ RESET ══ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Roboto', sans-serif;
+  background: var(--black); color: var(--ash);
+  overflow-x: hidden; -webkit-font-smoothing: antialiased;
+}
+a { text-decoration: none; color: inherit; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+/* ══ PAGE HEADER ══ */
+.page-header {
+  width: 100%; background: var(--black);
+  padding: calc(var(--nav-h) + 64px) var(--pad) 56px;
+  border-bottom: 0.5px solid var(--line);
+}
+.page-breadcrumb {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 32px;
+}
+.breadcrumb-item {
+  font-family: 'Oswald', sans-serif;
+  font-size: 10px; letter-spacing: .14em; color: var(--dim); text-transform: uppercase;
+}
+.breadcrumb-sep { color: var(--line2); font-size: 10px; }
+.breadcrumb-current { color: var(--gold); }
+.page-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(32px, 5vw, 64px); letter-spacing: .08em; font-weight: 400;
+  text-transform: uppercase; color: var(--white); line-height: 1.0; margin-bottom: 14px;
+}
+.page-count {
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px; letter-spacing: .10em; color: var(--dim); font-weight: 300;
+}
+.page-count span { color: var(--gold); }
+
+/* ══ FILTER BAR ══ */
+.filter-bar {
+  width: 100%; background: var(--dark);
+  border-bottom: 0.5px solid var(--line);
+  padding: 0 var(--pad);
+  display: flex; align-items: center; gap: 12px;
+  position: sticky; top: var(--nav-h); z-index: 100;
+}
+
+/* Dropdown filter button */
+.filter-btn {
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px; letter-spacing: .10em; text-transform: uppercase; font-weight: 400;
+  color: var(--muted);
+  padding: 18px 0;
+  display: flex; align-items: center; gap: 10px;
+  cursor: pointer; border: none; background: none;
+  position: relative;
+  border-bottom: 1px solid transparent;
+  transition: color .25s, border-color .25s;
+  white-space: nowrap;
+}
+.filter-btn:hover { color: var(--ash); }
+.filter-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
+.filter-btn-label { font-size: 11px; color: var(--gold); letter-spacing: .06em; font-family: 'Roboto', sans-serif; font-weight: 400; }
+.filter-btn svg {
+  width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2;
+  transition: transform .25s var(--ease); flex-shrink: 0;
+}
+.filter-btn.open svg { transform: rotate(180deg); }
+
+.filter-sep { width: 0.5px; height: 20px; background: var(--line2); flex-shrink: 0; }
+
+/* Result count on right */
+.filter-result {
+  margin-left: auto;
+  font-family: 'Oswald', sans-serif;
+  font-size: 11px; letter-spacing: .12em; color: var(--dim); text-transform: uppercase; font-weight: 300;
+}
+.filter-result span { color: var(--gold); }
+
+/* Dropdown panel */
+.filter-dropdown {
+  position: absolute; top: calc(100% + 0.5px); left: 0;
+  background: var(--dark);
+  border: 0.5px solid var(--line2);
+  border-top: none;
+  min-width: 220px;
+  z-index: 300;
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+}
+.filter-dropdown.open { display: flex; }
+.filter-option {
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px; letter-spacing: .08em; text-transform: uppercase; font-weight: 300;
+  color: var(--muted); padding: 14px 20px;
+  cursor: pointer; transition: background .2s, color .2s;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  border-bottom: 0.5px solid var(--line);
+}
+.filter-option:last-child { border-bottom: none; }
+.filter-option:hover { background: rgba(205,177,130,0.05); color: var(--ash); }
+.filter-option.selected { color: var(--gold); background: rgba(205,177,130,0.04); }
+.filter-option-check { width: 14px; height: 14px; flex-shrink: 0; }
+.filter-option-check svg { width: 14px; height: 14px; stroke: var(--gold); fill: none; stroke-width: 2.5; display: none; }
+.filter-option.selected .filter-option-check svg { display: block; }
+
+/* Filter tag (active selection label) */
+.filter-tag {
+  font-family: 'Oswald', sans-serif;
+  font-size: 10px; letter-spacing: .12em; color: var(--gold); text-transform: uppercase;
+  background: rgba(205,177,130,0.1); border: 0.5px solid rgba(205,177,130,0.3);
+  padding: 3px 10px; border-radius: 2px; display: none;
+}
+.filter-tag.visible { display: block; }
+
+/* ══ PORTFOLIO GRID ══ */
+.portfolio-wrap {
+  width: 100%; background: var(--black);
+  padding: 56px var(--pad) 96px;
+}
+
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px; background: var(--line);
+}
+
+/* Single portfolio card */
+.port-card {
+  background: var(--dark);
+  overflow: hidden; position: relative;
+  cursor: pointer;
+  transition: background .3s;
+}
+.port-card:hover { background: #131313; }
+.port-card.hidden { display: none; }
+
+/* Photo */
+.port-photo {
+  width: 100%; aspect-ratio: 4/3;
+  background: #0f0f0f;
+  position: relative; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+.port-photo::before, .port-photo::after {
+  content: ''; position: absolute; width: 18px; height: 18px; z-index: 2;
+}
+.port-photo::before { top: 12px; left: 12px; border-top: 0.5px solid var(--gold); border-left: 0.5px solid var(--gold); opacity: 0; transition: opacity .3s; }
+.port-photo::after  { bottom: 12px; right: 12px; border-bottom: 0.5px solid var(--gold); border-right: 0.5px solid var(--gold); opacity: 0; transition: opacity .3s; }
+.port-card:hover .port-photo::before,
+.port-card:hover .port-photo::after { opacity: .5; }
+
+.port-photo-img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  transition: transform .6s var(--ease);
+}
+.port-card:hover .port-photo-img { transform: scale(1.04); }
+
+/* Photo placeholder (no image) */
+.port-photo-placeholder {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(160deg, #181818 0%, #0e0e0e 100%);
+}
+.port-photo-placeholder-lbl {
+  font-family: 'Oswald', sans-serif;
+  font-size: 9px; letter-spacing: .18em; color: #252525; text-transform: uppercase;
+}
+
+/* Overlay on hover */
+.port-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 60%);
+  opacity: 0; transition: opacity .3s;
+}
+.port-card:hover .port-overlay { opacity: 1; }
+
+/* Product badge top-left */
+.port-badge {
+  position: absolute; top: 14px; left: 14px; z-index: 3;
+  font-family: 'Oswald', sans-serif;
+  font-size: 9px; letter-spacing: .14em; text-transform: uppercase; font-weight: 400;
+  background: rgba(10,10,10,0.82); color: var(--gold);
+  border: 0.5px solid rgba(205,177,130,0.35); padding: 4px 10px; border-radius: 2px;
+}
+
+/* Card body */
+.port-body { padding: 22px 24px 26px; }
+.port-product {
+  font-family: 'Oswald', sans-serif;
+  font-size: 18px; letter-spacing: .06em; font-weight: 400;
+  text-transform: uppercase; color: var(--white); margin-bottom: 8px; line-height: 1.1;
+}
+.port-location {
+  display: flex; align-items: center; gap: 7px;
+  font-size: 13px; color: var(--dim); font-weight: 300;
+}
+.port-location svg { width: 12px; height: 12px; stroke: var(--gold); fill: none; stroke-width: 1.5; flex-shrink: 0; }
+.port-category {
+  font-family: 'Oswald', sans-serif;
+  font-size: 9px; letter-spacing: .16em; color: var(--dim); text-transform: uppercase;
+  margin-top: 10px; display: flex; align-items: center; gap: 6px;
+}
+.port-category-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--dim); flex-shrink: 0; }
+
+/* Empty state */
+.empty-state {
+  width: 100%; padding: 80px 0; text-align: center; display: none;
+}
+.empty-state.visible { display: block; }
+.empty-icon { width: 48px; height: 48px; margin: 0 auto 20px; opacity: .3; }
+.empty-icon svg { width: 48px; height: 48px; stroke: var(--gold); fill: none; stroke-width: 1; }
+.empty-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 18px; letter-spacing: .06em; color: var(--muted); text-transform: uppercase; margin-bottom: 8px;
+}
+.empty-text { font-size: 14px; color: var(--dim); font-weight: 300; }
+
+/* Load more */
+.load-more-wrap { text-align: center; margin-top: 56px; }
+.btn-load-more {
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px; letter-spacing: .12em; text-transform: uppercase; font-weight: 400;
+  background: transparent; color: var(--gold);
+  padding: 16px 40px; border-radius: 2px; min-height: 52px;
+  border: 0.5px solid rgba(205,177,130,0.4);
+  display: inline-flex; align-items: center; gap: 10px;
+  transition: background .25s, border-color .25s;
+}
+.btn-load-more:hover { background: rgba(205,177,130,0.06); border-color: var(--gold); }
+.btn-load-more svg { width: 14px; height: 14px; stroke: var(--gold); fill: none; stroke-width: 1.5; }
+.btn-load-more.hidden { display: none; }
+
+/* ══ FOOTER ══ */
+.footer { background: var(--black); border-top: 0.5px solid var(--line); padding: 64px var(--pad) 32px; }
+.footer-top { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 56px; margin-bottom: 56px; }
+.footer-logo { font-family: 'Oswald', sans-serif; font-size: 15px; letter-spacing: .28em; color: var(--gold); font-weight: 400; margin-bottom: 14px; }
+.footer-tagline { font-size: 13px; color: var(--dim); line-height: 1.65; max-width: 220px; font-weight: 300; }
+.footer-col-title { font-family: 'Oswald', sans-serif; font-size: 11px; letter-spacing: .16em; color: var(--ash); text-transform: uppercase; font-weight: 400; margin-bottom: 18px; }
+.footer-link { font-size: 13px; color: var(--dim); display: block; margin-bottom: 11px; transition: color .25s; font-weight: 300; }
+.footer-link:hover { color: var(--gold); }
+.footer-link.active { color: var(--gold); }
+.footer-bottom { border-top: 0.5px solid var(--line); padding-top: 24px; display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
+.footer-copy { font-size: 12px; color: #333; font-weight: 300; }
+.footer-social { display: flex; gap: 10px; }
+.social-btn { width: 34px; height: 34px; border-radius: 50%; border: 0.5px solid var(--line2); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: border-color .25s; }
+.social-btn:hover { border-color: var(--gold); }
+.social-btn svg { width: 13px; height: 13px; stroke: var(--dim); fill: none; stroke-width: 1.5; transition: stroke .25s; }
+.social-btn:hover svg { stroke: var(--gold); }
+
+/* ══ RESPONSIVE — TABLET ══ */
+@media (max-width: 1023px) {
+  :root { --pad: 32px; }
+  .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
+  .footer-top { grid-template-columns: 1fr 1fr; gap: 40px; }
+  .footer-bottom { flex-direction: column; align-items: flex-start; gap: 20px; }
+  .filter-result { display: none; }
+}
+
+/* ══ RESPONSIVE — MOBILE ══ */
+@media (max-width: 480px) {
+  :root { --pad: 20px; --nav-h: 56px; }
+  .portfolio-grid { grid-template-columns: 1fr; }
+  .filter-bar { gap: 8px; overflow-x: auto; padding: 0 20px; }
+  .filter-btn { font-size: 12px; padding: 16px 0; }
+  .page-header { padding: calc(var(--nav-h) + 40px) var(--pad) 40px; }
+  .portfolio-wrap { padding: 32px var(--pad) 80px; }
+  .footer { padding: 48px var(--pad) 32px; }
+  .footer-top { grid-template-columns: 1fr; gap: 32px; }
+}
+</style>
+</head>
+<body data-page="portfolio">
+
+<div id="nav-placeholder"></div>
+
+<!-- ══ PAGE HEADER ══ -->
+<header class="page-header" aria-labelledby="page-title">
+  <div class="page-breadcrumb" aria-label="Breadcrumb">
+    <span class="breadcrumb-item">Home</span>
+    <span class="breadcrumb-sep" style="color:#555555;" aria-hidden="true">&mdash;</span>
+    <span class="breadcrumb-item breadcrumb-current">Portfolio Bangunan</span>
+  </div>
+  <h1 class="page-title" id="page-title">Portfolio Bangunan</h1>
+  <p class="page-count">Menampilkan <span id="visibleCount">6</span> proyek</p>
+</header>
+
+<!-- ══ FILTER BAR ══ -->
+<div class="filter-bar" role="toolbar" aria-label="Filter portfolio">
+
+  <!-- Filter 1: Semua Produk -->
+  <div style="position:relative;">
+    <button class="filter-btn" id="btnProduk" aria-haspopup="listbox" aria-expanded="false" aria-label="Filter berdasarkan produk">
+      <span>Semua Produk</span>
+      <span class="filter-btn-label" id="labelProduk" style="display:none;"></span>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+    <div class="filter-dropdown" id="dropProduk" role="listbox" aria-label="Pilih produk">
+      <div class="filter-option selected" data-val="all" role="option" aria-selected="true">
+        Semua Produk
+        <span class="filter-option-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+      </div>
+      <div class="filter-option" data-val="IQUE 73" role="option" aria-selected="false">
+        IQUE 73
+        <span class="filter-option-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+      </div>
+      <div class="filter-option" data-val="IQUE 53" role="option" aria-selected="false">
+        IQUE 53
+        <span class="filter-option-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+      </div>
+      <div class="filter-option" data-val="VIP" role="option" aria-selected="false">
+        V-Kool VIP
+        <span class="filter-option-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+      </div>
+      <div class="filter-option" data-val="40 & 70" role="option" aria-selected="false">
+        V-Kool 40 &amp; 70
+        <span class="filter-option-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+      </div>
+      <div class="filter-option" data-val="70 & VIP" role="option" aria-selected="false">
+        V-Kool 70 &amp; VIP
+        <span class="filter-option-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+      </div>
+      <div class="filter-option" data-val="X05" role="option" aria-selected="false">
+        V-Kool X05
+        <span class="filter-option-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="filter-sep" aria-hidden="true"></div>
+
+  <!-- Filter 2: Semua Kategori -->
+  <div style="position:relative;">
+    <button class="filter-btn" id="btnKategori" aria-haspopup="listbox" aria-expanded="false" aria-label="Filter berdasarkan kategori">
+      <span>Semua Kategori</span>
+      <span class="filter-btn-label" id="labelKategori" style="display:none;"></span>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+    <div class="filter-dropdown" id="dropKategori" role="listbox" aria-label="Pilih kategori">
+      <div class="filter-option selected" data-val="all" role="option" aria-selected="true">
+        Semua Kategori
+        <span class="filter-option-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+      </div>
+      <div class="filter-option" data-val="Residensial" role="option" aria-selected="false">
+        Residensial
+        <span class="filter-option-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+      </div>
+      <div class="filter-option" data-val="Hotel" role="option" aria-selected="false">
+        Hotel
+        <span class="filter-option-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+      </div>
+      <div class="filter-option" data-val="Komersial" role="option" aria-selected="false">
+        Komersial
+        <span class="filter-option-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+      </div>
+      <div class="filter-option" data-val="Pendidikan" role="option" aria-selected="false">
+        Pendidikan
+        <span class="filter-option-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Active tag -->
+  <span class="filter-tag" id="filterTag" aria-live="polite"></span>
+
+  <div class="filter-result" aria-live="polite">
+    <span id="countLabel">6</span> <span>proyek</span>
+  </div>
+</div>
+
+<!-- ══ PORTFOLIO GRID ══ -->
+<main class="portfolio-wrap" aria-label="Daftar portfolio">
+
+  <div class="portfolio-grid" id="portfolioGrid" role="list">
+
+    <!-- Card 1 -->
+    <article class="port-card" role="listitem" data-produk="IQUE 73" data-kategori="Residensial">
+      <div class="port-photo">
+        <img class="port-photo-img" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80" alt="Kempinski Residence — photography" loading="lazy">
+        <div class="port-overlay" aria-hidden="true"></div>
+        <span class="port-badge">Kaca Depan</span>
+      </div>
+      <div class="port-body">
+        <h2 class="port-product">IQUE 73</h2>
+        <div class="port-location">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="10" r="3"/><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg>
+          Kempinski Residence, Tharmin
+        </div>
+        <div class="port-category"><span class="port-category-dot" aria-hidden="true"></span>Residensial</div>
+      </div>
+    </article>
+
+    <!-- Card 2 -->
+    <article class="port-card" role="listitem" data-produk="40 & 70" data-kategori="Hotel">
+      <div class="port-photo">
+        <img class="port-photo-img" src="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=800&q=80" alt="Shangri-La Residence — photography" loading="lazy">
+        <div class="port-overlay" aria-hidden="true"></div>
+        <span class="port-badge">Kaca Depan</span>
+      </div>
+      <div class="port-body">
+        <h2 class="port-product">V-Kool 40 &amp; 70</h2>
+        <div class="port-location">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="10" r="3"/><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg>
+          Shangri-La Residence, Tharmin
+        </div>
+        <div class="port-category"><span class="port-category-dot" aria-hidden="true"></span>Hotel</div>
+      </div>
+    </article>
+
+    <!-- Card 3 -->
+    <article class="port-card" role="listitem" data-produk="VIP" data-kategori="Residensial">
+      <div class="port-photo">
+        <img class="port-photo-img" src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&q=80" alt="Gold Coast PIK — photography" loading="lazy">
+        <div class="port-overlay" aria-hidden="true"></div>
+        <span class="port-badge">Kaca Depan</span>
+      </div>
+      <div class="port-body">
+        <h2 class="port-product">V-Kool VIP</h2>
+        <div class="port-location">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="10" r="3"/><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg>
+          Gold Coast, PIK
+        </div>
+        <div class="port-category"><span class="port-category-dot" aria-hidden="true"></span>Residensial</div>
+      </div>
+    </article>
+
+    <!-- Card 4 -->
+    <article class="port-card" role="listitem" data-produk="IQUE 53" data-kategori="Residensial">
+      <div class="port-photo">
+        <img class="port-photo-img" src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&q=80" alt="Residential Bandung — photography" loading="lazy">
+        <div class="port-overlay" aria-hidden="true"></div>
+        <span class="port-badge">Kaca Depan</span>
+      </div>
+      <div class="port-body">
+        <h2 class="port-product">IQUE 53</h2>
+        <div class="port-location">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="10" r="3"/><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg>
+          Residential, Bandung
+        </div>
+        <div class="port-category"><span class="port-category-dot" aria-hidden="true"></span>Residensial</div>
+      </div>
+    </article>
+
+    <!-- Card 5 -->
+    <article class="port-card" role="listitem" data-produk="70 & VIP" data-kategori="Hotel">
+      <div class="port-photo">
+        <img class="port-photo-img" src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800&q=80" alt="Park Hotel Cawang — photography" loading="lazy">
+        <div class="port-overlay" aria-hidden="true"></div>
+        <span class="port-badge">Kaca Depan</span>
+      </div>
+      <div class="port-body">
+        <h2 class="port-product">V-Kool 70 &amp; VIP</h2>
+        <div class="port-location">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="10" r="3"/><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg>
+          Park Hotel, Cawang
+        </div>
+        <div class="port-category"><span class="port-category-dot" aria-hidden="true"></span>Hotel</div>
+      </div>
+    </article>
+
+    <!-- Card 6 -->
+    <article class="port-card" role="listitem" data-produk="X05" data-kategori="Pendidikan">
+      <div class="port-photo">
+        <img class="port-photo-img" src="https://images.unsplash.com/photo-1562774053-701939374585?w=800&q=80" alt="Universitas Trisakti — photography" loading="lazy">
+        <div class="port-overlay" aria-hidden="true"></div>
+        <span class="port-badge">Kaca Depan</span>
+      </div>
+      <div class="port-body">
+        <h2 class="port-product">V-Kool X05</h2>
+        <div class="port-location">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="10" r="3"/><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg>
+          Universitas Trisakti
+        </div>
+        <div class="port-category"><span class="port-category-dot" aria-hidden="true"></span>Pendidikan</div>
+      </div>
+    </article>
+
+    <!-- Card 7 (extra — hidden, revealed by Load More) -->
+    <article class="port-card hidden" role="listitem" data-produk="IQUE 73" data-kategori="Komersial" data-extra="true">
+      <div class="port-photo">
+        <img class="port-photo-img" src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80" alt="Commercial Tower Jakarta — photography" loading="lazy">
+        <div class="port-overlay" aria-hidden="true"></div>
+        <span class="port-badge">Kaca Depan</span>
+      </div>
+      <div class="port-body">
+        <h2 class="port-product">IQUE 73</h2>
+        <div class="port-location">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="10" r="3"/><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg>
+          Commercial Tower, Jakarta Pusat
+        </div>
+        <div class="port-category"><span class="port-category-dot" aria-hidden="true"></span>Komersial</div>
+      </div>
+    </article>
+
+    <!-- Card 8 -->
+    <article class="port-card hidden" role="listitem" data-produk="VIP" data-kategori="Hotel" data-extra="true">
+      <div class="port-photo">
+        <img class="port-photo-img" src="https://images.unsplash.com/photo-1444201983204-c43cbd584d93?w=800&q=80" alt="Grand Hyatt — photography" loading="lazy">
+        <div class="port-overlay" aria-hidden="true"></div>
+        <span class="port-badge">Kaca Samping</span>
+      </div>
+      <div class="port-body">
+        <h2 class="port-product">V-Kool VIP</h2>
+        <div class="port-location">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="10" r="3"/><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg>
+          Grand Hyatt, Jakarta
+        </div>
+        <div class="port-category"><span class="port-category-dot" aria-hidden="true"></span>Hotel</div>
+      </div>
+    </article>
+
+    <!-- Card 9 -->
+    <article class="port-card hidden" role="listitem" data-produk="X05" data-kategori="Komersial" data-extra="true">
+      <div class="port-photo">
+        <img class="port-photo-img" src="https://images.unsplash.com/photo-1464082354059-27db6ce50048?w=800&q=80" alt="Office Complex Sudirman — photography" loading="lazy">
+        <div class="port-overlay" aria-hidden="true"></div>
+        <span class="port-badge">Kaca Belakang</span>
+      </div>
+      <div class="port-body">
+        <h2 class="port-product">V-Kool X05</h2>
+        <div class="port-location">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="10" r="3"/><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg>
+          Office Complex, Sudirman
+        </div>
+        <div class="port-category"><span class="port-category-dot" aria-hidden="true"></span>Komersial</div>
+      </div>
+    </article>
+
+  </div>
+
+  <!-- Empty state -->
+  <div class="empty-state" id="emptyState" aria-live="polite">
+    <div class="empty-icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+    </div>
+    <p class="empty-title">Tidak ada proyek ditemukan</p>
+    <p class="empty-text">Coba ubah filter untuk melihat lebih banyak proyek.</p>
+  </div>
+
+  <!-- Load More -->
+  <div class="load-more-wrap">
+    <button class="btn-load-more" id="btnLoadMore" aria-label="Muat lebih banyak proyek">
+      Lihat Lebih Banyak
+      <svg viewBox="0 0 24 24" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+    </button>
+  </div>
+
+</main>
+
+<div id="footer-placeholder"></div>
+
+<!-- ══ JS ══ -->
+<script>
+(function () {
+
+  /* ── Filter state ── */
+  let activeProduk   = 'all';
+  let activeKategori = 'all';
+  let showExtra      = false;
+
+  const cards       = Array.from(document.querySelectorAll('.port-card'));
+  const emptyState  = document.getElementById('emptyState');
+  const countLabel  = document.getElementById('countLabel');
+  const visibleCount = document.getElementById('visibleCount');
+  const filterTag   = document.getElementById('filterTag');
+  const btnLoadMore = document.getElementById('btnLoadMore');
+
+  function applyFilters() {
+    let visible = 0;
+    cards.forEach(card => {
+      const p = card.dataset.produk;
+      const k = card.dataset.kategori;
+      const isExtra = card.dataset.extra === 'true';
+
+      const matchP = activeProduk   === 'all' || p === activeProduk;
+      const matchK = activeKategori === 'all' || k === activeKategori;
+      const show   = matchP && matchK && (!isExtra || showExtra);
+
+      card.classList.toggle('hidden', !show);
+      if (show) visible++;
+    });
+
+    emptyState.classList.toggle('visible', visible === 0);
+    countLabel.textContent  = visible;
+    visibleCount.textContent = visible;
+
+    /* Update tag */
+    const parts = [];
+    if (activeProduk   !== 'all') parts.push(activeProduk);
+    if (activeKategori !== 'all') parts.push(activeKategori);
+    filterTag.textContent = parts.join(' · ');
+    filterTag.classList.toggle('visible', parts.length > 0);
+
+    /* Load more: show if extra cards exist and aren't filtered out */
+    const hasHiddenExtra = cards.some(c => {
+      const isExtra = c.dataset.extra === 'true';
+      const matchP  = activeProduk   === 'all' || c.dataset.produk   === activeProduk;
+      const matchK  = activeKategori === 'all' || c.dataset.kategori === activeKategori;
+      return isExtra && matchP && matchK && !showExtra;
+    });
+    btnLoadMore.classList.toggle('hidden', !hasHiddenExtra);
+  }
+
+  /* ── Dropdown logic ── */
+  function makeDropdown(btnId, dropId, labelId, onSelect) {
+    const btn  = document.getElementById(btnId);
+    const drop = document.getElementById(dropId);
+    const lbl  = document.getElementById(labelId);
+    const opts = drop.querySelectorAll('.filter-option');
+
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const isOpen = drop.classList.toggle('open');
+      btn.classList.toggle('open', isOpen);
+      btn.setAttribute('aria-expanded', isOpen);
+      /* Close other dropdown */
+      document.querySelectorAll('.filter-dropdown').forEach(d => {
+        if (d !== drop) { d.classList.remove('open'); }
+      });
+      document.querySelectorAll('.filter-btn').forEach(b => {
+        if (b !== btn) { b.classList.remove('open'); b.setAttribute('aria-expanded', 'false'); }
+      });
+    });
+
+    opts.forEach(opt => {
+      opt.addEventListener('click', () => {
+        opts.forEach(o => { o.classList.remove('selected'); o.setAttribute('aria-selected', 'false'); });
+        opt.classList.add('selected');
+        opt.setAttribute('aria-selected', 'true');
+
+        const val = opt.dataset.val;
+        onSelect(val);
+
+        /* Update button label */
+        if (val === 'all') {
+          btn.querySelector('span:first-child').style.display = '';
+          lbl.style.display = 'none'; lbl.textContent = '';
+          btn.classList.remove('active');
+        } else {
+          btn.querySelector('span:first-child').style.display = 'none';
+          lbl.textContent = opt.textContent.trim().replace(/\s+/g, ' ').split(' ').slice(0, 3).join(' ');
+          lbl.style.display = '';
+          btn.classList.add('active');
+        }
+
+        drop.classList.remove('open');
+        btn.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+        applyFilters();
+      });
+
+      opt.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); opt.click(); }
+      });
+    });
+  }
+
+  makeDropdown('btnProduk',   'dropProduk',   'labelProduk',   val => { activeProduk   = val; });
+  makeDropdown('btnKategori', 'dropKategori', 'labelKategori', val => { activeKategori = val; });
+
+  /* Close dropdowns on outside click */
+  document.addEventListener('click', () => {
+    document.querySelectorAll('.filter-dropdown').forEach(d => d.classList.remove('open'));
+    document.querySelectorAll('.filter-btn').forEach(b => { b.classList.remove('open'); b.setAttribute('aria-expanded', 'false'); });
+  });
+
+  /* ── Load More ── */
+  btnLoadMore.addEventListener('click', () => {
+    showExtra = true;
+    applyFilters();
+  });
+
+  /* ── Init ── */
+  applyFilters();
+
+})();
+</script>
+<script src="nav-footer.js"></script>
+</body>
+</html>
