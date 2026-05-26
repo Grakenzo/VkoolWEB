@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FAQ — Pertanyaan yang Sering Diajukan | V-KOOL Indonesia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --black:#0a0a0a;--dark:#111111;--mid:#1a1a1a;--line:#1e1e1e;--line2:#2e2e2e;
+  --gold:#CDB182;--gold-h:#b89a6a;--gold-dim:rgba(205,177,130,.08);
+  --ash:#EBEBEB;--muted:#999;--dim:#555;--white:#fff;
+  --nav-h:64px;--pad:56px;--ease:cubic-bezier(.25,0,.1,1);
+  --sidebar-w:280px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Roboto',sans-serif;background:var(--black);color:var(--ash);overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+a{text-decoration:none;color:inherit;}
+button{font-family:inherit;cursor:pointer;border:none;background:none;}
+a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offset:3px;}
+
+/* ══ PAGE HEADER — same editorial system as other pages ══ */
+.page-header{
+  background:var(--black);
+  padding:calc(var(--nav-h) + 72px) var(--pad) 0;
+  border-bottom:.5px solid var(--line);
+  position:relative;overflow:hidden;
+}
+/* Subtle grid accent — matches dealers/portfolio header */
+.page-header::before{
+  content:'';position:absolute;inset:0;
+  background-image:linear-gradient(rgba(205,177,130,.025).5px,transparent .5px),linear-gradient(90deg,rgba(205,177,130,.025).5px,transparent .5px);
+  background-size:80px 80px;pointer-events:none;
+}
+.header-inner{position:relative;z-index:1;}
+.header-breadcrumb{display:flex;align-items:center;gap:10px;margin-bottom:28px;}
+.bc-item{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:.14em;color:var(--dim);text-transform:uppercase;}
+.bc-sep{color:var(--line2);}
+.bc-current{color:var(--gold);}
+.header-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:0;align-items:end;
+}
+.header-left{padding-bottom:56px;}
+.header-eyebrow{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+.header-ey-line{width:20px;height:.5px;background:var(--gold);}
+.header-ey-txt{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:.22em;color:var(--gold);text-transform:uppercase;font-weight:300;}
+.header-title{
+  font-family:'Oswald',sans-serif;
+  font-size:clamp(36px,5.5vw,72px);
+  letter-spacing:.06em;font-weight:400;
+  text-transform:uppercase;color:var(--white);
+  line-height:1.0;margin-bottom:16px;
+}
+.header-sub{
+  font-size:15px;color:var(--muted);font-weight:300;
+  line-height:1.7;max-width:48ch;
+}
+/* Right side — search box */
+.header-right{
+  border-left:.5px solid var(--line);
+  padding:0 0 56px var(--pad);
+  display:flex;flex-direction:column;justify-content:flex-end;
+  gap:16px;
+}
+.search-label{
+  font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:.20em;
+  text-transform:uppercase;color:var(--dim);font-weight:300;
+}
+.search-wrap{position:relative;}
+.search-input{
+  width:100%;background:var(--dark);
+  border:.5px solid var(--line2);
+  color:var(--ash);font-size:15px;font-weight:300;
+  padding:14px 48px 14px 18px;
+  border-radius:2px;transition:border-color .25s,background .25s;
+  font-family:'Roboto',sans-serif;
+}
+.search-input::placeholder{color:var(--dim);}
+.search-input:focus{outline:none;border-color:var(--gold);background:rgba(205,177,130,.04);}
+.search-icon{
+  position:absolute;right:16px;top:50%;transform:translateY(-50%);
+  pointer-events:none;
+}
+.search-icon svg{width:16px;height:16px;stroke:var(--dim);fill:none;stroke-width:1.5;}
+/* Category stat pills in header */
+.header-cats{display:flex;gap:8px;flex-wrap:wrap;}
+.header-cat-pill{
+  font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--dim);
+  border:.5px solid var(--line2);padding:5px 12px;
+  display:flex;align-items:center;gap:6px;
+  transition:color .25s,border-color .25s;cursor:pointer;
+}
+.header-cat-pill:hover{color:var(--gold);border-color:rgba(205,177,130,.4);}
+.header-cat-pill span{
+  background:rgba(205,177,130,.12);color:var(--gold);
+  font-size:8px;padding:1px 5px;
+}
+
+/* ══ MOBILE CATEGORY PILL SELECTOR ══ */
+.mobile-cats{
+  display:none;
+  background:var(--dark);border-bottom:.5px solid var(--line);
+  padding:16px var(--pad);gap:8px;overflow-x:auto;
+  scrollbar-width:none;
+}
+.mobile-cats::-webkit-scrollbar{display:none;}
+.mobile-cat-btn{
+  font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:.12em;
+  text-transform:uppercase;font-weight:400;
+  color:var(--muted);
+  border:.5px solid var(--line2);
+  padding:10px 18px;border-radius:2px;
+  white-space:nowrap;flex-shrink:0;
+  min-height:44px;transition:color .25s,border-color .25s,background .25s;
+}
+.mobile-cat-btn.active{
+  color:var(--black);background:var(--gold);border-color:var(--gold);
+}
+
+/* ══ MAIN LAYOUT — sidebar + content ══ */
+.faq-main{
+  display:grid;
+  grid-template-columns:var(--sidebar-w) 1fr;
+  min-height:70vh;
+}
+
+/* ── SIDEBAR ── */
+.sidebar{
+  background:var(--dark);
+  border-right:.5px solid var(--line);
+  position:sticky;
+  top:var(--nav-h);
+  height:calc(100vh - var(--nav-h));
+  overflow-y:auto;
+  scrollbar-width:thin;
+  scrollbar-color:var(--line2) transparent;
+}
+.sidebar::-webkit-scrollbar{width:3px;}
+.sidebar::-webkit-scrollbar-thumb{background:var(--line2);}
+.sidebar-inner{padding:32px 0;}
+
+/* Sidebar section — each category */
+.sidebar-section{margin-bottom:8px;}
+.sidebar-cat-btn{
+  width:100%;
+  display:flex;align-items:center;gap:12px;
+  padding:14px 24px;
+  border:none;background:none;cursor:pointer;
+  text-align:left;
+  transition:background .2s;
+  position:relative;
+}
+.sidebar-cat-btn::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;
+  width:2px;background:var(--gold);
+  transform:scaleY(0);transform-origin:bottom;
+  transition:transform .25s var(--ease);
+}
+.sidebar-cat-btn:hover{background:rgba(205,177,130,.04);}
+.sidebar-cat-btn.active{background:rgba(205,177,130,.06);}
+.sidebar-cat-btn.active::before{transform:scaleY(1);}
+.sidebar-cat-icon{
+  width:32px;height:32px;flex-shrink:0;
+  border:.5px solid var(--line2);
+  background:rgba(205,177,130,.04);
+  display:flex;align-items:center;justify-content:center;
+  transition:border-color .25s,background .25s;
+}
+.sidebar-cat-btn.active .sidebar-cat-icon{
+  border-color:rgba(205,177,130,.4);
+  background:rgba(205,177,130,.1);
+}
+.sidebar-cat-icon svg{width:14px;height:14px;stroke:var(--dim);fill:none;stroke-width:1.5;transition:stroke .25s;}
+.sidebar-cat-btn.active .sidebar-cat-icon svg{stroke:var(--gold);}
+.sidebar-cat-text{flex:1;min-width:0;}
+.sidebar-cat-label{
+  font-family:'Oswald',sans-serif;font-size:8px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--dim);font-weight:300;margin-bottom:3px;
+  transition:color .25s;
+}
+.sidebar-cat-btn.active .sidebar-cat-label{color:var(--gold);}
+.sidebar-cat-name{
+  font-family:'Oswald',sans-serif;font-size:13px;letter-spacing:.06em;
+  text-transform:uppercase;font-weight:400;color:var(--muted);
+  transition:color .25s;
+}
+.sidebar-cat-btn.active .sidebar-cat-name{color:var(--white);}
+.sidebar-cat-count{
+  font-family:'Oswald',sans-serif;font-size:9px;
+  color:var(--dim);
+  background:var(--line);padding:2px 7px;
+  transition:background .25s,color .25s;
+}
+.sidebar-cat-btn.active .sidebar-cat-count{
+  background:rgba(205,177,130,.15);color:var(--gold);
+}
+/* Sub-questions in sidebar when active */
+.sidebar-sub{
+  max-height:0;overflow:hidden;
+  transition:max-height .35s var(--ease);
+}
+.sidebar-section.open .sidebar-sub{max-height:600px;}
+.sidebar-sub-link{
+  display:block;padding:10px 24px 10px 68px;
+  font-size:12px;color:var(--dim);font-weight:300;
+  line-height:1.4;cursor:pointer;
+  transition:color .2s,background .2s;
+  border-left:none;
+}
+.sidebar-sub-link:hover{color:var(--ash);background:rgba(205,177,130,.02);}
+.sidebar-sub-link.active-q{color:var(--gold);}
+
+/* Sidebar divider */
+.sidebar-divider{height:.5px;background:var(--line);margin:8px 0;}
+
+/* Contact CTA in sidebar bottom */
+.sidebar-cta{
+  margin-top:24px;padding:24px;
+  border-top:.5px solid var(--line);
+}
+.sidebar-cta-label{
+  font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--dim);margin-bottom:10px;
+}
+.sidebar-cta-text{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:14px;font-weight:300;}
+.btn-sidebar-wa{
+  font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:.12em;
+  text-transform:uppercase;font-weight:400;
+  background:var(--gold);color:var(--black);
+  padding:12px 18px;border-radius:2px;
+  display:flex;align-items:center;gap:8px;
+  transition:background .25s;text-decoration:none;
+  min-height:44px;justify-content:center;
+}
+.btn-sidebar-wa:hover{background:var(--gold-h);}
+.btn-sidebar-wa svg{width:14px;height:14px;stroke:var(--black);fill:none;stroke-width:1.5;}
+
+/* ── FAQ CONTENT AREA ── */
+.faq-content{
+  background:var(--black);
+  padding:0;
+}
+/* Each category section */
+.faq-section{
+  display:none;
+  padding:56px var(--pad);
+  border-bottom:.5px solid var(--line);
+  animation:fadeInSection .3s var(--ease) both;
+}
+.faq-section.active{display:block;}
+@keyframes fadeInSection{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+.faq-section-header{
+  display:flex;align-items:flex-start;justify-content:space-between;
+  gap:24px;margin-bottom:48px;
+  padding-bottom:32px;border-bottom:.5px solid var(--line);
+}
+.faq-section-left{}
+.faq-section-eyebrow{
+  display:flex;align-items:center;gap:10px;margin-bottom:12px;
+}
+.faq-ey-line{width:16px;height:.5px;background:var(--gold);}
+.faq-ey-txt{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:300;}
+.faq-section-title{
+  font-family:'Oswald',sans-serif;
+  font-size:clamp(22px,2.5vw,32px);
+  letter-spacing:.06em;font-weight:400;
+  text-transform:uppercase;color:var(--white);line-height:1.1;
+}
+.faq-section-count{
+  font-family:'Oswald',sans-serif;
+  font-size:clamp(36px,5vw,64px);
+  font-weight:200;color:rgba(205,177,130,.1);
+  letter-spacing:-.02em;line-height:1;
+  flex-shrink:0;
+}
+
+/* ── FEATURED QUESTION — elevated treatment for the first/most important Q ── */
+.faq-featured{
+  background:var(--dark);
+  border:.5px solid var(--line);
+  padding:36px 40px;
+  margin-bottom:2px;
+  position:relative;
+  cursor:pointer;
+  transition:background .25s;
+}
+.faq-featured:hover{background:#131313;}
+.faq-featured-badge{
+  font-family:'Oswald',sans-serif;font-size:8px;letter-spacing:.20em;
+  text-transform:uppercase;color:var(--gold);
+  border:.5px solid rgba(205,177,130,.3);
+  padding:3px 10px;display:inline-block;
+  margin-bottom:18px;
+}
+.faq-featured-q{
+  font-family:'Oswald',sans-serif;
+  font-size:clamp(17px,1.8vw,22px);
+  letter-spacing:.04em;font-weight:400;
+  text-transform:uppercase;color:var(--white);
+  margin-bottom:0;line-height:1.2;
+  padding-right:48px;
+}
+/* Gold accent left border on hover */
+.faq-featured::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;
+  width:2px;background:var(--gold);
+  transform:scaleY(0);transform-origin:bottom;
+  transition:transform .3s var(--ease);
+}
+.faq-featured:hover::before,.faq-featured.open::before{transform:scaleY(1);}
+.faq-featured-chevron{
+  position:absolute;right:36px;top:36px;
+  width:32px;height:32px;
+  border:.5px solid var(--line2);
+  background:rgba(205,177,130,.04);
+  display:flex;align-items:center;justify-content:center;
+  transition:transform .3s var(--ease),background .25s,border-color .25s;
+}
+.faq-featured.open .faq-featured-chevron{
+  transform:rotate(180deg);
+  background:rgba(205,177,130,.12);
+  border-color:rgba(205,177,130,.4);
+}
+.faq-featured-chevron svg{width:14px;height:14px;stroke:var(--gold);fill:none;stroke-width:2;}
+.faq-featured-answer{
+  overflow:hidden;max-height:0;
+  transition:max-height .4s var(--ease),padding .3s;
+  padding-top:0;
+}
+.faq-featured.open .faq-featured-answer{max-height:600px;padding-top:20px;}
+.faq-featured-answer-inner{
+  border-top:.5px solid var(--line);padding-top:22px;
+}
+.faq-answer-summary{
+  font-family:'Oswald',sans-serif;
+  font-size:14px;letter-spacing:.06em;font-weight:300;
+  color:var(--gold);margin-bottom:12px;
+  text-transform:uppercase;
+}
+.faq-answer-body{
+  font-size:15px;color:var(--muted);line-height:1.8;font-weight:300;
+  max-width:64ch;/* web-typography: line length */
+}
+
+/* ── STANDARD ACCORDION ITEMS ── */
+.faq-list{display:flex;flex-direction:column;gap:0;}
+.faq-item{
+  border:.5px solid var(--line);
+  border-top:none;
+  position:relative;
+  transition:background .25s;
+}
+.faq-item:first-child{border-top:.5px solid var(--line);}
+/* When featured is present, first faq-item has no top border */
+.faq-featured + .faq-list .faq-item:first-child{border-top:none;}
+.faq-item:hover{background:rgba(205,177,130,.02);}
+.faq-item.open{background:rgba(205,177,130,.03);}
+/* Gold left border */
+.faq-item::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;
+  width:2px;background:var(--gold);
+  transform:scaleY(0);transform-origin:bottom;
+  transition:transform .3s var(--ease);
+}
+.faq-item.open::before{transform:scaleY(1);}
+.faq-trigger{
+  width:100%;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:16px;
+  padding:22px 28px;
+  cursor:pointer;
+  /* ios-hig: min 44px touch target */
+  min-height:64px;
+  text-align:left;
+  background:none;border:none;
+}
+.faq-trigger-left{flex:1;min-width:0;}
+.faq-q-num{
+  font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--dim);font-weight:300;
+  margin-bottom:6px;
+  transition:color .25s;
+}
+.faq-item.open .faq-q-num{color:var(--gold);}
+.faq-q{
+  font-family:'Oswald',sans-serif;
+  font-size:clamp(14px,1.4vw,17px);
+  letter-spacing:.04em;font-weight:400;
+  text-transform:uppercase;color:var(--ash);
+  line-height:1.3;
+  transition:color .25s;
+}
+.faq-item.open .faq-q{color:var(--white);}
+.faq-chevron{
+  width:28px;height:28px;flex-shrink:0;
+  border:.5px solid var(--line2);
+  background:var(--mid);
+  display:flex;align-items:center;justify-content:center;
+  transition:transform .3s var(--ease),background .25s,border-color .25s;
+}
+.faq-item.open .faq-chevron{
+  transform:rotate(180deg);
+  background:rgba(205,177,130,.1);
+  border-color:rgba(205,177,130,.35);
+}
+.faq-chevron svg{width:12px;height:12px;stroke:var(--dim);fill:none;stroke-width:2;transition:stroke .25s;}
+.faq-item.open .faq-chevron svg{stroke:var(--gold);}
+.faq-answer{
+  overflow:hidden;max-height:0;
+  transition:max-height .4s var(--ease);
+}
+.faq-item.open .faq-answer{max-height:500px;}
+.faq-answer-content{
+  padding:0 28px 24px;
+  border-top:.5px solid var(--line);
+  margin:0 0 0 0;
+}
+.faq-answer-content .faq-answer-summary{margin-top:20px;}
+.faq-answer-content .faq-answer-body{font-size:14px;}
+
+/* Multi-point answer (for PPF "what's different" Q) */
+.answer-points{
+  display:flex;flex-direction:column;gap:16px;
+  margin-top:16px;
+}
+.answer-point{
+  display:flex;gap:14px;align-items:flex-start;
+}
+.answer-point-num{
+  font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:.14em;
+  color:var(--gold);flex-shrink:0;margin-top:2px;
+}
+.answer-point-body{}
+.answer-point-title{
+  font-family:'Oswald',sans-serif;font-size:12px;letter-spacing:.10em;
+  text-transform:uppercase;color:var(--ash);margin-bottom:4px;
+}
+.answer-point-text{font-size:13px;color:var(--muted);line-height:1.65;font-weight:300;}
+
+/* ── CTA STRIP per section ── */
+.faq-section-cta{
+  margin-top:40px;
+  padding:28px 32px;
+  background:var(--dark);
+  border:.5px solid var(--line);
+  display:flex;align-items:center;justify-content:space-between;gap:20px;
+  flex-wrap:wrap;
+}
+.faq-cta-text{}
+.faq-cta-label{
+  font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--dim);margin-bottom:6px;
+}
+.faq-cta-heading{
+  font-family:'Oswald',sans-serif;font-size:17px;letter-spacing:.06em;
+  font-weight:400;text-transform:uppercase;color:var(--white);
+}
+.faq-cta-btns{display:flex;gap:10px;flex-shrink:0;flex-wrap:wrap;}
+.btn-faq-primary{
+  font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:.12em;
+  text-transform:uppercase;font-weight:400;
+  background:var(--gold);color:var(--black);
+  padding:12px 22px;border-radius:2px;min-height:44px;
+  display:inline-flex;align-items:center;gap:8px;
+  transition:background .25s;text-decoration:none;
+}
+.btn-faq-primary:hover{background:var(--gold-h);}
+.btn-faq-primary svg{width:12px;height:12px;stroke:var(--black);fill:none;stroke-width:2;}
+.btn-faq-outline{
+  font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:.12em;
+  text-transform:uppercase;font-weight:300;
+  background:transparent;color:var(--ash);
+  padding:11px 20px;border-radius:2px;min-height:44px;
+  display:inline-flex;align-items:center;gap:8px;
+  border:.5px solid rgba(235,235,235,.2);
+  transition:border-color .25s;text-decoration:none;
+}
+.btn-faq-outline:hover{border-color:rgba(235,235,235,.5);}
+
+/* No results state */
+.no-results{
+  padding:64px 0;text-align:center;display:none;
+}
+.no-results.visible{display:block;}
+.no-results-icon{width:48px;height:48px;margin:0 auto 20px;opacity:.25;}
+.no-results-icon svg{width:48px;height:48px;stroke:var(--gold);fill:none;stroke-width:1;}
+.no-results-title{font-family:'Oswald',sans-serif;font-size:18px;letter-spacing:.06em;color:var(--muted);text-transform:uppercase;margin-bottom:8px;}
+.no-results-text{font-size:14px;color:var(--dim);font-weight:300;}
+
+
+.footer{background:var(--black);border-top:.5px solid var(--line);padding:64px var(--pad) 32px;}
+.footer-top{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:56px;margin-bottom:56px;}
+.footer-logo{font-family:'Oswald',sans-serif;font-size:15px;letter-spacing:.28em;color:var(--gold);font-weight:400;margin-bottom:14px;}
+.footer-tagline{font-size:13px;color:var(--dim);line-height:1.65;max-width:220px;font-weight:300;}
+.footer-col-title{font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:.16em;color:var(--ash);text-transform:uppercase;font-weight:400;margin-bottom:18px;}
+.footer-link{font-size:13px;color:var(--dim);display:block;margin-bottom:11px;transition:color .25s;font-weight:300;}
+.footer-link:hover,.footer-link.active{color:var(--gold);}
+.footer-bottom{border-top:.5px solid var(--line);padding-top:24px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;}
+.footer-copy{font-size:12px;color:#333;font-weight:300;}
+.footer-social{display:flex;gap:10px;}
+.social-btn{width:34px;height:34px;border-radius:50%;border:.5px solid var(--line2);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:border-color .25s;}
+.social-btn:hover{border-color:var(--gold);}
+.social-btn svg{width:13px;height:13px;stroke:var(--dim);fill:none;stroke-width:1.5;transition:stroke .25s;}
+.social-btn:hover svg{stroke:var(--gold);}
+
+/* ══ RESPONSIVE ══ */
+@media(max-width:1023px){
+  :root{--pad:32px;--sidebar-w:240px;}
+  .nav-links,.nav-right{display:none;}
+  .header-grid{grid-template-columns:1fr;}
+  .header-right{border-left:none;border-top:.5px solid var(--line);padding:32px 0 48px;}
+  .footer-top{grid-template-columns:1fr 1fr;gap:40px;}
+  .footer-bottom{flex-direction:column;align-items:flex-start;gap:20px;}
+  .faq-section-cta{flex-direction:column;align-items:flex-start;}
+}
+@media(max-width:768px){
+  .faq-main{grid-template-columns:1fr;}
+  .sidebar{display:none;}
+  .mobile-cats{display:flex;}
+  .faq-section{padding:40px var(--pad);}
+  .faq-section-header{flex-direction:column;gap:8px;}
+  .faq-section-count{display:none;}
+  .faq-featured{padding:24px 20px;}
+  .faq-featured-chevron{right:20px;top:24px;}
+}
+@media(max-width:640px){
+  :root{--pad:20px;--nav-h:56px;}
+  .nav{padding:0 20px;}
+  .nav-logo{font-size:14px;letter-spacing:.22em;}
+  .header-left{padding-bottom:40px;}
+  .faq-trigger{padding:18px 20px;min-height:60px;}
+  .faq-featured-answer-inner{padding-top:18px;}
+  .faq-answer-content{padding:0 20px 20px;}
+  .footer{padding:48px var(--pad) 32px;}
+  .footer-top{grid-template-columns:1fr;gap:32px;}
+  .drawer-link{font-size:20px;padding:16px var(--pad);}
+  .drawer-ctas{padding:24px 20px;}
+  .mobile-cats{padding:12px var(--pad);}
+}
+</style>
+</head>
+<body data-page="faq">
+
+<div id="nav-placeholder"></div>
+
+<!-- PAGE HEADER -->
+<header class="page-header">
+  <div class="header-inner">
+    <nav class="header-breadcrumb" aria-label="Breadcrumb">
+      <span class="bc-item">Home</span>
+      <span class="bc-sep">—</span>
+      <span class="bc-item bc-current">FAQ</span>
+    </nav>
+    <div class="header-grid">
+      <div class="header-left">
+        <div class="header-eyebrow"><span class="header-ey-line"></span><span class="header-ey-txt">Pertanyaan Umum</span></div>
+        <h1 class="header-title">Semua yang<br>Ingin Anda<br>Ketahui</h1>
+        <p class="header-sub">Jawaban lengkap atas pertanyaan paling sering diajukan tentang kaca film otomotif, bangunan, dan Paint Protection Film V-KOOL.</p>
+      </div>
+      <div class="header-right">
+        <div class="search-label">Cari pertanyaan</div>
+        <div class="search-wrap">
+          <input class="search-input" type="search" id="faqSearch" placeholder="Ketik kata kunci..." aria-label="Cari FAQ">
+          <div class="search-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+        </div>
+        <div class="header-cats" role="tablist" aria-label="Kategori FAQ">
+          <button class="header-cat-pill active" data-cat="otomotif" role="tab" aria-selected="true">Otomotif <span>6</span></button>
+          <button class="header-cat-pill" data-cat="bangunan" role="tab" aria-selected="false">Bangunan <span>3</span></button>
+          <button class="header-cat-pill" data-cat="ppf" role="tab" aria-selected="false">PPF <span>9</span></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- MOBILE CATEGORY SELECTOR -->
+<div class="mobile-cats" id="mobileCats" role="tablist">
+  <button class="mobile-cat-btn active" data-cat="otomotif" role="tab">Kaca Film Otomotif</button>
+  <button class="mobile-cat-btn" data-cat="bangunan" role="tab">Kaca Film Bangunan</button>
+  <button class="mobile-cat-btn" data-cat="ppf" role="tab">Paint Protection Film</button>
+</div>
+
+<div class="faq-main">
+
+  <!-- ══ SIDEBAR ══ -->
+  <aside class="sidebar" aria-label="Navigasi FAQ">
+    <div class="sidebar-inner">
+
+      <!-- Otomotif -->
+      <div class="sidebar-section open" id="ss-otomotif">
+        <button class="sidebar-cat-btn active" data-cat="otomotif" aria-expanded="true">
+          <div class="sidebar-cat-icon">
+            <svg viewBox="0 0 24 24"><path d="M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v5a2 2 0 0 1-2 2h-2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>
+          </div>
+          <div class="sidebar-cat-text">
+            <div class="sidebar-cat-label">Kaca Film</div>
+            <div class="sidebar-cat-name">Otomotif</div>
+          </div>
+          <span class="sidebar-cat-count">6</span>
+        </button>
+        <div class="sidebar-sub">
+          <span class="sidebar-sub-link active-q" data-q="oto-1">Kenapa harus pasang V-KOOL?</span>
+          <span class="sidebar-sub-link" data-q="oto-2">Berapa lama pemasangannya?</span>
+          <span class="sidebar-sub-link" data-q="oto-3">Apakah ada garansi?</span>
+          <span class="sidebar-sub-link" data-q="oto-4">Untuk apa kaca film terang?</span>
+          <span class="sidebar-sub-link" data-q="oto-5">Apakah tersedia yang gelap?</span>
+          <span class="sidebar-sub-link" data-q="oto-6">Apakah mempengaruhi sinyal?</span>
+        </div>
+      </div>
+
+      <div class="sidebar-divider"></div>
+
+      <!-- Bangunan -->
+      <div class="sidebar-section" id="ss-bangunan">
+        <button class="sidebar-cat-btn" data-cat="bangunan" aria-expanded="false">
+          <div class="sidebar-cat-icon">
+            <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="18" rx="1"/><line x1="2" y1="9" x2="22" y2="9"/><line x1="12" y1="9" x2="12" y2="21"/></svg>
+          </div>
+          <div class="sidebar-cat-text">
+            <div class="sidebar-cat-label">Kaca Film</div>
+            <div class="sidebar-cat-name">Bangunan</div>
+          </div>
+          <span class="sidebar-cat-count">3</span>
+        </button>
+        <div class="sidebar-sub">
+          <span class="sidebar-sub-link" data-q="ban-1">Kenapa pakai kaca film?</span>
+          <span class="sidebar-sub-link" data-q="ban-2">Pengaruh pada kinerja AC?</span>
+          <span class="sidebar-sub-link" data-q="ban-3">Apakah bisa langsung pasang?</span>
+        </div>
+      </div>
+
+      <div class="sidebar-divider"></div>
+
+      <!-- PPF -->
+      <div class="sidebar-section" id="ss-ppf">
+        <button class="sidebar-cat-btn" data-cat="ppf" aria-expanded="false">
+          <div class="sidebar-cat-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div class="sidebar-cat-text">
+            <div class="sidebar-cat-label">Paint Protection Film</div>
+            <div class="sidebar-cat-name">PPF</div>
+          </div>
+          <span class="sidebar-cat-count">9</span>
+        </button>
+        <div class="sidebar-sub">
+          <span class="sidebar-sub-link" data-q="ppf-1">Apa itu PPF?</span>
+          <span class="sidebar-sub-link" data-q="ppf-2">Kenapa harus pasang PPF?</span>
+          <span class="sidebar-sub-link" data-q="ppf-3">Beda PPF dengan coating?</span>
+          <span class="sidebar-sub-link" data-q="ppf-4">Beda V-KOOL dengan PPF lain?</span>
+          <span class="sidebar-sub-link" data-q="ppf-5">Kenapa banyak PPF lebih murah?</span>
+          <span class="sidebar-sub-link" data-q="ppf-6">Aman saat dicopot?</span>
+          <span class="sidebar-sub-link" data-q="ppf-7">Jika terjadi kecelakaan?</span>
+          <span class="sidebar-sub-link" data-q="ppf-8">Lindungi dari kotoran burung?</span>
+          <span class="sidebar-sub-link" data-q="ppf-9">Bisa dipasang di interior?</span>
+        </div>
+      </div>
+
+      <div class="sidebar-cta">
+        <div class="sidebar-cta-label">Belum menemukan jawaban?</div>
+        <p class="sidebar-cta-text">Tim ahli kami siap menjawab pertanyaan spesifik Anda melalui WhatsApp.</p>
+        <a class="btn-sidebar-wa" href="https://wa.me/6221000000" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" fill="none" stroke-width="1.5"/></svg>
+          Tanya via WhatsApp
+        </a>
+      </div>
+
+    </div>
+  </aside>
+
+  <!-- ══ FAQ CONTENT ══ -->
+  <main class="faq-content" id="faqContent">
+
+    <!-- No results -->
+    <div class="no-results" id="noResults">
+      <div class="no-results-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+      <p class="no-results-title">Tidak Ditemukan</p>
+      <p class="no-results-text">Coba kata kunci lain atau pilih kategori di samping.</p>
+    </div>
+
+    <!-- ══════════════════════════
+      OTOMOTIF
+    ══════════════════════════ -->
+    <section class="faq-section active" id="sec-otomotif" aria-labelledby="sec-oto-title">
+      <div class="faq-section-header">
+        <div class="faq-section-left">
+          <div class="faq-section-eyebrow"><span class="faq-ey-line"></span><span class="faq-ey-txt">Kaca Film</span></div>
+          <h2 class="faq-section-title" id="sec-oto-title">Kaca Film<br>Otomotif</h2>
+        </div>
+        <div class="faq-section-count" aria-hidden="true">06</div>
+      </div>
+
+      <!-- Featured Q — most impactful -->
+      <div class="faq-featured" id="oto-1" data-cat="otomotif" tabindex="0" role="button" aria-expanded="false" aria-controls="feat-oto-ans">
+        <span class="faq-featured-badge">Paling Sering Ditanyakan</span>
+        <h3 class="faq-featured-q">Kenapa harus pasang kaca film V-KOOL?</h3>
+        <div class="faq-featured-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+        <div class="faq-featured-answer" id="feat-oto-ans" role="region">
+          <div class="faq-featured-answer-inner">
+            <p class="faq-answer-summary">Penolakan Panas Terbaik.</p>
+            <p class="faq-answer-body">Karena V-KOOL adalah satu-satunya yang memantulkan panas, bukan menyerapnya. Kaca film lain umumnya menyerap panas yang lama-kelamaan akan merambat ke dalam kabin. V-KOOL menggunakan teknologi multi-layered metal sputtering yang dapat memantulkan sinar infra-red hingga <strong style="color:var(--ash);font-weight:400;">98%</strong>, memastikan suhu di dalam mobil Anda tetap sejuk.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-list" role="list">
+
+        <div class="faq-item" id="oto-2" data-cat="otomotif" role="listitem">
+          <button class="faq-trigger" aria-expanded="false" aria-controls="ans-oto-2">
+            <div class="faq-trigger-left">
+              <div class="faq-q-num">02 / 06</div>
+              <div class="faq-q">Berapa lama proses pemasangannya?</div>
+            </div>
+            <div class="faq-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </button>
+          <div class="faq-answer" id="ans-oto-2" role="region">
+            <div class="faq-answer-content">
+              <p class="faq-answer-summary">Tergantung pada ukuran dan model kaca mobil.</p>
+              <p class="faq-answer-body">Sebuah sedan membutuhkan waktu sekitar 1,5 hingga 2 jam. MPV bisa selesai dalam 3 sampai 4 jam. Sedangkan untuk mobil dengan model kaca depan melengkung (seperti BMW, VW, dll.) dapat memakan waktu hingga 5 jam. Hubungi kami untuk pemesanan pemasangan agar terhindar dari waktu menunggu di outlet.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item" id="oto-3" data-cat="otomotif" role="listitem">
+          <button class="faq-trigger" aria-expanded="false" aria-controls="ans-oto-3">
+            <div class="faq-trigger-left">
+              <div class="faq-q-num">03 / 06</div>
+              <div class="faq-q">Apakah ada garansi?</div>
+            </div>
+            <div class="faq-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </button>
+          <div class="faq-answer" id="ans-oto-3" role="region">
+            <div class="faq-answer-content">
+              <p class="faq-answer-summary">Ya! Perlindungan penuh selama 5 tahun melalui kartu garansi resmi.</p>
+              <p class="faq-answer-body">Garansi kami mencakup penurunan performa, perubahan warna, atau kerusakan akibat pemasangan. Semua terdokumentasi dalam kartu garansi resmi V-KOOL yang dapat diverifikasi secara digital.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item" id="oto-4" data-cat="otomotif" role="listitem">
+          <button class="faq-trigger" aria-expanded="false" aria-controls="ans-oto-4">
+            <div class="faq-trigger-left">
+              <div class="faq-q-num">04 / 06</div>
+              <div class="faq-q">Untuk apa pakai kaca film terang?</div>
+            </div>
+            <div class="faq-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </button>
+          <div class="faq-answer" id="ans-oto-4" role="region">
+            <div class="faq-answer-content">
+              <p class="faq-answer-summary">Visibilitas tanpa mengorbankan penolakan panas.</p>
+              <p class="faq-answer-body">Teknologi V-KOOL memungkinkan Anda memiliki kaca depan yang bening namun tetap mampu menolak panas setara dengan kaca film gelap merek lain. Ini adalah solusi bagi Anda yang ingin berkendara di malam hari dengan pandangan yang tetap aman dan nyaman.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item" id="oto-5" data-cat="otomotif" role="listitem">
+          <button class="faq-trigger" aria-expanded="false" aria-controls="ans-oto-5">
+            <div class="faq-trigger-left">
+              <div class="faq-q-num">05 / 06</div>
+              <div class="faq-q">Apakah V-KOOL memiliki kaca film gelap?</div>
+            </div>
+            <div class="faq-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </button>
+          <div class="faq-answer" id="ans-oto-5" role="region">
+            <div class="faq-answer-content">
+              <p class="faq-answer-summary">Tentu! Kami hadirkan berbagai produk sesuai kebutuhan Anda.</p>
+              <p class="faq-answer-body">V-KOOL menawarkan berbagai pilihan tingkat kegelapan (VLT) mulai dari 70% hingga 5%, dari yang bening hingga yang sangat gelap. Cek selengkapnya di halaman produk Otomotif kami.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item" id="oto-6" data-cat="otomotif" role="listitem">
+          <button class="faq-trigger" aria-expanded="false" aria-controls="ans-oto-6">
+            <div class="faq-trigger-left">
+              <div class="faq-q-num">06 / 06</div>
+              <div class="faq-q">Apakah V-KOOL mempengaruhi sinyal?</div>
+            </div>
+            <div class="faq-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </button>
+          <div class="faq-answer" id="ans-oto-6" role="region">
+            <div class="faq-answer-content">
+              <p class="faq-answer-summary">Tidak.</p>
+              <p class="faq-answer-body">Meskipun mengandung lapisan logam berharga, struktur partikel pada V-KOOL telah disesuaikan agar tidak menghambat gelombang sinyal GPS, handphone, maupun e-toll sehingga konektivitas Anda tetap lancar sepanjang perjalanan.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="faq-section-cta">
+        <div class="faq-cta-text">
+          <div class="faq-cta-label">Tertarik mencoba?</div>
+          <div class="faq-cta-heading">Lihat Seluruh Produk Otomotif</div>
+        </div>
+        <div class="faq-cta-btns">
+          <a class="btn-faq-primary" href="vkool_otomotif.html">Produk Otomotif<svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+          <a class="btn-faq-outline" href="#">Cek Harga</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════
+      BANGUNAN
+    ══════════════════════════ -->
+    <section class="faq-section" id="sec-bangunan" aria-labelledby="sec-ban-title">
+      <div class="faq-section-header">
+        <div class="faq-section-left">
+          <div class="faq-section-eyebrow"><span class="faq-ey-line"></span><span class="faq-ey-txt">Kaca Film</span></div>
+          <h2 class="faq-section-title" id="sec-ban-title">Kaca Film<br>Bangunan</h2>
+        </div>
+        <div class="faq-section-count" aria-hidden="true">03</div>
+      </div>
+
+      <div class="faq-featured" id="ban-1" data-cat="bangunan" tabindex="0" role="button" aria-expanded="false" aria-controls="feat-ban-ans">
+        <span class="faq-featured-badge">Paling Sering Ditanyakan</span>
+        <h3 class="faq-featured-q">Kenapa rumah saya harus pakai kaca film?</h3>
+        <div class="faq-featured-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+        <div class="faq-featured-answer" id="feat-ban-ans" role="region">
+          <div class="faq-featured-answer-inner">
+            <p class="faq-answer-summary">Untuk melindungi interior dari panas dan radiasi UV yang merusak.</p>
+            <p class="faq-answer-body">Tanpa perlindungan, sinar matahari dapat memudarkan warna furnitur, lantai kayu, dan karya seni di rumah Anda. V-KOOL menolak hingga <strong style="color:var(--ash);font-weight:400;">99% sinar UV berbahaya</strong> sekaligus menjaga suhu ruangan tidak menyengat agar suasana di dalam rumah tetap homey.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-list" role="list">
+
+        <div class="faq-item" id="ban-2" data-cat="bangunan" role="listitem">
+          <button class="faq-trigger" aria-expanded="false" aria-controls="ans-ban-2">
+            <div class="faq-trigger-left">
+              <div class="faq-q-num">02 / 03</div>
+              <div class="faq-q">Apakah kaca film berpengaruh dengan kinerja AC?</div>
+            </div>
+            <div class="faq-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </button>
+          <div class="faq-answer" id="ans-ban-2" role="region">
+            <div class="faq-answer-content">
+              <p class="faq-answer-summary">Sangat berpengaruh dalam meringankan beban kerja AC.</p>
+              <p class="faq-answer-body">Dengan menolak panas inframerah sebelum masuk ke dalam kaca, suhu ruangan akan tetap stabil lebih lama. Hal ini membuat AC tidak perlu bekerja pada suhu maksimal terus-menerus sehingga konsumsi energi listrik Anda menjadi lebih hemat.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item" id="ban-3" data-cat="bangunan" role="listitem">
+          <button class="faq-trigger" aria-expanded="false" aria-controls="ans-ban-3">
+            <div class="faq-trigger-left">
+              <div class="faq-q-num">03 / 03</div>
+              <div class="faq-q">Apakah bisa langsung pasang?</div>
+            </div>
+            <div class="faq-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </button>
+          <div class="faq-answer" id="ans-ban-3" role="region">
+            <div class="faq-answer-content">
+              <p class="faq-answer-summary">Sebelum pemasangan, tim V-KOOL harus melakukan survei lokasi terlebih dahulu.</p>
+              <p class="faq-answer-body">Karena setiap bangunan memiliki jenis kaca, kondisi jendela, dan paparan cahaya matahari yang berbeda, kami akan melakukan pengukuran dan pengecekan teknis terlebih dahulu. Hal ini kami lakukan agar solusi yang diberikan benar-benar akurat dan hasil pemasangannya sempurna.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="faq-section-cta">
+        <div class="faq-cta-text">
+          <div class="faq-cta-label">Jadwalkan sekarang</div>
+          <div class="faq-cta-heading">Hitung Kebutuhan Kaca Film Anda</div>
+        </div>
+        <div class="faq-cta-btns">
+          <a class="btn-faq-primary" href="vkool_bangunan.html">Produk Bangunan<svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+          <a class="btn-faq-outline" href="#">Cek Harga</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════
+      PPF
+    ══════════════════════════ -->
+    <section class="faq-section" id="sec-ppf" aria-labelledby="sec-ppf-title">
+      <div class="faq-section-header">
+        <div class="faq-section-left">
+          <div class="faq-section-eyebrow"><span class="faq-ey-line"></span><span class="faq-ey-txt">Paint Protection Film</span></div>
+          <h2 class="faq-section-title" id="sec-ppf-title">PPF —<br>Paint Protection<br>Film</h2>
+        </div>
+        <div class="faq-section-count" aria-hidden="true">09</div>
+      </div>
+
+      <div class="faq-featured" id="ppf-1" data-cat="ppf" tabindex="0" role="button" aria-expanded="false" aria-controls="feat-ppf-ans">
+        <span class="faq-featured-badge">Mulai dari Sini</span>
+        <h3 class="faq-featured-q">Apa itu PPF?</h3>
+        <div class="faq-featured-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+        <div class="faq-featured-answer" id="feat-ppf-ans" role="region">
+          <div class="faq-featured-answer-inner">
+            <p class="faq-answer-summary">Lapisan film pelindung fisik yang elastis dan sangat kuat untuk bodi kendaraan.</p>
+            <p class="faq-answer-body">PPF adalah lapisan Thermoplastic Polyurethane (TPU) transparan yang dipasang di atas cat mobil. Berbeda dengan stiker biasa, PPF berfungsi sebagai "perisai" terhadap benturan fisik, sinar UV, dan kotoran agar cat asli mobil Anda tetap mulus.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-list" role="list">
+
+        <div class="faq-item" id="ppf-2" data-cat="ppf" role="listitem">
+          <button class="faq-trigger" aria-expanded="false" aria-controls="ans-ppf-2">
+            <div class="faq-trigger-left">
+              <div class="faq-q-num">02 / 09</div>
+              <div class="faq-q">Kenapa saya harus pasang PPF?</div>
+            </div>
+            <div class="faq-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </button>
+          <div class="faq-answer" id="ans-ppf-2" role="region">
+            <div class="faq-answer-content">
+              <p class="faq-answer-summary">Untuk menjaga kondisi cat mobil tetap seperti baru.</p>
+              <p class="faq-answer-body">Bodi mobil sangat rentan terkena kerikil di jalan (stone chips), goresan kuku di gagang pintu, hingga baret halus saat dicuci. Di iklim tropis, sinar UV tinggi dan kotoran yang membandel juga dapat membuat cat original mobil mudah kotor dan pudar. PPF memproteksi cat original mobil Anda dari semua ancaman tersebut.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item" id="ppf-3" data-cat="ppf" role="listitem">
+          <button class="faq-trigger" aria-expanded="false" aria-controls="ans-ppf-3">
+            <div class="faq-trigger-left">
+              <div class="faq-q-num">03 / 09</div>
+              <div class="faq-q">Apa beda PPF dengan coating?</div>
+            </div>
+            <div class="faq-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </button>
+          <div class="faq-answer" id="ans-ppf-3" role="region">
+            <div class="faq-answer-content">
+              <p class="faq-answer-summary">PPF adalah perlindungan fisik nyata, sedangkan coating hanyalah lapisan kimia tipis.</p>
+              <p class="faq-answer-body">Coating hanya memberikan efek kilap dan menangkal kotoran, namun tidak bisa menahan benturan kerikil atau goresan dalam. PPF memberikan perlindungan benturan yang tidak bisa diberikan oleh coating agar bodi mobil Anda tetap aman.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item" id="ppf-4" data-cat="ppf" role="listitem">
+          <button class="faq-trigger" aria-expanded="false" aria-controls="ans-ppf-4">
+            <div class="faq-trigger-left">
+              <div class="faq-q-num">04 / 09</div>
+              <div class="faq-q">Apa beda V-KOOL PPF dengan PPF lain?</div>
+            </div>
+            <div class="faq-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </button>
+          <div class="faq-answer" id="ans-ppf-4" role="region">
+            <div class="faq-answer-content">
+              <p class="faq-answer-summary">Kualitas Material, Pemasangan, dan Garansi.</p>
+              <div class="answer-points">
+                <div class="answer-point">
+                  <span class="answer-point-num">01</span>
+                  <div class="answer-point-body">
+                    <div class="answer-point-title">Kualitas Material</div>
+                    <p class="answer-point-text">Menggunakan bahan grade tertinggi, TPU Premium+ yang memiliki kejernihan tinggi serta fitur self-healing dan anti-noda. Lem yang digunakan juga aman untuk penggunaan jangka panjang.</p>
+                  </div>
+                </div>
+                <div class="answer-point">
+                  <span class="answer-point-num">02</span>
+                  <div class="answer-point-body">
+                    <div class="answer-point-title">Kualitas Pemasangan</div>
+                    <p class="answer-point-text">Setiap bagian dipasang dengan teknik presisi oleh installer bersertifikat untuk menjamin hasil pemasangan yang rapi dan melindungi kendaraan secara sempurna.</p>
+                  </div>
+                </div>
+                <div class="answer-point">
+                  <span class="answer-point-num">03</span>
+                  <div class="answer-point-body">
+                    <div class="answer-point-title">Kualitas Pelayanan &amp; Garansi</div>
+                    <p class="answer-point-text">Pelayanan prima mulai dari konsultasi hingga dukungan after-sales yang diperkuat dengan jaminan garansi resmi selama 10 tahun.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item" id="ppf-5" data-cat="ppf" role="listitem">
+          <button class="faq-trigger" aria-expanded="false" aria-controls="ans-ppf-5">
+            <div class="faq-trigger-left">
+              <div class="faq-q-num">05 / 09</div>
+              <div class="faq-q">Kenapa banyak PPF yang lebih murah?</div>
+            </div>
+            <div class="faq-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </button>
+          <div class="faq-answer" id="ans-ppf-5" role="region">
+            <div class="faq-answer-content">
+              <p class="faq-answer-summary">Perbedaan ada pada material produk dan kualitas lem.</p>
+              <p class="faq-answer-body">PPF dengan harga rendah banyak yang menggunakan material TPH atau PVC yang kaku. Kalaupun sama-sama berbahan TPU, terdapat perbedaan grade pada tingkat kejernihan. Kualitas lem yang digunakan juga harus diperhatikan — lem berkualitas rendah dapat merusak cat original mobil Anda saat PPF dicopot.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item" id="ppf-6" data-cat="ppf" role="listitem">
+          <button class="faq-trigger" aria-expanded="false" aria-controls="ans-ppf-6">
+            <div class="faq-trigger-left">
+              <div class="faq-q-num">06 / 09</div>
+              <div class="faq-q">Apakah V-KOOL PPF aman kalau dicopot?</div>
+            </div>
+            <div class="faq-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </button>
+          <div class="faq-answer" id="ans-ppf-6" role="region">
+            <div class="faq-answer-content">
+              <p class="faq-answer-summary">Aman dan tidak meninggalkan residu lem yang merusak cat original.</p>
+              <p class="faq-answer-body">Kami menggunakan teknologi perekat khusus yang dirancang untuk menempel kuat namun tetap mudah dilepas tanpa mengangkat lapisan cat mobil. Hal ini memastikan nilai jual kembali kendaraan Anda tetap tinggi karena kondisi catnya tetap terjaga.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item" id="ppf-7" data-cat="ppf" role="listitem">
+          <button class="faq-trigger" aria-expanded="false" aria-controls="ans-ppf-7">
+            <div class="faq-trigger-left">
+              <div class="faq-q-num">07 / 09</div>
+              <div class="faq-q">Bagaimana jika terjadi kecelakaan?</div>
+            </div>
+            <div class="faq-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </button>
+          <div class="faq-answer" id="ans-ppf-7" role="region">
+            <div class="faq-answer-content">
+              <p class="faq-answer-summary">Ganti hanya panel yang rusak, tidak perlu seluruh mobil.</p>
+              <p class="faq-answer-body">Jika terjadi benturan atau kecelakaan pada satu bagian, Anda tidak perlu memasang ulang PPF di seluruh mobil. Tim kami akan siap membantu untuk mengganti PPF hanya pada panel yang rusak saja, menghemat biaya dan waktu Anda.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item" id="ppf-8" data-cat="ppf" role="listitem">
+          <button class="faq-trigger" aria-expanded="false" aria-controls="ans-ppf-8">
+            <div class="faq-trigger-left">
+              <div class="faq-q-num">08 / 09</div>
+              <div class="faq-q">Apakah bisa melindungi dari kotoran burung atau getah pohon?</div>
+            </div>
+            <div class="faq-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </button>
+          <div class="faq-answer" id="ans-ppf-8" role="region">
+            <div class="faq-answer-content">
+              <p class="faq-answer-summary">Ya — lapisan top coat berfungsi sebagai penghalang kimia.</p>
+              <p class="faq-answer-body">Kotoran burung dan getah pohon mengandung asam tinggi yang bisa membuat cat mobil berlubang (etching). Lapisan top coat pada V-KOOL PPF berfungsi sebagai penghalang kimia agar permukaan bodi tetap higienis dan terlindungi.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item" id="ppf-9" data-cat="ppf" role="listitem">
+          <button class="faq-trigger" aria-expanded="false" aria-controls="ans-ppf-9">
+            <div class="faq-trigger-left">
+              <div class="faq-q-num">09 / 09</div>
+              <div class="faq-q">Apakah PPF bisa dipasang pada bagian interior juga?</div>
+            </div>
+            <div class="faq-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </button>
+          <div class="faq-answer" id="ans-ppf-9" role="region">
+            <div class="faq-answer-content">
+              <p class="faq-answer-summary">Ya! V-KOOL PPF Interior hadir untuk menjaga kemewahan kabin Anda.</p>
+              <p class="faq-answer-body">Panel piano black pada konsol tengah, layar head unit, hingga panel instrumen digital sangat rentan terhadap goresan halus dari kuku maupun debu. V-KOOL PPF Interior memberikan lapisan proteksi transparan untuk menjaga kilau asli material kabin agar suasana di dalam selalu terasa mewah.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="faq-section-cta">
+        <div class="faq-cta-text">
+          <div class="faq-cta-label">Siap melindungi kendaraan Anda?</div>
+          <div class="faq-cta-heading">Lihat Produk PPF V-KOOL</div>
+        </div>
+        <div class="faq-cta-btns">
+          <a class="btn-faq-primary" href="vkool_ppf_final.html">Produk PPF<svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+          <a class="btn-faq-outline" href="#">Cek Harga PPF</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<div id="footer-placeholder"></div>
+
+<script>
+(function(){
+  /* Nav scroll */
+  const nav=document.getElementById('nav');
+  window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>40),{passive:true});
+
+  /* Dropdowns */
+  [['ni-ppf','nb-ppf','nd-ppf'],['ni-more','nb-more','nd-more']].forEach(([ii,bi,di])=>{
+    const it=document.getElementById(ii),bt=document.getElementById(bi),dr=document.getElementById(di);
+    if(!it||!bt)return;
+    bt.addEventListener('click',e=>{e.stopPropagation();const o=it.classList.toggle('open');bt.setAttribute('aria-expanded',o);});
+    bt.addEventListener('keydown',e=>{if(e.key==='Escape'){it.classList.remove('open');bt.setAttribute('aria-expanded','false');}if(e.key==='ArrowDown'){e.preventDefault();dr.querySelector('.nav-drop-item')?.focus();}});
+    dr?.addEventListener('keydown',e=>{const items=[...dr.querySelectorAll('.nav-drop-item')];const idx=items.indexOf(document.activeElement);if(e.key==='Escape'){it.classList.remove('open');bt.focus();}if(e.key==='ArrowDown'){e.preventDefault();items[Math.min(idx+1,items.length-1)]?.focus();}if(e.key==='ArrowUp'){e.preventDefault();idx>0?items[idx-1].focus():bt.focus();}});
+    document.addEventListener('click',()=>{it.classList.remove('open');bt.setAttribute('aria-expanded','false');});
+  });
+
+  /* Hamburger */
+  [['dpt','dps'],['dmt','dms']].forEach(([t,s])=>{
+    const tt=document.getElementById(t),ss=document.getElementById(s);if(!tt||!ss)return;
+    const fn=()=>{const o=ss.classList.toggle('open');tt.classList.toggle('sub-open',o);tt.setAttribute('aria-expanded',o);};
+    tt.addEventListener('click',fn);tt.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();fn();}});
+  });
+
+  /* ── CATEGORY SWITCHING ── */
+  function switchCat(cat){
+    /* Sections */
+    document.querySelectorAll('.faq-section').forEach(s=>s.classList.remove('active'));
+    const sec=document.getElementById('sec-'+cat);
+    if(sec)sec.classList.add('active');
+
+    /* Sidebar buttons */
+    document.querySelectorAll('.sidebar-cat-btn').forEach(b=>{
+      const isTarget=b.dataset.cat===cat;
+      b.classList.toggle('active',isTarget);
+      b.setAttribute('aria-expanded',isTarget);
+      b.closest('.sidebar-section').classList.toggle('open',isTarget);
+    });
+
+    /* Header pills */
+    document.querySelectorAll('.header-cat-pill').forEach(p=>{
+      const isTarget=p.dataset.cat===cat;
+      p.classList.toggle('active',isTarget);
+      p.setAttribute('aria-selected',isTarget);
+    });
+
+    /* Mobile buttons */
+    document.querySelectorAll('.mobile-cat-btn').forEach(b=>{
+      b.classList.toggle('active',b.dataset.cat===cat);
+      b.setAttribute('aria-selected',b.dataset.cat===cat);
+    });
+
+    /* Reset search */
+    document.getElementById('faqSearch').value='';
+    document.getElementById('noResults').classList.remove('visible');
+    document.querySelectorAll('.faq-item,.faq-featured').forEach(el=>el.style.display='');
+
+    /* Scroll to top of content */
+    document.getElementById('faqContent').scrollIntoView({behavior:'smooth',block:'start'});
+  }
+
+  /* Sidebar cat buttons */
+  document.querySelectorAll('.sidebar-cat-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>switchCat(btn.dataset.cat));
+  });
+  /* Header pills */
+  document.querySelectorAll('.header-cat-pill').forEach(pill=>{
+    pill.addEventListener('click',()=>switchCat(pill.dataset.cat));
+  });
+  /* Mobile buttons */
+  document.querySelectorAll('.mobile-cat-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>switchCat(btn.dataset.cat));
+  });
+  /* Sidebar sub-links — scroll to Q */
+  document.querySelectorAll('.sidebar-sub-link').forEach(link=>{
+    link.addEventListener('click',()=>{
+      const qId=link.dataset.q;
+      /* Determine cat from qId prefix */
+      const cat=qId.startsWith('ban')?'bangunan':qId.startsWith('ppf')?'ppf':'otomotif';
+      switchCat(cat);
+      setTimeout(()=>{
+        const el=document.getElementById(qId);
+        if(el){el.scrollIntoView({behavior:'smooth',block:'center'});}
+        /* highlight */
+        document.querySelectorAll('.sidebar-sub-link').forEach(l=>l.classList.remove('active-q'));
+        link.classList.add('active-q');
+      },200);
+    });
+  });
+
+  /* ── ACCORDION — standard items ── */
+  document.querySelectorAll('.faq-trigger').forEach(trigger=>{
+    trigger.addEventListener('click',()=>{
+      const item=trigger.closest('.faq-item');
+      const isOpen=item.classList.contains('open');
+      /* Close all in same section */
+      const section=item.closest('.faq-section');
+      section.querySelectorAll('.faq-item.open').forEach(i=>{
+        i.classList.remove('open');
+        i.querySelector('.faq-trigger').setAttribute('aria-expanded','false');
+      });
+      if(!isOpen){
+        item.classList.add('open');
+        trigger.setAttribute('aria-expanded','true');
+      }
+    });
+    /* Keyboard: Enter/Space */
+    trigger.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();trigger.click();}});
+  });
+
+  /* ── FEATURED Q accordion ── */
+  document.querySelectorAll('.faq-featured').forEach(feat=>{
+    const toggle=()=>{
+      const isOpen=feat.classList.toggle('open');
+      feat.setAttribute('aria-expanded',isOpen);
+    };
+    feat.addEventListener('click',toggle);
+    feat.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle();}});
+  });
+
+  /* ── SEARCH ── */
+  const searchInput=document.getElementById('faqSearch');
+  searchInput.addEventListener('input',()=>{
+    const q=searchInput.value.toLowerCase().trim();
+    if(!q){
+      document.querySelectorAll('.faq-item,.faq-featured').forEach(el=>el.style.display='');
+      document.getElementById('noResults').classList.remove('visible');
+      return;
+    }
+    /* Search across ALL sections */
+    let anyVisible=false;
+    /* Show all sections when searching */
+    document.querySelectorAll('.faq-section').forEach(s=>s.classList.add('active'));
+    document.querySelectorAll('.faq-item,.faq-featured').forEach(el=>{
+      const text=(el.textContent||'').toLowerCase();
+      const show=text.includes(q);
+      el.style.display=show?'':'none';
+      if(show)anyVisible=true;
+    });
+    document.getElementById('noResults').classList.toggle('visible',!anyVisible);
+    if(!anyVisible){
+      document.querySelectorAll('.faq-section').forEach(s=>s.classList.remove('active'));
+    }
+  });
+
+})();
+</script>
+<script src="nav-footer.js"></script>
+</body>
+</html>
