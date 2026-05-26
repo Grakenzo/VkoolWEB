@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Videos — V-KOOL Indonesia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --black:#0a0a0a;--dark:#111111;--mid:#1a1a1a;--line:#222222;--line2:#2e2e2e;
+  --gold:#CDB182;--gold2:#b89a6a;
+  --ash:#EBEBEB;--muted:#888888;--dim:#555555;--white:#ffffff;
+  --radius:2px;--nav-h:68px;--pad:56px;--ease:cubic-bezier(.25,0,.1,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Roboto',sans-serif;background:var(--black);color:var(--ash);overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+a{text-decoration:none;color:inherit;}
+button{font-family:inherit;cursor:pointer;border:none;background:none;}
+a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offset:3px;}
+
+/* ══ PAGE HEADER ══ */
+.page-header{background:var(--dark);padding:calc(var(--nav-h) + 72px) var(--pad) 0;border-bottom:.5px solid var(--line);position:relative;overflow:hidden;}
+.page-header::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(205,177,130,.025) .5px,transparent .5px),linear-gradient(90deg,rgba(205,177,130,.025) .5px,transparent .5px);background-size:80px 80px;pointer-events:none;}
+.ph-inner{position:relative;z-index:1;display:grid;grid-template-columns:1fr auto;align-items:end;gap:40px;padding-bottom:56px;}
+.ph-breadcrumb{display:flex;align-items:center;gap:10px;margin-bottom:24px;}
+.ph-bc{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:.14em;color:var(--dim);text-transform:uppercase;}
+.ph-bc-sep{color:#555555;}
+.ph-bc-cur{color:var(--gold);}
+.ph-eyebrow{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.ph-ey-line{width:20px;height:.5px;background:var(--gold);}
+.ph-ey-txt{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:.22em;color:var(--gold);text-transform:uppercase;font-weight:300;}
+.ph-title{font-family:'Oswald',sans-serif;font-size:clamp(36px,5vw,72px);letter-spacing:.06em;font-weight:400;text-transform:uppercase;color:var(--white);line-height:1.0;margin-bottom:14px;}
+.ph-sub{font-size:15px;color:var(--muted);font-weight:300;line-height:1.7;max-width:52ch;}
+.ph-ghost{font-family:'Oswald',sans-serif;font-size:clamp(72px,12vw,160px);font-weight:200;color:rgba(205,177,130,.04);letter-spacing:-.04em;line-height:.85;flex-shrink:0;pointer-events:none;user-select:none;align-self:flex-end;}
+
+/* ══ FEATURED VIDEO ══ */
+.featured-wrap{padding:64px var(--pad) 0;}
+.section-label{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:.22em;color:var(--gold);text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;gap:12px;}
+.section-label-line{width:20px;height:.5px;background:var(--gold);}
+
+/*
+ * ─────────────────────────────────────────────
+ * FEATURED VIDEO EMBED
+ * TO EDIT: Replace the YouTube video ID in the
+ * iframe src below. Change "dQw4w9WgXcQ" to your
+ * actual YouTube video ID.
+ * File: vkool_videos.html — around line 70 (HTML section)
+ * ─────────────────────────────────────────────
+ */
+.featured-video-wrap{
+  position:relative;width:100%;
+  padding-bottom:52%;  /* 16:9 ratio but slightly shorter */
+  background:var(--dark);border:.5px solid var(--line2);
+  overflow:hidden;
+}
+.featured-video-wrap::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,var(--gold),var(--gold2),transparent);
+  z-index:5;
+}
+.featured-video-wrap iframe{
+  position:absolute;inset:0;width:100%;height:100%;border:none;
+}
+.featured-video-meta{
+  background:var(--dark);border:.5px solid var(--line2);border-top:none;
+  padding:20px 24px;display:flex;align-items:center;justify-content:space-between;
+}
+.featured-video-title{font-family:'Oswald',sans-serif;font-size:18px;letter-spacing:.04em;font-weight:400;text-transform:uppercase;color:var(--white);}
+.featured-video-tag{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:6px;}
+.tag-dot{width:4px;height:4px;border-radius:50%;background:var(--gold);}
+
+/* ══ VIDEO GRID ══ */
+.grid-wrap{padding:56px var(--pad) 80px;}
+.grid-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:40px;}
+.grid-title{font-family:'Oswald',sans-serif;font-size:clamp(16px,2vw,22px);letter-spacing:.06em;text-transform:uppercase;color:var(--white);font-weight:400;}
+.grid-count{font-size:12px;color:var(--dim);font-weight:300;}
+
+.videos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:.5px solid var(--line);}
+
+/* Video card */
+.vid-card{
+  background:var(--dark);border-right:.5px solid var(--line);border-bottom:.5px solid var(--line);
+  position:relative;overflow:hidden;cursor:pointer;
+  transition:background .4s var(--ease);display:flex;flex-direction:column;
+}
+.vid-card:nth-child(3n){border-right:none;}
+.vid-card:nth-last-child(-n+3){border-bottom:none;}
+.vid-card:hover{background:#131313;}
+/* top gold line */
+.vid-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:1px;background:linear-gradient(90deg,var(--gold),var(--gold2),transparent);transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease);z-index:10;}
+.vid-card:hover::before{transform:scaleX(1);}
+.vid-card-lline{position:absolute;left:0;top:0;width:1px;height:100%;background:linear-gradient(to bottom,var(--gold),transparent);transform:scaleY(0);transform-origin:top;transition:transform .5s var(--ease) .1s;z-index:10;pointer-events:none;}
+.vid-card:hover .vid-card-lline{transform:scaleY(1);}
+
+/* Thumbnail area */
+.vid-thumb{height:185px;position:relative;overflow:hidden;background:#0f0f0f;}
+.vid-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease);}
+.vid-card:hover .vid-thumb img{transform:scale(1.04);}
+.vid-thumb-overlay{position:absolute;inset:0;background:rgba(10,10,10,.35);transition:background .3s;}
+.vid-card:hover .vid-thumb-overlay{background:rgba(10,10,10,.55);}
+
+/* Play button */
+.play-btn{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:48px;height:48px;border-radius:50%;
+  background:rgba(205,177,130,.15);border:1.5px solid rgba(205,177,130,.6);
+  display:flex;align-items:center;justify-content:center;
+  transition:background .3s,transform .3s,border-color .3s;
+  backdrop-filter:blur(4px);
+}
+.vid-card:hover .play-btn{
+  background:rgba(205,177,130,.25);
+  border-color:var(--gold);
+  transform:translate(-50%,-50%) scale(1.1);
+}
+.play-btn svg{width:16px;height:16px;fill:var(--gold);margin-left:3px;}
+
+/* Duration badge */
+.vid-duration{
+  position:absolute;bottom:10px;right:10px;
+  background:rgba(10,10,10,.85);
+  font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:.06em;
+  color:var(--ash);padding:3px 8px;
+}
+
+.vid-body{padding:20px 20px 18px;flex:1;display:flex;flex-direction:column;}
+.vid-cat{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:6px;margin-bottom:10px;}
+.vid-title{font-family:'Oswald',sans-serif;font-size:14px;letter-spacing:.04em;font-weight:400;text-transform:uppercase;color:var(--white);line-height:1.3;margin-bottom:auto;transition:color .25s var(--ease);}
+.vid-card:hover .vid-title{color:var(--gold);}
+.vid-footer{display:flex;align-items:center;justify-content:space-between;margin-top:16px;padding-top:14px;border-top:.5px solid var(--line);}
+.vid-platform{font-size:10px;color:var(--dim);display:flex;align-items:center;gap:6px;}
+.vid-platform svg{width:12px;height:12px;fill:var(--dim);}
+.vid-arrow{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:6px;transition:gap .3s;}
+.vid-card:hover .vid-arrow{gap:10px;}
+.vid-arrow svg{width:10px;height:10px;stroke:var(--gold);fill:none;stroke-width:2;}
+
+/* ══ FADE UP ══ */
+.fade-up{opacity:0;transform:translateY(24px);transition:opacity .7s var(--ease),transform .7s var(--ease);}
+.fade-up.visible{opacity:1;transform:translateY(0);}
+
+/* ══ RESPONSIVE ══ */
+@media(max-width:1023px){
+  .videos-grid{grid-template-columns:repeat(2,1fr);}
+  .vid-card:nth-child(3n){border-right:.5px solid var(--line);}
+  .vid-card:nth-child(2n){border-right:none;}
+}
+@media(max-width:639px){
+  :root{--pad:20px;}
+  .ph-inner{grid-template-columns:1fr;}
+  .ph-ghost{display:none;}
+  .videos-grid{grid-template-columns:1fr;}
+  .vid-card{border-right:none;}
+  .featured-video-wrap{padding-bottom:56%;}
+}
+</style>
+</head>
+<body data-page="videos">
+
+<div id="nav-placeholder"></div>
+
+<!-- ══ PAGE HEADER ══ -->
+<header class="page-header">
+  <div class="ph-inner">
+    <div>
+      <nav class="ph-breadcrumb" aria-label="Breadcrumb">
+        <span class="ph-bc">Home</span>
+        <span class="ph-bc-sep">&mdash;</span>
+        <span class="ph-bc ph-bc-cur">Videos</span>
+      </nav>
+      <div class="ph-eyebrow">
+        <span class="ph-ey-line"></span>
+        <span class="ph-ey-txt">Tonton &amp; Pelajari</span>
+      </div>
+      <h1 class="ph-title">Videos<br>V-KOOL</h1>
+      <p class="ph-sub">Demo instalasi, teknologi produk, testimoni pelanggan, dan liputan event V-KOOL Indonesia.</p>
+    </div>
+    <div class="ph-ghost" aria-hidden="true">▶</div>
+  </div>
+</header>
+
+<!-- ══ FEATURED VIDEO ══ -->
+<section class="featured-wrap fade-up" aria-label="Video Unggulan">
+  <div class="section-label">
+    <span class="section-label-line"></span>
+    Video Unggulan
+  </div>
+
+  <!--
+    ════════════════════════════════════════════
+    EDIT POINT 1 — FEATURED VIDEO
+    Replace "dQw4w9WgXcQ" with the real YouTube
+    video ID. Example:
+    YouTube URL: https://www.youtube.com/watch?v=ABC123xyz
+    Video ID = ABC123xyz
+    ════════════════════════════════════════════
+  -->
+  <div class="featured-video-wrap">
+    <iframe
+      src="https://www.youtube.com/embed/dQw4w9WgXcQ?rel=0&modestbranding=1"
+      title="V-KOOL Indonesia — Brand Film"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen
+      loading="lazy">
+    </iframe>
+  </div>
+  <div class="featured-video-meta">
+    <div class="featured-video-title">V-KOOL Indonesia — Brand Film 2025</div>
+    <div class="featured-video-tag"><span class="tag-dot"></span>Brand Film</div>
+  </div>
+</section>
+
+<!-- ══ VIDEO GRID ══ -->
+<section class="grid-wrap" aria-label="Semua Videos">
+  <div class="grid-header fade-up">
+    <h2 class="grid-title">Semua Videos</h2>
+    <span class="grid-count">6 videos</span>
+  </div>
+
+  <div class="videos-grid fade-up">
+
+    <!--
+      ════════════════════════════════════════════
+      EDIT POINT 2 — VIDEO CARD 1
+      Replace href YouTube URL and thumbnail src.
+      Thumbnail format:
+      https://img.youtube.com/vi/VIDEO_ID/maxresdefault.jpg
+      ════════════════════════════════════════════
+    -->
+    <a class="vid-card" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" rel="noopener">
+      <div class="vid-card-lline" aria-hidden="true"></div>
+      <div class="vid-thumb">
+        <img src="https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg" alt="Proses Instalasi Kaca Film Otomotif V-KOOL" loading="lazy">
+        <div class="vid-thumb-overlay"></div>
+        <div class="play-btn" aria-hidden="true"><svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+        <span class="vid-duration">4:32</span>
+      </div>
+      <div class="vid-body">
+        <div class="vid-cat"><span class="tag-dot"></span>Instalasi</div>
+        <h3 class="vid-title">Proses Instalasi Kaca Film Otomotif V-KOOL Step by Step</h3>
+        <div class="vid-footer">
+          <div class="vid-platform">
+            <svg viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.95C5.12 20 12 20 12 20s6.88 0 8.59-.47a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="var(--black)" style="fill:var(--black)"/></svg>
+            YouTube
+          </div>
+          <span class="vid-arrow">Tonton<svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+        </div>
+      </div>
+    </a>
+
+    <!--
+      ════════════════════════════════════════════
+      EDIT POINT 3 — VIDEO CARD 2
+      ════════════════════════════════════════════
+    -->
+    <a class="vid-card" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" rel="noopener">
+      <div class="vid-card-lline" aria-hidden="true"></div>
+      <div class="vid-thumb">
+        <img src="https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg" alt="Teknologi XIR V-KOOL" loading="lazy">
+        <div class="vid-thumb-overlay"></div>
+        <div class="play-btn" aria-hidden="true"><svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+        <span class="vid-duration">3:15</span>
+      </div>
+      <div class="vid-body">
+        <div class="vid-cat"><span class="tag-dot"></span>Teknologi</div>
+        <h3 class="vid-title">Mengenal Teknologi XIR V-KOOL yang Datang dari Silicon Valley</h3>
+        <div class="vid-footer">
+          <div class="vid-platform"><svg viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.95C5.12 20 12 20 12 20s6.88 0 8.59-.47a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="var(--black)"/></svg>YouTube</div>
+          <span class="vid-arrow">Tonton<svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+        </div>
+      </div>
+    </a>
+
+    <!--
+      ════════════════════════════════════════════
+      EDIT POINT 4 — VIDEO CARD 3
+      ════════════════════════════════════════════
+    -->
+    <a class="vid-card" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" rel="noopener">
+      <div class="vid-card-lline" aria-hidden="true"></div>
+      <div class="vid-thumb">
+        <img src="https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg" alt="PPF Installation V-KOOL" loading="lazy">
+        <div class="vid-thumb-overlay"></div>
+        <div class="play-btn" aria-hidden="true"><svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+        <span class="vid-duration">6:48</span>
+      </div>
+      <div class="vid-body">
+        <div class="vid-cat"><span class="tag-dot"></span>PPF</div>
+        <h3 class="vid-title">Full PPF Wrapping Process — V-KOOL Tetrashield on Toyota Land Cruiser</h3>
+        <div class="vid-footer">
+          <div class="vid-platform"><svg viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.95C5.12 20 12 20 12 20s6.88 0 8.59-.47a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="var(--black)"/></svg>YouTube</div>
+          <span class="vid-arrow">Tonton<svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+        </div>
+      </div>
+    </a>
+
+    <!--
+      ════════════════════════════════════════════
+      EDIT POINT 5 — VIDEO CARD 4
+      ════════════════════════════════════════════
+    -->
+    <a class="vid-card" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" rel="noopener">
+      <div class="vid-card-lline" aria-hidden="true"></div>
+      <div class="vid-thumb">
+        <img src="https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg" alt="Testimoni V-KOOL" loading="lazy">
+        <div class="vid-thumb-overlay"></div>
+        <div class="play-btn" aria-hidden="true"><svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+        <span class="vid-duration">2:05</span>
+      </div>
+      <div class="vid-body">
+        <div class="vid-cat"><span class="tag-dot"></span>Testimoni</div>
+        <h3 class="vid-title">Testimoni Pelanggan — Rasakan Bedanya V-KOOL di Musim Panas</h3>
+        <div class="vid-footer">
+          <div class="vid-platform"><svg viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.95C5.12 20 12 20 12 20s6.88 0 8.59-.47a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="var(--black)"/></svg>YouTube</div>
+          <span class="vid-arrow">Tonton<svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+        </div>
+      </div>
+    </a>
+
+    <!--
+      ════════════════════════════════════════════
+      EDIT POINT 6 — VIDEO CARD 5
+      ════════════════════════════════════════════
+    -->
+    <a class="vid-card" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" rel="noopener">
+      <div class="vid-card-lline" aria-hidden="true"></div>
+      <div class="vid-thumb">
+        <img src="https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg" alt="GIIAS 2025 V-KOOL" loading="lazy">
+        <div class="vid-thumb-overlay"></div>
+        <div class="play-btn" aria-hidden="true"><svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+        <span class="vid-duration">5:20</span>
+      </div>
+      <div class="vid-body">
+        <div class="vid-cat"><span class="tag-dot"></span>Event</div>
+        <h3 class="vid-title">V-KOOL di GIIAS 2025 — Booth Tour &amp; Highlight Own Your Drive</h3>
+        <div class="vid-footer">
+          <div class="vid-platform"><svg viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.95C5.12 20 12 20 12 20s6.88 0 8.59-.47a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="var(--black)"/></svg>YouTube</div>
+          <span class="vid-arrow">Tonton<svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+        </div>
+      </div>
+    </a>
+
+    <!--
+      ════════════════════════════════════════════
+      EDIT POINT 7 — VIDEO CARD 6
+      ════════════════════════════════════════════
+    -->
+    <a class="vid-card" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" rel="noopener">
+      <div class="vid-card-lline" aria-hidden="true"></div>
+      <div class="vid-thumb">
+        <img src="https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg" alt="Kaca Film Bangunan V-KOOL" loading="lazy">
+        <div class="vid-thumb-overlay"></div>
+        <div class="play-btn" aria-hidden="true"><svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+        <span class="vid-duration">3:55</span>
+      </div>
+      <div class="vid-body">
+        <div class="vid-cat"><span class="tag-dot"></span>Bangunan</div>
+        <h3 class="vid-title">Seberapa Efektif Kaca Film Bangunan V-KOOL Menahan Panas?</h3>
+        <div class="vid-footer">
+          <div class="vid-platform"><svg viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.95C5.12 20 12 20 12 20s6.88 0 8.59-.47a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="var(--black)"/></svg>YouTube</div>
+          <span class="vid-arrow">Tonton<svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+        </div>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<div id="footer-placeholder"></div>
+
+<script>
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target);} });
+}, {threshold:0.08, rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.fade-up').forEach(el => io.observe(el));
+</script>
+<script src="nav-footer.js"></script>
+</body>
+</html>
