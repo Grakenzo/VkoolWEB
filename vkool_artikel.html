@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Artikel & Berita — V-KOOL Indonesia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --black:#0a0a0a;--dark:#111111;--mid:#1a1a1a;--line:#222222;--line2:#2e2e2e;
+  --gold:#CDB182;--gold2:#b89a6a;--gold-h:#b89a6a;
+  --ash:#EBEBEB;--muted:#888888;--dim:#555555;--white:#ffffff;
+  --radius:2px;--nav-h:68px;--pad:56px;--ease:cubic-bezier(.25,0,.1,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Roboto',sans-serif;background:var(--black);color:var(--ash);overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+a{text-decoration:none;color:inherit;}
+button{font-family:inherit;cursor:pointer;border:none;background:none;}
+a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offset:3px;}
+
+/* ══ PAGE HEADER ══ */
+.page-header{
+  background:var(--dark);
+  padding:calc(var(--nav-h) + 72px) var(--pad) 0;
+  border-bottom:.5px solid var(--line);
+  position:relative;overflow:hidden;
+}
+.page-header::before{
+  content:'';position:absolute;inset:0;
+  background-image:linear-gradient(rgba(205,177,130,.025) .5px,transparent .5px),linear-gradient(90deg,rgba(205,177,130,.025) .5px,transparent .5px);
+  background-size:80px 80px;pointer-events:none;
+}
+.ph-inner{position:relative;z-index:1;display:grid;grid-template-columns:1fr auto;align-items:end;gap:40px;padding-bottom:56px;}
+.ph-breadcrumb{display:flex;align-items:center;gap:10px;margin-bottom:24px;}
+.ph-bc{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:.14em;color:var(--dim);text-transform:uppercase;}
+.ph-bc-sep{color:#555555;}
+.ph-bc-cur{color:var(--gold);}
+.ph-eyebrow{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.ph-ey-line{width:20px;height:.5px;background:var(--gold);}
+.ph-ey-txt{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:.22em;color:var(--gold);text-transform:uppercase;font-weight:300;}
+.ph-title{font-family:'Oswald',sans-serif;font-size:clamp(36px,5vw,72px);letter-spacing:.06em;font-weight:400;text-transform:uppercase;color:var(--white);line-height:1.0;margin-bottom:14px;}
+.ph-sub{font-size:15px;color:var(--muted);font-weight:300;line-height:1.7;max-width:52ch;}
+.ph-ghost{font-family:'Oswald',sans-serif;font-size:clamp(72px,12vw,160px);font-weight:200;color:rgba(205,177,130,.04);letter-spacing:-.04em;line-height:.85;flex-shrink:0;pointer-events:none;user-select:none;align-self:flex-end;}
+
+/* ══ FEATURED ARTICLE ══ */
+.featured-wrap{padding:64px var(--pad) 0;}
+.featured-label{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:.22em;color:var(--gold);text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;gap:12px;}
+.featured-label-line{width:20px;height:.5px;background:var(--gold);}
+.featured-card{
+  display:grid;grid-template-columns:1fr 1fr;
+  border:.5px solid var(--line2);
+  overflow:hidden;
+  position:relative;
+  transition:border-color .4s var(--ease);
+}
+.featured-card:hover{border-color:rgba(205,177,130,.4);}
+/* gold top line sweep */
+.featured-card::before{
+  content:'';position:absolute;top:0;left:0;width:100%;height:1px;
+  background:linear-gradient(90deg,var(--gold),var(--gold2),transparent);
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .6s var(--ease);z-index:10;
+}
+.featured-card:hover::before{transform:scaleX(1);}
+
+.featured-img{
+  height:480px;
+  background:url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1200&q=80') center/cover no-repeat;
+  position:relative;
+}
+.featured-img::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(to right,transparent 60%,rgba(10,10,10,.85) 100%);
+}
+.featured-body{
+  background:var(--dark);
+  padding:48px 44px;
+  display:flex;flex-direction:column;justify-content:center;
+  gap:0;
+}
+.art-cat{
+  font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:.20em;
+  text-transform:uppercase;color:var(--gold);
+  display:inline-flex;align-items:center;gap:8px;
+  margin-bottom:16px;
+}
+.art-cat-dot{width:4px;height:4px;border-radius:50%;background:var(--gold);}
+.featured-title{
+  font-family:'Oswald',sans-serif;font-size:clamp(20px,2.5vw,32px);
+  letter-spacing:.04em;font-weight:400;text-transform:uppercase;
+  color:var(--white);line-height:1.15;margin-bottom:16px;
+  transition:color .25s;
+}
+.featured-card:hover .featured-title{color:var(--gold);}
+.featured-excerpt{font-size:14px;color:var(--muted);font-weight:300;line-height:1.75;margin-bottom:28px;max-width:42ch;}
+.featured-meta{display:flex;align-items:center;gap:16px;margin-bottom:32px;}
+.meta-date{font-size:11px;color:var(--dim);font-weight:300;}
+.meta-sep{width:3px;height:3px;border-radius:50%;background:var(--line2);}
+.meta-read{font-size:11px;color:var(--dim);font-weight:300;}
+.btn-read{
+  font-family:'Oswald',sans-serif;font-size:12px;letter-spacing:.12em;
+  text-transform:uppercase;font-weight:400;
+  color:var(--gold);display:inline-flex;align-items:center;gap:10px;
+  transition:gap .3s var(--ease);
+  width:fit-content;
+}
+.btn-read:hover{gap:16px;}
+.btn-read svg{width:12px;height:12px;stroke:var(--gold);fill:none;stroke-width:2;}
+
+/* ══ ARTICLES GRID ══ */
+.grid-wrap{padding:56px var(--pad) 80px;}
+.grid-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:40px;}
+.grid-title{font-family:'Oswald',sans-serif;font-size:clamp(16px,2vw,22px);letter-spacing:.06em;text-transform:uppercase;color:var(--white);font-weight:400;}
+.grid-count{font-size:12px;color:var(--dim);font-weight:300;}
+
+.articles-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:0;
+  border:.5px solid var(--line);
+}
+
+/* Article card */
+.art-card{
+  background:var(--dark);
+  border-right:.5px solid var(--line);
+  border-bottom:.5px solid var(--line);
+  position:relative;overflow:hidden;
+  transition:background .4s var(--ease);
+  display:flex;flex-direction:column;
+}
+.art-card:nth-child(3n){border-right:none;}
+.art-card:nth-last-child(-n+3){border-bottom:none;}
+.art-card:hover{background:#131313;}
+
+/* 4-edge luxury line sweep */
+.art-card::before{
+  content:'';position:absolute;top:0;left:0;width:100%;height:1px;
+  background:linear-gradient(90deg,var(--gold),var(--gold2),transparent);
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .5s var(--ease);z-index:10;
+}
+.art-card::after{
+  content:'';position:absolute;bottom:0;right:0;width:100%;height:1px;
+  background:linear-gradient(270deg,var(--gold),var(--gold2),transparent);
+  transform:scaleX(0);transform-origin:right;
+  transition:transform .5s var(--ease) .08s;z-index:10;
+}
+.art-card:hover::before,.art-card:hover::after{transform:scaleX(1);}
+.art-card-lline{position:absolute;left:0;top:0;width:1px;height:100%;background:linear-gradient(to bottom,var(--gold),transparent);transform:scaleY(0);transform-origin:top;transition:transform .5s var(--ease) .16s;z-index:10;pointer-events:none;}
+.art-card:hover .art-card-lline{transform:scaleY(1);}
+
+.art-img{
+  height:200px;overflow:hidden;position:relative;
+  background:#0f0f0f;
+}
+.art-img img{
+  width:100%;height:100%;object-fit:cover;
+  transition:transform .6s var(--ease);
+}
+.art-card:hover .art-img img{transform:scale(1.04);}
+.art-img-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(10,10,10,.6),transparent 60%);
+}
+.art-promo-badge{
+  position:absolute;top:14px;left:14px;
+  background:var(--gold);color:var(--black);
+  font-family:'Oswald',sans-serif;font-size:8px;letter-spacing:.14em;
+  padding:3px 9px;text-transform:uppercase;font-weight:400;
+  z-index:5;
+}
+
+.art-body{padding:24px 24px 20px;flex:1;display:flex;flex-direction:column;}
+.art-body .art-cat{margin-bottom:10px;}
+.art-card-title{
+  font-family:'Oswald',sans-serif;font-size:16px;letter-spacing:.04em;
+  font-weight:400;text-transform:uppercase;color:var(--white);
+  line-height:1.25;margin-bottom:10px;
+  transition:color .25s var(--ease);
+}
+.art-card:hover .art-card-title{color:var(--gold);}
+.art-card-excerpt{font-size:13px;color:var(--dim);font-weight:300;line-height:1.65;margin-bottom:18px;flex:1;}
+.art-card-footer{display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:16px;border-top:.5px solid var(--line);}
+.art-card-meta{display:flex;align-items:center;gap:10px;}
+.art-card-date{font-size:10px;color:var(--dim);font-weight:300;}
+.art-card-link{
+  font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--gold);
+  display:flex;align-items:center;gap:6px;
+  transition:gap .3s var(--ease);
+}
+.art-card:hover .art-card-link{gap:10px;}
+.art-card-link svg{width:10px;height:10px;stroke:var(--gold);fill:none;stroke-width:2;}
+
+/* ══ LOAD MORE ══ */
+.load-more-wrap{
+  text-align:center;padding:0 var(--pad) 80px;
+}
+.btn-load-more{
+  font-family:'Oswald',sans-serif;font-size:12px;letter-spacing:.14em;
+  text-transform:uppercase;font-weight:400;
+  background:transparent;color:var(--ash);
+  padding:15px 40px;border-radius:var(--radius);
+  border:.5px solid var(--line2);
+  display:inline-flex;align-items:center;gap:10px;
+  transition:border-color .3s var(--ease),color .3s var(--ease),gap .3s var(--ease);
+  cursor:pointer;
+}
+.btn-load-more:hover{border-color:var(--gold);color:var(--gold);gap:14px;}
+.btn-load-more svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2;transition:transform .3s;}
+.btn-load-more:hover svg{transform:translateY(2px);}
+
+/* ══ PROMO BANNER ══ */
+.promo-banner{
+  background:var(--gold);
+  padding:56px var(--pad);
+  display:grid;grid-template-columns:1fr auto;
+  align-items:center;gap:40px;
+  position:relative;overflow:hidden;
+}
+.promo-banner::before{
+  content:'';position:absolute;inset:0;
+  background-image:repeating-linear-gradient(90deg,rgba(0,0,0,.03) 0,rgba(0,0,0,.03) 1px,transparent 1px,transparent 48px);
+  pointer-events:none;
+}
+.promo-ey{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:.22em;color:rgba(0,0,0,.45);text-transform:uppercase;margin-bottom:10px;}
+.promo-title{font-family:'Oswald',sans-serif;font-size:clamp(20px,2.8vw,32px);letter-spacing:.06em;text-transform:uppercase;color:var(--black);font-weight:500;line-height:1.1;margin-bottom:8px;}
+.promo-sub{font-size:14px;color:rgba(0,0,0,.55);font-weight:300;max-width:48ch;line-height:1.65;}
+.btn-promo{
+  font-family:'Oswald',sans-serif;font-size:12px;letter-spacing:.12em;
+  text-transform:uppercase;font-weight:400;
+  background:var(--black);color:var(--gold);
+  padding:16px 32px;border-radius:var(--radius);
+  min-height:52px;display:inline-flex;align-items:center;gap:10px;
+  transition:background .25s;white-space:nowrap;flex-shrink:0;
+  text-decoration:none;
+}
+.btn-promo:hover{background:#1a1a1a;}
+.btn-promo svg{width:12px;height:12px;stroke:var(--gold);fill:none;stroke-width:2;}
+
+/* ══ FADE UP ══ */
+.fade-up{opacity:0;transform:translateY(24px);transition:opacity .7s var(--ease),transform .7s var(--ease);}
+.fade-up.visible{opacity:1;transform:translateY(0);}
+
+/* ══ RESPONSIVE ══ */
+@media(max-width:1023px){
+  .featured-card{grid-template-columns:1fr;}
+  .featured-img{height:280px;}
+  .articles-grid{grid-template-columns:repeat(2,1fr);}
+  .art-card:nth-child(3n){border-right:.5px solid var(--line);}
+  .art-card:nth-child(2n){border-right:none;}
+  .promo-banner{grid-template-columns:1fr;gap:24px;}
+}
+@media(max-width:639px){
+  :root{--pad:20px;}
+  .ph-inner{grid-template-columns:1fr;}
+  .ph-ghost{display:none;}
+  .articles-grid{grid-template-columns:1fr;}
+  .art-card{border-right:none;}
+  .art-card:nth-child(3n){border-right:none;}
+  .art-card:nth-last-child(-n+3){border-bottom:.5px solid var(--line);}
+  .art-card:last-child{border-bottom:none;}
+}
+</style>
+</head>
+<body data-page="artikel">
+
+<div id="nav-placeholder"></div>
+
+<!-- ══ PAGE HEADER ══ -->
+<header class="page-header">
+  <div class="ph-inner">
+    <div>
+      <nav class="ph-breadcrumb" aria-label="Breadcrumb">
+        <span class="ph-bc">Home</span>
+        <span class="ph-bc-sep">&mdash;</span>
+        <span class="ph-bc ph-bc-cur">Artikel</span>
+      </nav>
+      <div class="ph-eyebrow">
+        <span class="ph-ey-line"></span>
+        <span class="ph-ey-txt">Berita &amp; Panduan</span>
+      </div>
+      <h1 class="ph-title">Artikel<br>&amp; Berita</h1>
+      <p class="ph-sub">Tips perawatan, panduan produk, kampanye terbaru, dan berita seputar teknologi kaca film dan PPF V-KOOL.</p>
+    </div>
+    <div class="ph-ghost" aria-hidden="true">V</div>
+  </div>
+</header>
+
+<!-- ══ FEATURED ARTICLE ══ -->
+<section class="featured-wrap fade-up" aria-label="Artikel Unggulan">
+  <div class="featured-label">
+    <span class="featured-label-line"></span>
+    Artikel Unggulan
+  </div>
+  <a class="featured-card" href="https://www.vkool-indonesia.com" target="_blank" rel="noopener" aria-label="Baca artikel unggulan">
+    <div class="featured-img"></div>
+    <div class="featured-body">
+      <div class="art-cat">
+        <span class="art-cat-dot"></span>
+        Kampanye
+      </div>
+      <h2 class="featured-title">Own Your Drive — Kampanye V-KOOL di GIIAS 2025</h2>
+      <p class="featured-excerpt">V-KOOL hadir di GIIAS 2025 dengan kampanye "Own Your Drive" yang menginspirasi para pecinta otomotif untuk melindungi kendaraan mereka dengan teknologi terdepan. Temukan promo eksklusif dan demo langsung di booth kami.</p>
+      <div class="featured-meta">
+        <span class="meta-date">15 Agustus 2025</span>
+        <span class="meta-sep"></span>
+        <span class="meta-read">3 menit baca</span>
+      </div>
+      <span class="btn-read">
+        Baca Selengkapnya
+        <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </span>
+    </div>
+  </a>
+</section>
+
+<!-- ══ ARTICLES GRID ══ -->
+<section class="grid-wrap" aria-label="Artikel Terbaru">
+  <div class="grid-header fade-up">
+    <h2 class="grid-title">Artikel Terbaru</h2>
+    <span class="grid-count">6 artikel</span>
+  </div>
+
+  <div class="articles-grid fade-up">
+
+    <!-- Card 1 — Promo -->
+    <a class="art-card" href="https://www.tokopedia.com/vkool" target="_blank" rel="noopener">
+      <div class="art-card-lline" aria-hidden="true"></div>
+      <div class="art-img">
+        <img src="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=800&q=80" alt="Promo Akhir Tahun V-KOOL" loading="lazy">
+        <div class="art-img-overlay"></div>
+        <span class="art-promo-badge">Promo</span>
+      </div>
+      <div class="art-body">
+        <div class="art-cat"><span class="art-cat-dot"></span>Promo &amp; Event</div>
+        <h3 class="art-card-title">Promo Akhir Tahun — Diskon hingga 20% Kaca Film Bangunan</h3>
+        <p class="art-card-excerpt">Dapatkan diskon spesial akhir tahun untuk produk kaca film bangunan V-KOOL. Tersedia di seluruh dealer resmi dan Tokopedia Official Store.</p>
+        <div class="art-card-footer">
+          <div class="art-card-meta">
+            <span class="art-card-date">10 Des 2025</span>
+          </div>
+          <span class="art-card-link">
+            Lihat Promo
+            <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+        </div>
+      </div>
+    </a>
+
+    <!-- Card 2 — Tips -->
+    <a class="art-card" href="https://www.vkool-indonesia.com" target="_blank" rel="noopener">
+      <div class="art-card-lline" aria-hidden="true"></div>
+      <div class="art-img">
+        <img src="https://images.unsplash.com/photo-1625047509168-a7026f36de04?w=800&q=80" alt="Tips Perawatan Kaca Film" loading="lazy">
+        <div class="art-img-overlay"></div>
+      </div>
+      <div class="art-body">
+        <div class="art-cat"><span class="art-cat-dot"></span>Tips &amp; Panduan</div>
+        <h3 class="art-card-title">5 Cara Merawat Kaca Film Agar Tahan Lama</h3>
+        <p class="art-card-excerpt">Kaca film yang dirawat dengan benar bisa bertahan hingga 10 tahun. Pelajari cara membersihkan, menghindari goresan, dan menjaga kejernihan optimal.</p>
+        <div class="art-card-footer">
+          <div class="art-card-meta">
+            <span class="art-card-date">2 Des 2025</span>
+          </div>
+          <span class="art-card-link">
+            Baca Artikel
+            <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+        </div>
+      </div>
+    </a>
+
+    <!-- Card 3 — PPF Launch -->
+    <a class="art-card" href="https://www.vkool-indonesia.com" target="_blank" rel="noopener">
+      <div class="art-card-lline" aria-hidden="true"></div>
+      <div class="art-img">
+        <img src="https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=800&q=80" alt="V-KOOL PPF Tetrashield" loading="lazy">
+        <div class="art-img-overlay"></div>
+        <span class="art-promo-badge">Baru</span>
+      </div>
+      <div class="art-body">
+        <div class="art-cat"><span class="art-cat-dot"></span>PPF</div>
+        <h3 class="art-card-title">V-KOOL Perkenalkan PPF Tetrashield — Generasi Terbaru Paint Protection</h3>
+        <p class="art-card-excerpt">Teknologi Tetrashield menghadirkan lapisan perlindungan cat terkuat yang pernah ada. Self-healing, anti-gores, dan anti-yellowing dalam satu solusi.</p>
+        <div class="art-card-footer">
+          <div class="art-card-meta">
+            <span class="art-card-date">28 Nov 2025</span>
+          </div>
+          <span class="art-card-link">
+            Baca Artikel
+            <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+        </div>
+      </div>
+    </a>
+
+    <!-- Card 4 — Technology -->
+    <a class="art-card" href="https://www.vkool-indonesia.com" target="_blank" rel="noopener">
+      <div class="art-card-lline" aria-hidden="true"></div>
+      <div class="art-img">
+        <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800&q=80" alt="Teknologi XIR V-KOOL" loading="lazy">
+        <div class="art-img-overlay"></div>
+      </div>
+      <div class="art-body">
+        <div class="art-cat"><span class="art-cat-dot"></span>Teknologi</div>
+        <h3 class="art-card-title">Apa itu XIR? Teknologi di Balik Kaca Film V-KOOL</h3>
+        <p class="art-card-excerpt">XIR adalah proses sputtering nano-lapisan emas dan perak dari Silicon Valley yang memberikan penolakan inframerah hingga 99% tanpa menggelapkan kaca.</p>
+        <div class="art-card-footer">
+          <div class="art-card-meta">
+            <span class="art-card-date">20 Nov 2025</span>
+          </div>
+          <span class="art-card-link">
+            Baca Artikel
+            <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+        </div>
+      </div>
+    </a>
+
+    <!-- Card 5 — Promo Tokopedia -->
+    <a class="art-card" href="https://www.tokopedia.com/vkool" target="_blank" rel="noopener">
+      <div class="art-card-lline" aria-hidden="true"></div>
+      <div class="art-img">
+        <img src="https://images.unsplash.com/photo-1555215695-3004980ad54e?w=800&q=80" alt="V-KOOL di Tokopedia" loading="lazy">
+        <div class="art-img-overlay"></div>
+        <span class="art-promo-badge">Eksklusif</span>
+      </div>
+      <div class="art-body">
+        <div class="art-cat"><span class="art-cat-dot"></span>Promo &amp; Event</div>
+        <h3 class="art-card-title">Kini Tersedia di Tokopedia — Klaim Voucher Pemasangan Gratis</h3>
+        <p class="art-card-excerpt">V-KOOL resmi hadir di Tokopedia Discovery Page. Beli produk kaca film otomotif online dan klaim voucher pemasangan gratis di dealer terdekat Anda.</p>
+        <div class="art-card-footer">
+          <div class="art-card-meta">
+            <span class="art-card-date">12 Nov 2025</span>
+          </div>
+          <span class="art-card-link">
+            Klaim Sekarang
+            <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+        </div>
+      </div>
+    </a>
+
+    <!-- Card 6 — Bangunan Tips -->
+    <a class="art-card" href="https://www.vkool-indonesia.com" target="_blank" rel="noopener">
+      <div class="art-card-lline" aria-hidden="true"></div>
+      <div class="art-img">
+        <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80" alt="Kaca Film Bangunan Tips" loading="lazy">
+        <div class="art-img-overlay"></div>
+      </div>
+      <div class="art-body">
+        <div class="art-cat"><span class="art-cat-dot"></span>Bangunan</div>
+        <h3 class="art-card-title">Berapa Lama Kaca Film Bangunan Bisa Bertahan?</h3>
+        <p class="art-card-excerpt">Kaca film bangunan V-KOOL dirancang untuk ketahanan jangka panjang. Pelajari faktor yang mempengaruhi daya tahan dan cara memaksimalkan investasi Anda.</p>
+        <div class="art-card-footer">
+          <div class="art-card-meta">
+            <span class="art-card-date">5 Nov 2025</span>
+          </div>
+          <span class="art-card-link">
+            Baca Artikel
+            <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+        </div>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<!-- ══ LOAD MORE ══ -->
+<div class="load-more-wrap fade-up">
+  <button class="btn-load-more" id="btnLoadMore">
+    Lihat Lebih Banyak
+    <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+  </button>
+</div>
+
+<div id="footer-placeholder"></div>
+
+<script>
+/* Fade up */
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target);} });
+}, {threshold:0.08, rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.fade-up').forEach(el => io.observe(el));
+
+/* Load more — placeholder, swap hrefs when real articles exist */
+document.getElementById('btnLoadMore').addEventListener('click', function() {
+  this.textContent = 'Semua artikel telah ditampilkan';
+  this.disabled = true;
+  this.style.opacity = '0.4';
+  this.style.cursor = 'default';
+});
+</script>
+<script src="nav-footer.js"></script>
+</body>
+</html>
