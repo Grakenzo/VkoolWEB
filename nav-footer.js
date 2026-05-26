@@ -18,6 +18,7 @@
     portfolio:    'vkool_portfolio.html',
     faq:          'vkool_faq.html',
     cek_harga:    'vkool_cek_harga.html',
+    cek_garansi:  'vkool_cek_garansi.html',
   };
 
   const cur = document.body.getAttribute('data-page') || 'home';
@@ -142,7 +143,7 @@
       <div class="nav-dropdown-panel cols-1">
         <a class="dd-item" href="#"><div class="dd-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div class="dd-text"><span class="dd-title">Artikel</span><span class="dd-sub">Berita &amp; panduan produk</span></div></a>
         <a class="dd-item" href="#"><div class="dd-icon"><svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg></div><div class="dd-text"><span class="dd-title">Videos</span><span class="dd-sub">Lihat instalasi &amp; review</span></div></a>
-        <a class="dd-item" href="#"><div class="dd-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div><div class="dd-text"><span class="dd-title">Cek Garansi</span><span class="dd-sub">Verifikasi status garansi produk</span></div></a>
+        <a class="dd-item" href="${PAGES.cek_garansi}"><div class="dd-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div><div class="dd-text"><span class="dd-title">Cek Garansi</span><span class="dd-sub">Verifikasi status garansi produk</span></div></a>
         <a class="dd-item" href="${PAGES.faq}"><div class="dd-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div class="dd-text"><span class="dd-title">FAQ</span><span class="dd-sub">Pertanyaan yang sering diajukan</span></div></a>
       </div>
     </div>
@@ -184,7 +185,7 @@
     <div>
       <div class="footer-col-title">Contact</div>
       <a class="footer-link" href="#">Enquiry</a>
-      <a class="footer-link" href="#">Garansi Elektronik</a>
+      <a class="footer-link" href="${PAGES.cek_garansi}">Garansi Elektronik</a>
       <a class="footer-link" href="#">Contact Us</a>
     </div>
   </div>

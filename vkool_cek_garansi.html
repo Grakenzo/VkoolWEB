@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cek Garansi — Verifikasi Kartu Garansi V-KOOL</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ══ TOKENS ══ */
+:root{
+  --black:#0a0a0a;--dark:#111111;--mid:#1a1a1a;--line:#222222;--line2:#2e2e2e;
+  --gold:#CDB182;--gold2:#b89a6a;--gold-h:#b89a6a;--gold-dim:rgba(205,177,130,.08);
+  --ash:#EBEBEB;--muted:#999;--dim:#555;--white:#fff;
+  --success:#6B9E78;--success-bg:rgba(107,158,120,.08);--success-border:rgba(107,158,120,.3);
+  --warn:#CDB182;--warn-bg:rgba(205,177,130,.08);--warn-border:rgba(205,177,130,.35);
+  --error:#C0565A;--error-bg:rgba(192,86,90,.06);--error-border:rgba(192,86,90,.28);
+  --nav-h:68px;--pad:56px;--ease:cubic-bezier(.25,0,.1,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Roboto',sans-serif;background:var(--black);color:var(--ash);overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+a{text-decoration:none;color:inherit;}
+button{font-family:inherit;cursor:pointer;border:none;background:none;}
+a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offset:3px;}
+
+/* ══ PAGE HEADER ══ */
+.page-header{
+  background:var(--dark);margin-top:var(--nav-h);
+  padding:72px var(--pad) 64px;
+  border-bottom:.5px solid var(--line);
+  position:relative;overflow:hidden;
+}
+.page-header::before{
+  content:'';position:absolute;inset:0;
+  background-image:linear-gradient(rgba(205,177,130,.025).5px,transparent .5px),linear-gradient(90deg,rgba(205,177,130,.025).5px,transparent .5px);
+  background-size:80px 80px;pointer-events:none;
+}
+.ph-inner{position:relative;z-index:1;display:grid;grid-template-columns:1fr auto;align-items:end;gap:40px;}
+.ph-breadcrumb{display:flex;align-items:center;gap:10px;margin-bottom:24px;}
+.ph-bc{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:.14em;color:var(--dim);text-transform:uppercase;}
+.ph-bc-sep{color:var(--line2);}
+.ph-bc-cur{color:var(--gold);}
+.ph-eyebrow{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.ph-ey-line{width:20px;height:.5px;background:var(--gold);}
+.ph-ey-txt{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:.22em;color:var(--gold);text-transform:uppercase;font-weight:300;}
+.ph-title{font-family:'Oswald',sans-serif;font-size:clamp(32px,5vw,64px);letter-spacing:.06em;font-weight:400;text-transform:uppercase;color:var(--white);line-height:1.0;margin-bottom:14px;}
+.ph-sub{font-size:15px;color:var(--muted);font-weight:300;line-height:1.7;max-width:52ch;}
+/* Ghost number right side — same pattern as about/dealers */
+.ph-ghost{
+  font-family:'Oswald',sans-serif;font-size:clamp(72px,12vw,160px);
+  font-weight:200;color:rgba(205,177,130,.05);
+  letter-spacing:-.04em;line-height:.85;
+  flex-shrink:0;pointer-events:none;user-select:none;
+  align-self:flex-end;
+}
+
+/* ══ STEP PROGRESS BAR ══ */
+.progress-bar{
+  background:var(--dark);border-bottom:.5px solid var(--line);
+  padding:0 var(--pad);
+  position:sticky;top:var(--nav-h);z-index:100;
+}
+.pb-inner{display:flex;align-items:stretch;max-width:700px;}
+.pb-step{
+  display:flex;align-items:center;gap:12px;
+  padding:20px 0;
+  position:relative;
+}
+/* Connector line between steps */
+.pb-step:not(:last-child){
+  flex:1;
+  padding-right:32px;
+}
+.pb-step:not(:last-child)::after{
+  content:'';position:absolute;right:12px;top:50%;
+  transform:translateY(-50%);
+  width:12px;height:.5px;
+  background:var(--line2);
+  transition:background .4s;
+}
+.pb-step.done:not(:last-child)::after{background:rgba(205,177,130,.35);}
+.pb-dot{
+  width:28px;height:28px;border-radius:50%;
+  border:.5px solid var(--line2);background:var(--mid);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+  transition:all .35s var(--ease);
+}
+.pb-dot-num{font-family:'Oswald',sans-serif;font-size:11px;color:var(--dim);}
+.pb-dot-check{display:none;width:11px;height:11px;stroke:var(--gold);fill:none;stroke-width:2.5;}
+.pb-step.active .pb-dot{border-color:var(--gold);background:var(--gold);}
+.pb-step.active .pb-dot-num{color:var(--black);}
+.pb-step.done .pb-dot{border-color:rgba(205,177,130,.5);background:rgba(205,177,130,.1);}
+.pb-step.done .pb-dot-num{display:none;}
+.pb-step.done .pb-dot-check{display:block;}
+.pb-labels{display:flex;flex-direction:column;gap:2px;}
+.pb-label{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);transition:color .3s;}
+.pb-title{font-family:'Oswald',sans-serif;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--dim);transition:color .3s;}
+.pb-step.active .pb-label{color:rgba(205,177,130,.7);}
+.pb-step.active .pb-title{color:var(--white);}
+.pb-step.done .pb-label,.pb-step.done .pb-title{color:var(--muted);}
+
+/* ══ MAIN CONTENT WRAPPER ══ */
+.main{background:var(--black);padding:72px var(--pad) 96px;min-height:60vh;}
+.main-inner{max-width:700px;margin:0 auto;}
+
+/* Panel transitions — fade + slide up */
+.panel{display:none;}
+.panel.active{display:block;animation:panelIn .35s var(--ease) both;}
+@keyframes panelIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+.panel-eyebrow{
+  display:flex;align-items:center;gap:12px;
+  font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:.20em;
+  color:var(--gold);text-transform:uppercase;margin-bottom:12px;
+}
+.panel-ey-line{width:14px;height:.5px;background:var(--gold);}
+.panel-title{font-family:'Oswald',sans-serif;font-size:clamp(20px,2.5vw,28px);letter-spacing:.06em;text-transform:uppercase;color:var(--white);font-weight:400;line-height:1.1;margin-bottom:8px;}
+.panel-sub{font-size:14px;color:var(--muted);font-weight:300;line-height:1.7;margin-bottom:40px;max-width:54ch;}
+
+/* ══════════════════════════════════════
+   STEP 1 — PRODUCT SELECTOR
+   Three large cards. Not dropdowns, not
+   radio buttons. Cards are scannable,
+   show the warranty code format as a hint
+   so users know which card to look for.
+   Hick's Law: only 3 choices at this step.
+══════════════════════════════════════ */
+.product-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:0;background:var(--line);
+  border:.5px solid var(--line);
+  margin-bottom:32px;
+}
+
+.product-card{
+  background:var(--dark);
+  padding:28px 22px 24px;
+  cursor:pointer;
+  position:relative;overflow:hidden;
+  display:flex;flex-direction:column;
+  transition:background .25s var(--ease);
+  /* ios-hig: tap target well above 44px — these are ~160px tall */
+  touch-action:manipulation;
+}
+/* Top gold reveal line — the primary selection indicator */
+.product-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;
+  height:2px;background:var(--gold);
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .3s var(--ease);
+}
+.product-card:hover{background:#131313;}
+.product-card:hover::before{transform:scaleX(1);}
+.product-card.selected{background:rgba(205,177,130,.05);}
+.product-card.selected::before{transform:scaleX(1);}
+
+/* Selection dot — top right. Provides secondary confirmation of selection. */
+.pc-check{
+  position:absolute;top:12px;right:12px;
+  width:20px;height:20px;border-radius:50%;
+  border:.5px solid var(--line2);background:var(--mid);
+  display:flex;align-items:center;justify-content:center;
+  transition:all .25s var(--ease);flex-shrink:0;
+}
+.product-card.selected .pc-check{
+  border-color:var(--gold);background:var(--gold);
+}
+.pc-check svg{width:9px;height:9px;stroke:var(--black);fill:none;stroke-width:3;opacity:0;transition:opacity .2s;}
+.product-card.selected .pc-check svg{opacity:1;}
+
+/* Icon box — 48×48px, matches the icon badge system across other pages */
+.pc-icon{
+  width:48px;height:48px;
+  border:.5px solid rgba(205,177,130,.25);
+  background:rgba(205,177,130,.05);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:18px;
+  transition:border-color .25s,background .25s;
+  position:relative;
+}
+/* Lexus corner accent — consistent with site icon badge language */
+.pc-icon::before{
+  content:'';position:absolute;top:-1px;right:-1px;
+  width:8px;height:8px;
+  border-top:.5px solid rgba(205,177,130,.4);
+  border-right:.5px solid rgba(205,177,130,.4);
+  opacity:0;transition:opacity .25s;
+}
+.product-card.selected .pc-icon::before,
+.product-card:hover .pc-icon::before{opacity:1;}
+.pc-icon svg{width:20px;height:20px;stroke:var(--gold);fill:none;stroke-width:1.3;}
+.product-card.selected .pc-icon{
+  border-color:rgba(205,177,130,.5);
+  background:rgba(205,177,130,.1);
+}
+
+.pc-category{
+  font-family:'Oswald',sans-serif;font-size:8px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--dim);margin-bottom:5px;
+  transition:color .25s;
+}
+.product-card.selected .pc-category{color:rgba(205,177,130,.7);}
+.pc-name{
+  font-family:'Oswald',sans-serif;font-size:15px;letter-spacing:.05em;
+  text-transform:uppercase;color:var(--white);font-weight:400;
+  line-height:1.1;margin-bottom:8px;
+}
+.pc-desc{
+  font-size:12px;color:var(--dim);font-weight:300;
+  line-height:1.55;margin-bottom:auto;padding-bottom:16px;
+}
+/* Code format hint — tells the user what the code looks like for this product */
+.pc-format{
+  font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:.12em;
+  color:var(--line2);text-transform:uppercase;
+  padding-top:14px;border-top:.5px solid var(--line);
+  transition:color .3s;
+}
+.product-card.selected .pc-format{color:rgba(205,177,130,.45);}
+
+/* Step 1 continue button */
+.s1-footer{display:flex;justify-content:flex-end;padding-top:4px;}
+
+/* ══════════════════════════════════════
+   STEP 2 — CODE INPUT
+   One field. Large. Clear format hints.
+   The input is the only thing on screen —
+   maximum ability (Fogg model).
+══════════════════════════════════════ */
+/* Selected product recap — so user never forgets what they picked */
+.product-recap{
+  display:flex;align-items:center;gap:14px;
+  background:var(--dark);border:.5px solid var(--line);
+  padding:14px 18px;margin-bottom:36px;
+  transition:border-color .25s;
+}
+.product-recap:hover{border-color:var(--line2);}
+.pr-icon{
+  width:34px;height:34px;flex-shrink:0;
+  border:.5px solid rgba(205,177,130,.3);
+  background:rgba(205,177,130,.06);
+  display:flex;align-items:center;justify-content:center;
+}
+.pr-icon svg{width:15px;height:15px;stroke:var(--gold);fill:none;stroke-width:1.4;}
+.pr-text{}
+.pr-label{font-family:'Oswald',sans-serif;font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin-bottom:2px;}
+.pr-value{font-family:'Oswald',sans-serif;font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:var(--white);}
+/* Change link on right */
+.pr-change{
+  margin-left:auto;font-family:'Oswald',sans-serif;font-size:10px;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--dim);
+  flex-shrink:0;transition:color .2s;cursor:pointer;
+  min-height:44px;display:flex;align-items:center;padding:0 4px;
+}
+.pr-change:hover{color:var(--gold);}
+
+/* Code input field */
+.code-field-label{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:10px;
+}
+.cfl-main{
+  font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--muted);font-weight:400;
+}
+.cfl-hint{font-size:12px;color:var(--dim);font-weight:300;letter-spacing:0;text-transform:none;}
+.code-wrap{position:relative;}
+.code-input{
+  width:100%;
+  background:var(--dark);
+  border:.5px solid var(--line2);
+  color:var(--ash);
+  /* Oswald for code — feels authoritative, like a serial number */
+  font-family:'Oswald',sans-serif;
+  font-size:clamp(18px,2.5vw,24px);
+  letter-spacing:.20em;
+  text-transform:uppercase;
+  font-weight:300;
+  /* ios-hig: input height well above 44px */
+  padding:20px 56px 20px 22px;
+  border-radius:2px;
+  transition:border-color .3s,background .25s;
+  /* Prevent zoom on mobile — 16px base prevents iOS auto-zoom */
+  font-size:max(16px, clamp(16px, 2.5vw, 24px));
+}
+.code-input::placeholder{color:rgba(235,235,235,.1);font-size:max(14px, 1.8vw);letter-spacing:.10em;}
+.code-input:focus{outline:none;border-color:var(--gold);background:rgba(205,177,130,.03);}
+.code-input.has-error{border-color:var(--error);}
+.code-input.is-valid{border-color:rgba(107,158,120,.5);}
+
+/* Clear X inside input */
+.code-clear{
+  position:absolute;right:16px;top:50%;transform:translateY(-50%);
+  width:28px;height:28px;border-radius:50%;
+  border:.5px solid var(--line2);background:rgba(255,255,255,.04);
+  display:none;align-items:center;justify-content:center;
+  cursor:pointer;transition:border-color .2s,background .2s;
+}
+.code-clear:hover{border-color:var(--dim);background:rgba(255,255,255,.07);}
+.code-clear svg{width:10px;height:10px;stroke:var(--dim);fill:none;stroke-width:2.5;}
+.code-clear.show{display:flex;}
+
+/* Format hint below input */
+.code-hint{
+  display:flex;align-items:flex-start;gap:8px;
+  margin-top:10px;font-size:13px;color:var(--dim);font-weight:300;line-height:1.5;
+}
+.code-hint svg{width:13px;height:13px;stroke:var(--dim);fill:none;stroke-width:1.5;flex-shrink:0;margin-top:1px;}
+.code-hint-example{
+  font-family:'Oswald',sans-serif;
+  color:rgba(205,177,130,.4);letter-spacing:.12em;font-size:12px;
+}
+/* Inline error */
+.code-error{
+  display:none;align-items:flex-start;gap:8px;
+  margin-top:10px;font-size:13px;color:var(--error);font-weight:300;line-height:1.5;
+}
+.code-error svg{width:13px;height:13px;stroke:var(--error);fill:none;stroke-width:2;flex-shrink:0;margin-top:1px;}
+.code-error.show{display:flex;}
+
+/* Step 2 actions */
+.s2-actions{display:flex;align-items:center;justify-content:space-between;margin-top:36px;gap:16px;}
+.btn-back{
+  font-family:'Oswald',sans-serif;font-size:12px;letter-spacing:.10em;text-transform:uppercase;
+  font-weight:300;color:var(--dim);
+  display:flex;align-items:center;gap:8px;transition:color .25s;
+  min-height:44px;padding:8px 0;background:none;border:none;cursor:pointer;
+}
+.btn-back:hover{color:var(--ash);}
+.btn-back svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.5;}
+
+/* ══ PRIMARY BUTTON — used across both steps ══ */
+.btn-primary{
+  font-family:'Oswald',sans-serif;font-size:13px;letter-spacing:.12em;
+  text-transform:uppercase;font-weight:400;
+  background:var(--gold);color:var(--black);
+  padding:0 36px;height:52px;border-radius:2px;
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  transition:background .25s,opacity .2s;cursor:pointer;border:none;
+  /* Minimum touch target */
+  min-width:160px;
+}
+.btn-primary:hover:not(:disabled){background:var(--gold-h);}
+.btn-primary:disabled{opacity:.45;cursor:not-allowed;}
+.btn-primary svg{width:13px;height:13px;stroke:var(--black);fill:none;stroke-width:2;}
+/* Loading state */
+.btn-primary .btn-spinner{display:none;width:14px;height:14px;border:2px solid rgba(0,0,0,.2);border-top-color:var(--black);border-radius:50%;animation:spin .65s linear infinite;}
+.btn-primary.loading .btn-spinner{display:block;}
+.btn-primary.loading .btn-label{display:none;}
+.btn-primary.loading .btn-arrow{display:none;}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ══════════════════════════════════════
+   STEP 3 — RESULT
+   The result is the REWARD.
+   It must feel like a premium certificate —
+   authoritative, clear, trustworthy.
+   Not a table. Not a list. A document.
+══════════════════════════════════════ */
+
+/* Status Banner — THE most important element on the page */
+.status-banner{
+  display:flex;align-items:center;gap:14px;
+  padding:20px 24px;margin-bottom:2px;
+  border:.5px solid transparent;
+}
+.status-banner.s-active{background:var(--success-bg);border-color:var(--success-border);}
+.status-banner.s-expiring{background:var(--warn-bg);border-color:var(--warn-border);}
+.status-banner.s-expired{background:var(--error-bg);border-color:var(--error-border);}
+.status-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.s-active .status-dot{background:var(--success);}
+.s-expiring .status-dot{background:var(--warn);}
+.s-expired .status-dot{background:var(--error);}
+.status-text{}
+.status-label{
+  font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:.18em;
+  text-transform:uppercase;font-weight:400;display:block;margin-bottom:2px;
+}
+.s-active .status-label{color:var(--success);}
+.s-expiring .status-label{color:var(--warn);}
+.s-expired .status-label{color:var(--error);}
+.status-desc{font-size:13px;font-weight:300;color:var(--muted);}
+/* Days remaining pill on far right */
+.status-days{
+  margin-left:auto;flex-shrink:0;
+  font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:.10em;
+  text-transform:uppercase;font-weight:300;color:var(--dim);
+  text-align:right;
+}
+
+/* Certificate card */
+.cert-card{
+  background:var(--dark);
+  border:.5px solid var(--line);
+  overflow:hidden;margin-bottom:20px;
+}
+/* Header of card — product name + series + logo mark */
+.cert-header{
+  padding:28px 32px;border-bottom:.5px solid var(--line);
+  display:grid;grid-template-columns:1fr auto;align-items:start;gap:16px;
+  position:relative;
+}
+/* Gold gradient top line — marks this as a certificate */
+.cert-header::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1.5px;
+  background:linear-gradient(to right,var(--gold) 0%,rgba(205,177,130,.15) 60%,transparent 100%);
+}
+.cert-product{
+  font-family:'Oswald',sans-serif;font-size:clamp(16px,2vw,22px);
+  letter-spacing:.05em;text-transform:uppercase;color:var(--white);
+  font-weight:400;margin-bottom:4px;
+}
+.cert-series{font-size:13px;color:var(--muted);font-weight:300;}
+.cert-eyebrow{
+  font-family:'Oswald',sans-serif;font-size:8px;letter-spacing:.20em;
+  text-transform:uppercase;color:var(--gold);margin-bottom:8px;
+}
+/* V-KOOL watermark top-right */
+.cert-watermark{
+  font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:.24em;
+  color:rgba(205,177,130,.2);text-transform:uppercase;font-weight:400;
+  text-align:right;
+}
+
+/* Details grid — 2 columns, clean fields */
+.cert-fields{
+  display:grid;grid-template-columns:1fr 1fr;
+}
+.cert-field{
+  padding:20px 32px;
+  border-bottom:.5px solid var(--line);border-right:.5px solid var(--line);
+}
+.cert-field:nth-child(2n){border-right:none;}
+.cert-field:nth-last-child(-n+2){border-bottom:none;}
+.cert-field.full{grid-column:1/-1;border-right:none;}
+.cert-field.full:last-child{border-bottom:none;}
+.cf-label{
+  font-family:'Oswald',sans-serif;font-size:8px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--dim);margin-bottom:6px;
+}
+.cf-val{
+  font-family:'Oswald',sans-serif;font-size:14px;letter-spacing:.04em;
+  color:var(--ash);font-weight:400;line-height:1.3;
+}
+.cf-val.mono{letter-spacing:.14em;color:var(--muted);font-size:13px;}
+/* Expiry color coding */
+.cf-val.active-color{color:var(--success);}
+.cf-val.warn-color{color:var(--warn);}
+.cf-val.error-color{color:var(--error);}
+
+/* Coverage chips */
+.cert-coverage{
+  padding:20px 32px;border-top:.5px solid var(--line);
+}
+.cov-label{
+  font-family:'Oswald',sans-serif;font-size:8px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--dim);margin-bottom:12px;
+}
+.cov-chips{display:flex;flex-wrap:wrap;gap:6px;}
+.cov-chip{
+  display:flex;align-items:center;gap:6px;
+  font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--muted);
+  border:.5px solid var(--line);padding:5px 12px;
+  transition:border-color .25s;
+}
+.cov-chip svg{width:10px;height:10px;stroke:var(--success);fill:none;stroke-width:2.5;flex-shrink:0;}
+
+/* Result CTA row */
+.result-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:4px;}
+.btn-res-outline{
+  font-family:'Oswald',sans-serif;font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:300;
+  background:transparent;color:var(--ash);padding:0 22px;height:48px;border-radius:2px;
+  display:inline-flex;align-items:center;gap:8px;
+  border:.5px solid rgba(235,235,235,.2);transition:border-color .25s;cursor:pointer;
+  min-height:44px;
+}
+.btn-res-outline:hover{border-color:rgba(235,235,235,.5);}
+.btn-res-ghost{
+  font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:.10em;text-transform:uppercase;font-weight:300;
+  color:var(--dim);display:inline-flex;align-items:center;gap:7px;
+  transition:color .25s;cursor:pointer;min-height:44px;padding:0 8px;
+}
+.btn-res-ghost:hover{color:var(--ash);}
+.btn-res-ghost svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:1.5;}
+
+/* ══ NOT FOUND STATE ══ */
+.not-found{
+  background:var(--dark);border:.5px solid var(--error-border);
+  padding:52px 40px;text-align:center;
+}
+.nf-icon{width:52px;height:52px;margin:0 auto 20px;opacity:.35;}
+.nf-icon svg{width:52px;height:52px;stroke:var(--error);fill:none;stroke-width:1;}
+.nf-title{font-family:'Oswald',sans-serif;font-size:22px;letter-spacing:.06em;text-transform:uppercase;color:var(--ash);margin-bottom:10px;}
+.nf-code{
+  font-family:'Oswald',sans-serif;font-size:14px;letter-spacing:.14em;
+  color:var(--muted);margin-bottom:16px;
+  background:rgba(255,255,255,.03);border:.5px solid var(--line);
+  padding:8px 18px;display:inline-block;
+}
+.nf-text{font-size:14px;color:var(--muted);font-weight:300;line-height:1.7;max-width:44ch;margin:0 auto 24px;}
+.nf-hints{
+  background:rgba(192,86,90,.04);border:.5px solid var(--error-border);
+  padding:16px 20px;margin-bottom:28px;
+  text-align:left;
+}
+.nf-hints-title{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--error);margin-bottom:10px;}
+.nf-hint-item{font-size:13px;color:var(--muted);font-weight:300;line-height:1.6;display:flex;align-items:flex-start;gap:8px;margin-bottom:4px;}
+.nf-hint-item::before{content:'·';color:var(--dim);flex-shrink:0;}
+.nf-actions{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;}
+
+/* ══ FALLBACK CTA ══ */
+.fallback{
+  background:var(--gold);
+  padding:52px var(--pad);
+  display:flex;align-items:center;justify-content:space-between;
+  gap:32px;flex-wrap:wrap;
+}
+.fb-eyebrow{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(10,10,10,.5);margin-bottom:8px;}
+.fb-title{font-family:'Oswald',sans-serif;font-size:clamp(18px,2.5vw,26px);letter-spacing:.06em;text-transform:uppercase;color:var(--black);font-weight:400;line-height:1.1;}
+.fb-btns{display:flex;gap:10px;flex-shrink:0;flex-wrap:wrap;}
+.btn-fb-dark{font-family:'Oswald',sans-serif;font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:400;background:var(--black);color:var(--gold);padding:0 24px;height:48px;border-radius:2px;display:inline-flex;align-items:center;gap:8px;transition:background .25s;text-decoration:none;min-height:44px;}
+.btn-fb-dark:hover{background:#111;}
+.btn-fb-outline-dark{font-family:'Oswald',sans-serif;font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:300;background:transparent;color:var(--black);padding:0 20px;height:48px;border-radius:2px;display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(10,10,10,.3);transition:border-color .25s;cursor:pointer;min-height:44px;}
+.btn-fb-outline-dark:hover{border-color:rgba(10,10,10,.7);}
+
+/* ══ FOOTER ══ */
+.footer{background:var(--black);border-top:.5px solid var(--line);padding:64px var(--pad) 32px;}
+.footer-top{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:56px;margin-bottom:56px;}
+.footer-logo{font-family:'Oswald',sans-serif;font-size:15px;letter-spacing:.28em;color:var(--gold);font-weight:400;margin-bottom:14px;}
+.footer-tagline{font-size:13px;color:var(--dim);line-height:1.65;max-width:220px;font-weight:300;}
+.footer-col-title{font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:.16em;color:var(--ash);text-transform:uppercase;font-weight:400;margin-bottom:18px;}
+.footer-link{font-size:13px;color:var(--dim);display:block;margin-bottom:11px;transition:color .25s;font-weight:300;}
+.footer-link:hover,.footer-link.active{color:var(--gold);}
+.footer-bottom{border-top:.5px solid var(--line);padding-top:24px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;}
+.footer-copy{font-size:12px;color:#333;font-weight:300;}
+.footer-social{display:flex;gap:10px;}
+.social-btn{width:34px;height:34px;border-radius:50%;border:.5px solid var(--line2);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:border-color .25s;}
+.social-btn:hover{border-color:var(--gold);}
+.social-btn svg{width:13px;height:13px;stroke:var(--dim);fill:none;stroke-width:1.5;transition:stroke .25s;}
+.social-btn:hover svg{stroke:var(--gold);}
+
+/* ══ RESPONSIVE ══ */
+@media(max-width:1023px){
+  :root{--pad:32px;}
+  .nav-links,.nav-right{display:none;}
+  .ph-inner{grid-template-columns:1fr;}
+  .ph-ghost{display:none;}
+  .footer-top{grid-template-columns:1fr 1fr;gap:40px;}
+  .footer-bottom{flex-direction:column;align-items:flex-start;gap:20px;}
+  .fallback{flex-direction:column;align-items:flex-start;}
+  .pb-title{display:none;}
+}
+@media(max-width:640px){
+  :root{--pad:20px;--nav-h:56px;}
+  .nav{padding:0 20px;}
+  .nav-logo{font-size:14px;letter-spacing:.22em;}
+  .product-grid{grid-template-columns:1fr;}
+  .cert-fields{grid-template-columns:1fr;}
+  .cert-field{border-right:none;}
+  .cert-field:nth-last-child(-n+2){border-bottom:.5px solid var(--line);}
+  .cert-field:last-child,.cert-field.full:last-child{border-bottom:none;}
+  .s2-actions{flex-direction:column;align-items:stretch;}
+  .btn-back{justify-content:center;}
+  .btn-primary{width:100%;}
+  .result-actions{flex-direction:column;}
+  .btn-primary,.btn-res-outline{width:100%;justify-content:center;}
+  .cert-header{grid-template-columns:1fr;gap:8px;}
+  .cert-watermark{display:none;}
+  .footer-top{grid-template-columns:1fr;gap:32px;}
+  .footer-bottom{flex-direction:column;align-items:flex-start;gap:20px;}
+  .fb-btns{flex-direction:column;width:100%;}
+  .btn-fb-dark,.btn-fb-outline-dark{width:100%;justify-content:center;}
+  .drawer-ctas{padding:24px 20px;}
+  .pb-label{display:none;}
+}
+</style>
+</head>
+<body data-page="cek_garansi">
+
+<div id="nav-placeholder"></div>
+
+<!-- ══ PAGE HEADER ══ -->
+<header class="page-header">
+  <div class="ph-inner">
+    <div>
+      <nav class="ph-breadcrumb" aria-label="Breadcrumb">
+        <span class="ph-bc">Home</span>
+        <span class="ph-bc-sep" style="color:#555555;">&mdash;</span>
+        <span class="ph-bc">Selengkapnya</span>
+        <span class="ph-bc-sep" style="color:#555555;">&mdash;</span>
+        <span class="ph-bc ph-bc-cur">Cek Garansi</span>
+      </nav>
+      <div class="ph-eyebrow"><span class="ph-ey-line"></span><span class="ph-ey-txt">Garansi Elektronik</span></div>
+      <h1 class="ph-title">Cek Status<br>Garansi</h1>
+      <p class="ph-sub">Verifikasi keaslian dan status garansi produk V-KOOL Anda menggunakan kode dari kartu garansi resmi dealer.</p>
+    </div>
+    <!-- Ghost number — architectural typographic element, consistent with About/portfolio pages -->
+    <div class="ph-ghost" aria-hidden="true">G</div>
+  </div>
+</header>
+
+<!-- ══ STEP PROGRESS BAR ══ -->
+<div class="progress-bar" id="progressBar" role="navigation" aria-label="Progress">
+  <div class="pb-inner">
+    <div class="pb-step active" id="ps1">
+      <div class="pb-dot">
+        <span class="pb-dot-num">1</span>
+        <svg class="pb-dot-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div class="pb-labels">
+        <span class="pb-label">Langkah 1</span>
+        <span class="pb-title">Pilih Produk</span>
+      </div>
+    </div>
+    <div class="pb-step" id="ps2">
+      <div class="pb-dot">
+        <span class="pb-dot-num">2</span>
+        <svg class="pb-dot-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div class="pb-labels">
+        <span class="pb-label">Langkah 2</span>
+        <span class="pb-title">Masukkan Kode</span>
+      </div>
+    </div>
+    <div class="pb-step" id="ps3">
+      <div class="pb-dot">
+        <span class="pb-dot-num">3</span>
+        <svg class="pb-dot-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div class="pb-labels">
+        <span class="pb-label">Hasil</span>
+        <span class="pb-title">Status Garansi</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MAIN ══ -->
+<main class="main" id="mainAnchor">
+  <div class="main-inner">
+
+    <!-- ─────────────────────────────────
+      PANEL 1: PRODUCT SELECTOR
+      Three cards: Otomotif / Bagunan / PPF
+      Each shows icon + name + description
+      + the code format so users know
+      which card to look for on their physical
+      warranty card before clicking.
+    ───────────────────────────────── -->
+    <div class="panel active" id="panel1">
+      <div class="panel-eyebrow"><span class="panel-ey-line"></span>Langkah 1 dari 2</div>
+      <h2 class="panel-title">Pilih Kategori Produk</h2>
+      <p class="panel-sub">Pilih produk V-KOOL yang terpasang pada kendaraan atau bangunan Anda. Format kode garansi berbeda tiap kategori.</p>
+
+      <div class="product-grid" role="radiogroup" aria-label="Kategori produk">
+
+        <!-- OTOMOTIF -->
+        <div class="product-card"
+          data-key="otomotif"
+          data-name="Kaca Film Otomotif"
+          data-format="VK-OTO-YYYY-XXXXXX"
+          data-example="VK-OTO-2024-A3B9C1"
+          data-prefix="OTO"
+          tabindex="0" role="radio" aria-checked="false">
+          <div class="pc-check" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="pc-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v5a2 2 0 0 1-2 2h-2"/>
+              <circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/>
+            </svg>
+          </div>
+          <div class="pc-category">Kaca Film</div>
+          <div class="pc-name">Otomotif</div>
+          <p class="pc-desc">Untuk sedan, SUV, MPV, pick-up, dan semua jenis kendaraan bermotor.</p>
+          <div class="pc-format">Format: VK-OTO-YYYY-XXXXXX</div>
+        </div>
+
+        <!-- BAGUNAN -->
+        <div class="product-card"
+          data-key="bangunan"
+          data-name="Kaca Film Bangunan"
+          data-format="VK-BAN-YYYY-XXXXXX"
+          data-example="VK-BAN-2024-D7E2F5"
+          data-prefix="BAN"
+          tabindex="0" role="radio" aria-checked="false">
+          <div class="pc-check" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="pc-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="3" width="20" height="18" rx="1"/>
+              <line x1="2" y1="9" x2="22" y2="9"/>
+              <line x1="12" y1="9" x2="12" y2="21"/>
+            </svg>
+          </div>
+          <div class="pc-category">Kaca Film</div>
+          <div class="pc-name">Bagunan</div>
+          <p class="pc-desc">Untuk hunian, ruko, gedung perkantoran, dan ruang komersial.</p>
+          <div class="pc-format">Format: VK-BAN-YYYY-XXXXXX</div>
+        </div>
+
+        <!-- PPF -->
+        <div class="product-card"
+          data-key="ppf"
+          data-name="Paint Protection Film"
+          data-format="VK-PPF-YYYY-XXXXXX"
+          data-example="VK-PPF-2024-G1H8J4"
+          data-prefix="PPF"
+          tabindex="0" role="radio" aria-checked="false">
+          <div class="pc-check" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="pc-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+          </div>
+          <div class="pc-category">Paint Protection Film</div>
+          <div class="pc-name">PPF</div>
+          <p class="pc-desc">Film pelindung cat eksterior dan interior kendaraan dari goresan dan benturan.</p>
+          <div class="pc-format">Format: VK-PPF-YYYY-XXXXXX</div>
+        </div>
+
+      </div>
+
+      <div class="s1-footer">
+        <button class="btn-primary" id="btnS1Next" disabled aria-label="Lanjutkan ke langkah 2">
+          <span class="btn-label">Lanjutkan</span>
+          <svg class="btn-arrow" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          <div class="btn-spinner"></div>
+        </button>
+      </div>
+    </div>
+
+    <!-- ─────────────────────────────────
+      PANEL 2: CODE INPUT
+      Single field. Maximum clarity.
+      Product recap shows so user knows
+      they're on the right track.
+      Real-time format validation.
+      Error messages inline, not top-of-form.
+    ───────────────────────────────── -->
+    <div class="panel" id="panel2">
+      <div class="panel-eyebrow"><span class="panel-ey-line"></span>Langkah 2 dari 2</div>
+      <h2 class="panel-title">Masukkan Nomor Garansi</h2>
+      <p class="panel-sub">Nomor garansi tertera pada kartu garansi fisik yang diberikan dealer saat pemasangan selesai.</p>
+
+      <!-- Product recap with change option -->
+      <div class="product-recap" id="productRecap">
+        <div class="pr-icon" id="recapIcon">
+          <svg viewBox="0 0 24 24"><path d="M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v5a2 2 0 0 1-2 2h-2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>
+        </div>
+        <div class="pr-text">
+          <div class="pr-label">Produk Terpilih</div>
+          <div class="pr-value" id="recapName">—</div>
+        </div>
+        <button class="pr-change" id="btnChange" aria-label="Ganti pilihan produk">Ganti</button>
+      </div>
+
+      <!-- Code input -->
+      <div>
+        <div class="code-field-label">
+          <span class="cfl-main" id="cflMain">Nomor Kartu Garansi</span>
+          <span class="cfl-hint">Tidak case-sensitive</span>
+        </div>
+        <div class="code-wrap">
+          <input
+            class="code-input"
+            type="text"
+            id="codeInput"
+            name="warranty-code"
+            autocomplete="off"
+            autocorrect="off"
+            autocapitalize="characters"
+            spellcheck="false"
+            maxlength="20"
+            placeholder="VK-OTO-2024-XXXXXX"
+            aria-label="Nomor kartu garansi"
+            aria-describedby="codeHint codeErrorMsg"
+          >
+          <button class="code-clear" id="codeClear" aria-label="Hapus kode yang dimasukkan">
+            <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+        <div class="code-hint" id="codeHint">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          Contoh: <span class="code-hint-example" id="codeHintExample">VK-OTO-2024-A3B9C1</span>
+        </div>
+        <div class="code-error" id="codeErrorMsg" role="alert" aria-live="polite">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span id="codeErrorText">Format kode tidak sesuai.</span>
+        </div>
+      </div>
+
+      <div class="s2-actions">
+        <button class="btn-back" id="btnBack">
+          <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+          Kembali
+        </button>
+        <button class="btn-primary" id="btnCheck" disabled>
+          <span class="btn-label">Cek Garansi</span>
+          <svg class="btn-arrow" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          <div class="btn-spinner"></div>
+        </button>
+      </div>
+    </div>
+
+    <!-- Panel 3: Result (populated by JS) -->
+    <div class="panel" id="panel3" role="region" aria-live="polite" aria-label="Hasil pengecekan garansi"></div>
+
+  </div>
+</main>
+
+<!-- ══ FALLBACK CTA ══ -->
+<section class="fallback">
+  <div>
+    <div class="fb-eyebrow">Butuh Bantuan?</div>
+    <h2 class="fb-title">Tidak Menemukan<br>Kartu Garansi?</h2>
+  </div>
+  <div class="fb-btns">
+    <a class="btn-fb-dark" href="https://wa.me/6221000000" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:var(--gold);fill:none;stroke-width:1.5"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+      Hubungi Kami
+    </a>
+    <button class="btn-fb-outline-dark">Temukan Dealer</button>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<div id="footer-placeholder"></div>
+
+<script>
+(function(){
+
+/* ── NAV BOILERPLATE ── */
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>40),{passive:true});
+[['ni-ppf','nb-ppf','nd-ppf'],['ni-more','nb-more','nd-more']].forEach(([ii,bi,di])=>{
+  const it=document.getElementById(ii),bt=document.getElementById(bi),dr=document.getElementById(di);
+  if(!it||!bt)return;
+  bt.addEventListener('click',e=>{e.stopPropagation();const o=it.classList.toggle('open');bt.setAttribute('aria-expanded',o);});
+  bt.addEventListener('keydown',e=>{
+    if(e.key==='Escape'){it.classList.remove('open');bt.setAttribute('aria-expanded','false');}
+    if(e.key==='ArrowDown'){e.preventDefault();dr.querySelector('.nav-drop-item')?.focus();}
+  });
+  dr?.addEventListener('keydown',e=>{
+    const items=[...dr.querySelectorAll('.nav-drop-item')];
+    const idx=items.indexOf(document.activeElement);
+    if(e.key==='Escape'){it.classList.remove('open');bt.focus();}
+    if(e.key==='ArrowDown'){e.preventDefault();items[Math.min(idx+1,items.length-1)]?.focus();}
+    if(e.key==='ArrowUp'){e.preventDefault();idx>0?items[idx-1].focus():bt.focus();}
+  });
+  document.addEventListener('click',()=>{it.classList.remove('open');bt.setAttribute('aria-expanded','false');});
+});
+
+/* ── HELPERS ── */
+const $=id=>document.getElementById(id);
+const scrollToMain=()=>$('mainAnchor').scrollIntoView({behavior:'smooth',block:'start'});
+
+function setStep(n){
+  [1,2,3].forEach(i=>{
+    const el=$('ps'+i);
+    el.classList.remove('active','done');
+    if(i<n) el.classList.add('done');
+    else if(i===n) el.classList.add('active');
+  });
+}
+
+function showPanel(id){
+  ['panel1','panel2','panel3'].forEach(p=>$(p).classList.remove('active'));
+  $(id).classList.add('active');
+  setTimeout(scrollToMain,50);
+}
+
+/* Button loading */
+function loadingBtn(btn,fn,delay=1300){
+  btn.classList.add('loading');
+  btn.disabled=true;
+  setTimeout(()=>{btn.classList.remove('loading');fn();},delay);
+}
+
+/* ── STATE ── */
+let selectedProduct=null;
+
+/* ══ STEP 1: PRODUCT SELECTION ══ */
+const cards=document.querySelectorAll('.product-card');
+const btnS1Next=$('btnS1Next');
+
+cards.forEach(card=>{
+  const select=()=>{
+    cards.forEach(c=>{c.classList.remove('selected');c.setAttribute('aria-checked','false');});
+    card.classList.add('selected');
+    card.setAttribute('aria-checked','true');
+    selectedProduct={
+      key: card.dataset.key,
+      name: card.dataset.name,
+      format: card.dataset.format,
+      example: card.dataset.example,
+      prefix: card.dataset.prefix,
+      icon: card.querySelector('.pc-icon').innerHTML
+    };
+    btnS1Next.disabled=false;
+  };
+  card.addEventListener('click',select);
+  card.addEventListener('keydown',e=>{
+    if(e.key==='Enter'||e.key===' '){e.preventDefault();select();}
+    // Arrow key navigation between cards
+    const arr=[...cards];const i=arr.indexOf(card);
+    if(e.key==='ArrowRight'||e.key==='ArrowDown'){e.preventDefault();arr[Math.min(i+1,arr.length-1)].focus();}
+    if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();arr[Math.max(i-1,0)].focus();}
+  });
+});
+
+btnS1Next.addEventListener('click',()=>{
+  if(!selectedProduct)return;
+  loadingBtn(btnS1Next,()=>{
+    // Populate step 2 with selected product
+    $('recapIcon').innerHTML=selectedProduct.icon;
+    $('recapName').textContent=selectedProduct.name;
+    $('codeInput').placeholder=selectedProduct.format;
+    $('codeHintExample').textContent=selectedProduct.example;
+    // Reset code input
+    $('codeInput').value='';
+    $('codeClear').classList.remove('show');
+    $('codeInput').classList.remove('has-error','is-valid');
+    $('codeErrorMsg').classList.remove('show');
+    $('btnCheck').disabled=true;
+    setStep(2);
+    showPanel('panel2');
+    setTimeout(()=>$('codeInput').focus(),350);
+  },600);
+});
+
+/* ══ STEP 2: CODE INPUT ══ */
+const codeInput=$('codeInput');
+const codeClear=$('codeClear');
+const codeErrorMsg=$('codeErrorMsg');
+const codeErrorText=$('codeErrorText');
+const btnCheck=$('btnCheck');
+
+// Format: VK-(OTO|BAN|PPF)-YYYY-XXXXXX
+const CODE_REGEX=/^VK-(OTO|BAN|PPF)-\d{4}-[A-Z0-9]{6}$/i;
+const PREFIX_MAP={otomotif:'OTO',bangunan:'BAN',ppf:'PPF'};
+
+function validateCode(val){
+  const v=val.trim().toUpperCase();
+  if(!v)return{ok:false,msg:''};
+  if(!CODE_REGEX.test(v))
+    return{ok:false,msg:'Format tidak valid. Contoh: '+selectedProduct?.example};
+  const parts=v.split('-');
+  const expectedPrefix=PREFIX_MAP[selectedProduct?.key];
+  if(parts[1]!==expectedPrefix)
+    return{ok:false,msg:`Kode ini bukan untuk "${selectedProduct?.name}". Periksa kembali kategori produk Anda.`};
+  return{ok:true,msg:''};
+}
+
+codeInput.addEventListener('input',()=>{
+  // Auto-uppercase, strip invalid chars
+  const pos=codeInput.selectionStart;
+  codeInput.value=codeInput.value.toUpperCase().replace(/[^A-Z0-9-]/g,'');
+  codeInput.setSelectionRange(pos,pos);
+
+  const empty=!codeInput.value.trim();
+  codeClear.classList.toggle('show',!empty);
+  // Clear error state while typing
+  codeErrorMsg.classList.remove('show');
+  codeInput.classList.remove('has-error');
+
+  if(empty){btnCheck.disabled=true;codeInput.classList.remove('is-valid');return;}
+  const {ok}=validateCode(codeInput.value);
+  codeInput.classList.toggle('is-valid',ok);
+  btnCheck.disabled=!ok;
+});
+
+// Show specific error on blur only (not while typing — less frustrating)
+codeInput.addEventListener('blur',()=>{
+  const v=codeInput.value.trim();
+  if(!v)return;
+  const {ok,msg}=validateCode(v);
+  if(!ok&&msg){
+    codeInput.classList.add('has-error');
+    codeInput.classList.remove('is-valid');
+    codeErrorText.textContent=msg;
+    codeErrorMsg.classList.add('show');
+  }
+});
+codeInput.addEventListener('focus',()=>{
+  codeInput.classList.remove('has-error');
+  codeErrorMsg.classList.remove('show');
+});
+
+codeClear.addEventListener('click',()=>{
+  codeInput.value='';
+  codeClear.classList.remove('show');
+  codeInput.classList.remove('has-error','is-valid');
+  codeErrorMsg.classList.remove('show');
+  btnCheck.disabled=true;
+  codeInput.focus();
+});
+
+// Enter to submit
+codeInput.addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&!btnCheck.disabled)btnCheck.click();
+});
+
+// Back
+$('btnBack').addEventListener('click',()=>{setStep(1);showPanel('panel1');});
+
+// Change product (link in recap)
+$('btnChange').addEventListener('click',()=>{setStep(1);showPanel('panel1');});
+
+/* ── MOCK WARRANTY DATABASE ──
+   Real implementation would call an API.
+   These 3 codes are testable demos.
+   Any other valid-format code = not found. */
+const WARRANTY_DB={
+  'VK-OTO-2024-A3B9C1':{
+    status:'active',
+    product:'Kaca Film Otomotif',
+    series:'V-KOOL VK-40 (Sputtered Silver)',
+    code:'VK-OTO-2024-A3B9C1',
+    installed:'12 Maret 2024',
+    expiry:'12 Maret 2029',
+    daysLeft:1812,
+    dealer:'Merapin Megah Abadi',
+    dealerCity:'Jakarta Pusat',
+    vehicleRef:'B 1234 VKL',
+    coverage:['Yellowing','Delamination','Cracking','Penurunan Performa','Pemasangan Resmi'],
+  },
+  'VK-BAN-2024-D7E2F5':{
+    status:'expiring',
+    product:'Kaca Film Bagunan',
+    series:'V-KOOL IQUE 73 (Arsitektural)',
+    code:'VK-BAN-2024-D7E2F5',
+    installed:'5 Januari 2020',
+    expiry:'5 Januari 2025',
+    daysLeft:56,
+    dealer:'Indo Motor Lestari',
+    dealerCity:'Jakarta Pusat',
+    vehicleRef:'Jl. Sudirman No. 45, Jakarta Selatan',
+    coverage:['Yellowing','Delamination','Anti-UV','Penurunan Performa'],
+  },
+  'VK-PPF-2024-G1H8J4':{
+    status:'expired',
+    product:'Paint Protection Film',
+    series:'V-KOOL PPF Glossy Full Body',
+    code:'VK-PPF-2024-G1H8J4',
+    installed:'20 Juni 2019',
+    expiry:'20 Juni 2024',
+    daysLeft:-215,
+    dealer:'Kantor Pusat PT V-KOOL Indo Lestari',
+    dealerCity:'Jakarta Pusat',
+    vehicleRef:'B 5678 VKP',
+    coverage:['Stone Chips','Yellowing','Delamination','Self-Healing','Anti-UV','Anti-Gores'],
+  }
+};
+
+btnCheck.addEventListener('click',()=>{
+  const code=codeInput.value.trim().toUpperCase();
+  loadingBtn(btnCheck,()=>{
+    setStep(3);
+    renderResult(code,WARRANTY_DB[code]);
+    showPanel('panel3');
+  },1400);
+});
+
+/* ══ RESULT RENDERER ══ */
+function renderResult(code,data){
+  const p3=$('panel3');
+
+  if(!data){
+    /* ── NOT FOUND ── */
+    p3.innerHTML=`
+    <div class="not-found" role="alert">
+      <div class="nf-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg></div>
+      <h2 class="nf-title">Garansi Tidak Ditemukan</h2>
+      <div class="nf-code">${code}</div>
+      <p class="nf-text">Kode garansi tersebut tidak ada dalam sistem kami. Pastikan kode diketik sesuai yang tertera di kartu garansi fisik.</p>
+      <div class="nf-hints">
+        <div class="nf-hints-title">Periksa kembali</div>
+        <div class="nf-hint-item">Kode tertera di bagian bawah kartu garansi fisik dari dealer</div>
+        <div class="nf-hint-item">Pastikan kategori produk yang dipilih sudah benar</div>
+        <div class="nf-hint-item">Kartu garansi hanya berlaku untuk pemasangan resmi melalui dealer V-KOOL</div>
+        <div class="nf-hint-item">Garansi sebelum tahun 2020 tidak terdaftar dalam sistem digital ini</div>
+      </div>
+      <div class="nf-actions">
+        <button class="btn-primary" onclick="resetFlow()">
+          <span class="btn-label">Coba Lagi</span>
+          <svg class="btn-arrow" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.75"/></svg>
+          <div class="btn-spinner"></div>
+        </button>
+        <button class="btn-res-outline" onclick="location.href='https://wa.me/6221000000'">Hubungi Dealer</button>
+      </div>
+    </div>`;
+    return;
+  }
+
+  /* ── STATUS CONFIG ── */
+  const ST={
+    active:{cls:'s-active',label:'Garansi Aktif',desc:'Garansi masih berlaku dan perlindungan penuh aktif',expiryClass:'active-color',daysTxt:`${data.daysLeft} hari lagi`},
+    expiring:{cls:'s-expiring',label:'Segera Berakhir',desc:'Garansi akan berakhir dalam waktu dekat',expiryClass:'warn-color',daysTxt:`${data.daysLeft} hari lagi`},
+    expired:{cls:'s-expired',label:'Garansi Berakhir',desc:'Masa garansi telah habis',expiryClass:'error-color',daysTxt:`Berakhir ${Math.abs(data.daysLeft)} hari lalu`}
+  };
+  const s=ST[data.status];
+
+  /* Coverage chips */
+  const chips=data.coverage.map(c=>`
+    <div class="cov-chip">
+      <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      ${c}
+    </div>`).join('');
+
+  /* CTA depends on status */
+  const primaryCTA = data.status==='expired'
+    ? `<button class="btn-primary" onclick="location.href='https://wa.me/6221000000?text=Garansi+saya+sudah+habis,+ingin+konsultasi+pemasangan+ulang'">
+         <span class="btn-label">Konsultasi Ulang Pasang</span>
+         <svg class="btn-arrow" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" fill="none" stroke-width="1.5"/></svg>
+         <div class="btn-spinner"></div>
+       </button>`
+    : `<button class="btn-primary" onclick="location.href='https://wa.me/6221000000'">
+         <span class="btn-label">Hubungi Dealer</span>
+         <svg class="btn-arrow" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" fill="none" stroke-width="1.5"/></svg>
+         <div class="btn-spinner"></div>
+       </button>`;
+
+  /* Ref label depends on category */
+  const refLabel=data.product.toLowerCase().includes('bagunan')?'Lokasi Bangunan':'No. Polisi / Kendaraan';
+
+  p3.innerHTML=`
+  <div>
+    <div class="panel-eyebrow" style="margin-bottom:16px;"><span class="panel-ey-line"></span>Hasil Verifikasi</div>
+    <h2 class="panel-title" style="margin-bottom:24px;">Status Garansi</h2>
+
+    <!-- Status banner — primary information, highest hierarchy -->
+    <div class="status-banner ${s.cls}" role="status">
+      <span class="status-dot" aria-hidden="true"></span>
+      <div class="status-text">
+        <span class="status-label">${s.label}</span>
+        <span class="status-desc">${s.desc}</span>
+      </div>
+      <div class="status-days">${s.daysTxt}</div>
+    </div>
+
+    <!-- Certificate card — the reward, designed as a document -->
+    <div class="cert-card">
+      <div class="cert-header">
+        <div>
+          <div class="cert-eyebrow">Sertifikat Garansi Resmi</div>
+          <div class="cert-product">${data.product}</div>
+          <div class="cert-series">${data.series}</div>
+        </div>
+        <div class="cert-watermark" aria-hidden="true">V-KOOL™</div>
+      </div>
+      <div class="cert-fields">
+        <div class="cert-field">
+          <div class="cf-label">Nomor Garansi</div>
+          <div class="cf-val mono">${data.code}</div>
+        </div>
+        <div class="cert-field">
+          <div class="cf-label">Tanggal Pemasangan</div>
+          <div class="cf-val">${data.installed}</div>
+        </div>
+        <div class="cert-field">
+          <div class="cf-label">Berlaku Hingga</div>
+          <div class="cf-val ${s.expiryClass}">${data.expiry}</div>
+        </div>
+        <div class="cert-field">
+          <div class="cf-label">Dealer Pemasang</div>
+          <div class="cf-val">${data.dealer}<br><span style="font-size:12px;color:var(--dim);font-family:'Roboto',sans-serif;font-weight:300;letter-spacing:0;">${data.dealerCity}</span></div>
+        </div>
+        <div class="cert-field full">
+          <div class="cf-label">${refLabel}</div>
+          <div class="cf-val">${data.vehicleRef}</div>
+        </div>
+      </div>
+      <div class="cert-coverage">
+        <div class="cov-label">Cakupan Garansi</div>
+        <div class="cov-chips">${chips}</div>
+      </div>
+    </div>
+
+    <div class="result-actions">
+      ${primaryCTA}
+      <button class="btn-res-outline" onclick="resetFlow()">Cek Garansi Lain</button>
+      <button class="btn-res-ghost" onclick="window.print()">
+        <svg viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        Cetak
+      </button>
+    </div>
+  </div>`;
+}
+
+/* ── GLOBAL RESET ── */
+window.resetFlow=function(){
+  selectedProduct=null;
+  cards.forEach(c=>{c.classList.remove('selected');c.setAttribute('aria-checked','false');});
+  btnS1Next.disabled=true;
+  $('codeInput').value='';
+  $('codeClear').classList.remove('show');
+  $('codeInput').classList.remove('has-error','is-valid');
+  $('codeErrorMsg').classList.remove('show');
+  btnCheck.disabled=true;
+  setStep(1);
+  showPanel('panel1');
+};
+
+/* prefers-reduced-motion */
+if(window.matchMedia('(prefers-reduced-motion:reduce)').matches){
+  document.querySelectorAll('.panel').forEach(p=>{p.style.animation='none';});
+}
+
+})();
+</script>
+<script src="nav-footer.js"></script>
+</body>
+</html>
