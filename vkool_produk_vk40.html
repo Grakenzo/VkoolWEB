@@ -1,0 +1,1335 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VK-40 — Kaca Film Otomotif | V-KOOL Indonesia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════
+   DESIGN TOKENS — V-KOOL canonical system
+   Source: Body.png style guide
+══════════════════════════════════════════ */
+:root{
+  --black:#0a0a0a; --dark:#111111; --mid:#1a1a1a;
+  --line:#222222;  --line2:#2e2e2e;
+  --gold:#CDB182;  --gold2:#b89a6a;--gold-h:#B89A6A;
+  --white:#ffffff; --ash:#EBEBEB; --muted:#999999; --dim:#555555;
+  --success:#6B9E78; --error:#C0565A;
+  --nav-h:68px; --pad:56px;
+  --ease:cubic-bezier(.25,0,.1,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Roboto',sans-serif;
+  background:var(--black);color:var(--ash);
+  overflow-x:hidden;-webkit-font-smoothing:antialiased;
+}
+a{text-decoration:none;color:inherit;}
+button{font-family:inherit;cursor:pointer;border:none;background:none;}
+a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offset:3px;}
+
+/* ══════════════════════════════════════════
+   BREADCRUMB
+══════════════════════════════════════════ */
+.breadcrumb{
+  margin-top:var(--nav-h);
+  background:var(--dark);border-bottom:.5px solid var(--line);
+  padding:14px var(--pad);display:flex;align-items:center;gap:8px;
+}
+.bc{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:.14em;color:var(--dim);text-transform:uppercase;}
+.bc a{color:var(--dim);transition:color .2s;}
+.bc a:hover{color:var(--gold);}
+.bc-sep{color:var(--line2);}
+.bc-cur{color:var(--gold);}
+
+/* ══════════════════════════════════════════
+   HERO — Exact from PDF:
+   Black bg. Left: text bottom-anchored.
+   Right: photo floats, no frame.
+══════════════════════════════════════════ */
+.hero{
+  min-height:calc(100vh - var(--nav-h) - 44px);
+  background:var(--black);
+  display:grid;grid-template-columns:1fr 1fr;
+  border-bottom:.5px solid var(--line);
+  overflow:hidden;
+}
+/* LEFT — text bottom-anchored */
+.hero-left{
+  display:flex;flex-direction:column;justify-content:flex-end;
+  padding:64px var(--pad);position:relative;z-index:2;
+}
+.hero-name{
+  font-family:'Oswald',sans-serif;
+  font-size:clamp(60px,9vw,112px);
+  font-weight:400;letter-spacing:.03em;text-transform:uppercase;
+  color:var(--white);line-height:.88;margin-bottom:22px;
+}
+.hero-name .g{color:var(--gold);}
+.hero-tagline{
+  font-size:15px;color:rgba(235,235,235,.5);font-weight:300;
+  line-height:1.75;max-width:36ch;
+}
+
+/* RIGHT — photo panel, no frame, floats on black */
+.hero-right{
+  position:relative;overflow:hidden;
+  /* Exact car interior from PDF — dark headliner, tan leather, sunroof */
+  background:
+    radial-gradient(ellipse 60% 45% at 62% 22%, rgba(170,120,40,.20) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 55% at 72% 70%, rgba(95,62,18,.12) 0%, transparent 58%),
+    radial-gradient(ellipse 35% 30% at 30% 55%, rgba(50,35,10,.08) 0%, transparent 50%),
+    linear-gradient(145deg,#181310 0%,#1e1910 18%,#111009 38%,#161308 60%,#0d0b06 80%,#090806 100%);
+}
+/* Film-on-glass tint layer */
+.hero-right::before{
+  content:'';position:absolute;inset:0;pointer-events:none;z-index:1;
+  background:rgba(7,9,12,.40);
+}
+/* Ambient specular reflections — metallic film quality */
+.hero-right::after{
+  content:'';position:absolute;inset:0;pointer-events:none;z-index:2;
+  background:
+    linear-gradient(to right, rgba(0,0,0,.45) 0%, transparent 25%),
+    radial-gradient(ellipse 40% 35% at 85% 12%, rgba(200,155,55,.09) 0%, transparent 55%);
+}
+/* Leather seat crosshatch texture */
+.hero-texture{
+  position:absolute;z-index:3;pointer-events:none;
+  inset:20% 32% 18% 6%;
+  background-image:
+    repeating-linear-gradient(90deg, rgba(205,177,130,.025) 0, rgba(205,177,130,.025) 1px, transparent 1px, transparent 50px),
+    repeating-linear-gradient(0deg,  rgba(205,177,130,.018) 0, rgba(205,177,130,.018) 1px, transparent 1px, transparent 50px);
+}
+/* Left glass-edge shimmer — film on glass signature */
+.hero-glass-edge{
+  position:absolute;z-index:4;pointer-events:none;
+  left:0;top:0;bottom:0;width:2px;
+  background:linear-gradient(to bottom,
+    transparent 4%,rgba(205,177,130,.22) 22%,
+    rgba(205,177,130,.10) 50%,rgba(205,177,130,.25) 78%,transparent 96%);
+}
+/* Top edge of photo — matches PDF crop */
+.hero-top-edge{
+  position:absolute;z-index:4;pointer-events:none;
+  top:0;left:0;right:0;height:1px;
+  background:linear-gradient(to right,rgba(205,177,130,.2) 0%, transparent 60%);
+}
+/* VLT badge — product spec callout on photo */
+.hero-vlt-tag{
+  position:absolute;bottom:32px;left:28px;z-index:5;
+  font-family:'Oswald',sans-serif;text-align:left;
+}
+.hero-vlt-val{
+  font-size:clamp(28px,3.5vw,40px);font-weight:200;letter-spacing:-.02em;
+  color:rgba(205,177,130,.72);display:block;line-height:1;
+}
+.hero-vlt-key{
+  font-size:8px;letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(205,177,130,.35);display:block;margin-top:4px;
+}
+/* Film badge top-right */
+.hero-film-badge{
+  position:absolute;top:28px;right:28px;z-index:5;
+  font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:.16em;text-transform:uppercase;
+  background:rgba(205,177,130,.12);color:var(--gold);
+  border:.5px solid rgba(205,177,130,.3);padding:5px 14px;
+}
+/* Ghost product name watermark */
+.hero-wm{
+  position:absolute;bottom:24px;right:24px;z-index:3;pointer-events:none;
+  font-family:'Oswald',sans-serif;font-size:80px;font-weight:200;
+  color:rgba(205,177,130,.045);line-height:1;letter-spacing:-.04em;
+}
+
+/* ══════════════════════════════════════════
+   STATS STRIP — 4 col, from PDF
+══════════════════════════════════════════ */
+.stats{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  background:var(--dark);border-bottom:.5px solid var(--line);
+}
+.stat{
+  padding:30px 20px;text-align:center;
+  border-right:.5px solid var(--line);
+  position:relative;transition:background .25s;
+}
+.stat:last-child{border-right:none;}
+.stat::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:var(--gold);transform:scaleX(0);transform-origin:left;
+  transition:transform .4s var(--ease);
+}
+.stat:hover::before{transform:scaleX(1);}
+.stat:hover{background:rgba(205,177,130,.03);}
+.stat-val{
+  font-family:'Oswald',sans-serif;
+  font-size:clamp(30px,4vw,46px);font-weight:200;
+  color:var(--gold);display:block;line-height:1;margin-bottom:8px;
+  letter-spacing:-.01em;
+}
+.stat-key{
+  font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--dim);display:block;margin-bottom:4px;
+}
+.stat-name{
+  font-family:'Oswald',sans-serif;font-size:8px;letter-spacing:.10em;
+  text-transform:uppercase;color:rgba(85,85,85,.55);display:block;
+}
+
+/* ══════════════════════════════════════════
+   NYAMAN SECTION — 2-col: copy+bar | spec table
+══════════════════════════════════════════ */
+.nyaman{
+  display:grid;grid-template-columns:1fr 1fr;gap:80px;
+  padding:80px var(--pad);align-items:start;
+  border-bottom:.5px solid var(--line);background:var(--black);
+}
+/* Shared eyebrow */
+.eyebrow{
+  display:flex;align-items:center;gap:10px;margin-bottom:18px;
+}
+.ey-line{width:14px;height:.5px;background:var(--gold);}
+.ey-txt{
+  font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:.20em;
+  text-transform:uppercase;color:var(--gold);font-weight:300;
+}
+.section-heading{
+  font-family:'Oswald',sans-serif;
+  font-size:clamp(24px,3.2vw,38px);
+  letter-spacing:.04em;font-weight:400;text-transform:uppercase;
+  color:var(--white);line-height:1.05;margin-bottom:18px;
+}
+.section-body{
+  font-size:14px;color:var(--muted);font-weight:300;
+  line-height:1.8;max-width:52ch;margin-bottom:36px;
+}
+
+/* VLT bar — Gelap → VK-40 → Bening */
+.vlt-bar-wrap{}
+.vlt-axis-labels{
+  display:flex;justify-content:space-between;
+  font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--dim);margin-bottom:12px;
+}
+.vlt-axis-labels .active{color:var(--gold);}
+.vlt-track{
+  height:6px;background:var(--line);position:relative;
+  margin-bottom:10px;overflow:visible;
+}
+.vlt-fill{
+  height:100%;
+  background:linear-gradient(to right,var(--gold-h),var(--gold));
+  width:0%;transition:width 1.3s var(--ease);
+}
+/* Marker pin for VK-40 position */
+.vlt-pin{
+  position:absolute;top:-10px;bottom:-10px;
+  transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;
+  pointer-events:none;
+}
+.vlt-pin-line{width:1.5px;flex:1;background:var(--gold);}
+.vlt-pin-dot{width:8px;height:8px;border-radius:50%;background:var(--gold);flex-shrink:0;margin:2px 0;}
+.vlt-sub-labels{
+  display:flex;justify-content:space-between;
+  font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:.10em;
+  text-transform:uppercase;color:var(--dim);
+}
+.vlt-sub-labels .cur{color:var(--gold);}
+
+/* Spec table right column */
+.spec-table{border:.5px solid var(--line);}
+.spec-row{
+  display:grid;grid-template-columns:1fr 1fr;
+  border-bottom:.5px solid var(--line);transition:background .2s;
+}
+.spec-row:last-child{border-bottom:none;}
+.spec-row:hover{background:rgba(205,177,130,.03);}
+.spec-lbl{
+  padding:14px 18px;font-family:'Oswald',sans-serif;font-size:10px;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--dim);
+  border-right:.5px solid var(--line);
+}
+.spec-val{
+  padding:14px 18px;font-family:'Oswald',sans-serif;
+  font-size:14px;letter-spacing:.04em;color:var(--ash);
+}
+.spec-val.hi{color:var(--gold);}
+
+/* ══════════════════════════════════════════
+   APLIKASI — position cards + vehicle chips
+══════════════════════════════════════════ */
+.aplikasi{
+  padding:80px var(--pad);
+  border-bottom:.5px solid var(--line);
+  background:var(--mid);
+}
+.app-intro{
+  font-size:14px;color:var(--muted);font-weight:300;
+  line-height:1.8;max-width:60ch;margin-bottom:40px;
+}
+/* 4-column position grid */
+.app-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:0;background:var(--line);border:.5px solid var(--line);
+  margin-bottom:32px;
+}
+.app-card{
+  background:var(--dark);padding:28px 20px;
+  position:relative;transition:background .25s;
+}
+.app-card:hover{background:#131313;}
+/* Gold top bar on recommended */
+.app-card.rec{background:rgba(205,177,130,.04);}
+.app-card.rec::before{
+  content:'';position:absolute;top:0;left:0;right:0;
+  height:2px;background:var(--gold);
+}
+.app-icon{
+  width:36px;height:36px;
+  border:.5px solid rgba(205,177,130,.2);
+  background:rgba(205,177,130,.04);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:12px;
+}
+.app-icon svg{width:16px;height:16px;stroke:var(--gold);fill:none;stroke-width:1.4;}
+.app-name{
+  font-family:'Oswald',sans-serif;font-size:12px;letter-spacing:.10em;
+  text-transform:uppercase;color:var(--ash);margin-bottom:8px;
+}
+.app-status{
+  font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:.14em;
+  text-transform:uppercase;display:flex;align-items:center;gap:6px;
+}
+.app-status svg{width:10px;height:10px;fill:none;stroke-width:2.5;}
+.app-status.yes{color:var(--success);}
+.app-status.yes svg{stroke:var(--success);}
+.app-status.avail{color:var(--dim);}
+.app-status.avail svg{stroke:var(--dim);}
+/* Vehicle type chips */
+.vehicle-lbl{
+  font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--dim);margin-bottom:12px;
+}
+.chips{display:flex;flex-wrap:wrap;gap:8px;}
+.chip{
+  font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:.10em;
+  text-transform:uppercase;color:var(--muted);
+  border:.5px solid var(--line2);padding:6px 14px;
+  transition:color .2s,border-color .2s;
+}
+.chip:hover{color:var(--gold);border-color:rgba(205,177,130,.35);}
+
+/* ══════════════════════════════════════════
+   GARANSI — 3-col: big 5 | info+items | CTA
+══════════════════════════════════════════ */
+.garansi{
+  display:grid;grid-template-columns:280px 1fr 280px;
+  border-bottom:.5px solid var(--line);
+  background:var(--dark);
+}
+/* Left: giant typographic 5 */
+.gar-left{
+  padding:64px var(--pad);border-right:.5px solid var(--line);
+  display:flex;flex-direction:column;justify-content:center;
+}
+.gar-num{
+  font-family:'Oswald',sans-serif;
+  font-size:clamp(96px,14vw,148px);font-weight:200;
+  color:var(--gold);letter-spacing:-.04em;line-height:.82;display:block;
+}
+.gar-num-label{
+  font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:.20em;
+  text-transform:uppercase;color:var(--muted);margin-top:12px;display:block;
+}
+/* Centre: info */
+.gar-body{
+  padding:64px 56px;
+  display:flex;flex-direction:column;justify-content:center;
+}
+.gar-title{
+  font-family:'Oswald',sans-serif;font-size:clamp(20px,2vw,26px);
+  letter-spacing:.05em;text-transform:uppercase;
+  color:var(--white);font-weight:400;margin-bottom:14px;
+}
+.gar-desc{
+  font-size:14px;color:var(--muted);font-weight:300;
+  line-height:1.75;max-width:44ch;margin-bottom:28px;
+}
+.gar-items{display:flex;flex-direction:column;}
+.gar-item{
+  display:flex;align-items:center;gap:12px;
+  padding:11px 0;border-bottom:.5px solid var(--line);
+}
+.gar-item:last-child{border-bottom:none;}
+.gar-dot{
+  width:20px;height:20px;border-radius:50%;flex-shrink:0;
+  border:.5px solid rgba(107,158,120,.4);background:rgba(107,158,120,.08);
+  display:flex;align-items:center;justify-content:center;
+}
+.gar-dot svg{width:9px;height:9px;stroke:var(--success);fill:none;stroke-width:2.5;}
+.gar-item-txt{font-size:13px;color:var(--muted);font-weight:300;}
+/* Right: CTA panel */
+.gar-right{
+  padding:64px var(--pad);border-left:.5px solid var(--line);
+  display:flex;flex-direction:column;justify-content:center;
+}
+.gar-cta-title{
+  font-family:'Oswald',sans-serif;font-size:14px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--white);font-weight:400;margin-bottom:8px;
+}
+.gar-cta-desc{
+  font-size:13px;color:var(--dim);font-weight:300;
+  line-height:1.65;max-width:26ch;margin-bottom:24px;
+}
+/* Shared button styles */
+.btn-gold{
+  font-family:'Oswald',sans-serif;font-size:13px;letter-spacing:.12em;
+  text-transform:uppercase;font-weight:400;background:var(--gold);color:var(--black);
+  padding:14px 26px;min-height:48px;display:inline-flex;align-items:center;gap:8px;
+  transition:background .25s,transform .25s;text-decoration:none;cursor:pointer;border:none;
+  margin-bottom:10px;
+}
+.btn-gold:hover{background:var(--gold-h);transform:translateY(-1px);}
+.btn-gold svg{width:12px;height:12px;stroke:var(--black);fill:none;stroke-width:2;}
+.btn-outline{
+  font-family:'Oswald',sans-serif;font-size:13px;letter-spacing:.12em;
+  text-transform:uppercase;font-weight:400;background:transparent;color:var(--gold);
+  border:.5px solid var(--gold);padding:13px 22px;min-height:48px;
+  display:inline-flex;align-items:center;gap:8px;
+  transition:background .25s,transform .25s;cursor:pointer;
+}
+.btn-outline:hover{background:rgba(205,177,130,.08);transform:translateY(-1px);}
+
+/* ══════════════════════════════════════════
+   LIHAT JUGA — horizontal drag rail
+   Exact from PDF: 5 products, "Geser..." hint
+══════════════════════════════════════════ */
+.lihat-juga{
+  background:var(--black);
+  border-bottom:.5px solid var(--line);
+  padding:72px 0 0;
+}
+.lj-header{
+  padding:0 var(--pad) 40px;
+  display:flex;align-items:flex-end;justify-content:space-between;
+}
+.lj-heading{
+  font-family:'Oswald',sans-serif;
+  font-size:clamp(24px,3.2vw,38px);
+  letter-spacing:.04em;font-weight:400;text-transform:uppercase;color:var(--white);
+}
+.lj-all{
+  font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--gold);flex-shrink:0;
+  display:flex;align-items:center;gap:8px;transition:gap .25s;text-decoration:none;
+}
+.lj-all:hover{gap:14px;}
+.lj-all svg{width:11px;height:11px;stroke:var(--gold);fill:none;stroke-width:2;}
+/* Drag rail */
+.lj-rail{
+  overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;
+  cursor:grab;border-top:.5px solid var(--line);
+}
+.lj-rail::-webkit-scrollbar{display:none;}
+.lj-rail.grabbing{cursor:grabbing;}
+.lj-row{display:flex;width:max-content;}
+/* Product card */
+.lj-card{
+  width:300px;flex-shrink:0;
+  background:var(--dark);border-right:.5px solid var(--line);
+  display:flex;flex-direction:column;
+  transition:background .25s;text-decoration:none;color:inherit;
+}
+.lj-card:last-child{border-right:none;}
+.lj-card:hover{background:#131313;}
+.lj-photo{
+  width:100%;aspect-ratio:16/10;
+  background:#0d0d0d;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+}
+/* Partial image bleed on last card — Indonesia UX best practice */
+.lj-photo-lbl{
+  font-family:'Oswald',sans-serif;font-size:9px;
+  letter-spacing:.12em;color:#1c1c1c;text-transform:uppercase;
+}
+.lj-body{padding:18px 22px;}
+.lj-name{
+  font-family:'Oswald',sans-serif;font-size:18px;letter-spacing:.04em;
+  text-transform:uppercase;color:var(--white);font-weight:400;margin-bottom:4px;
+}
+.lj-tag{font-size:12px;color:var(--muted);font-weight:300;margin-bottom:14px;}
+.lj-specs{display:flex;gap:16px;}
+.lj-spec{text-align:center;}
+.lj-spec-val{
+  font-family:'Oswald',sans-serif;font-size:15px;color:var(--gold);
+  font-weight:300;display:block;line-height:1;
+}
+.lj-spec-key{
+  font-family:'Oswald',sans-serif;font-size:7px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--dim);
+}
+.lj-foot{
+  padding:13px 22px;border-top:.5px solid var(--line);margin-top:auto;
+  font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:.10em;
+  text-transform:uppercase;color:var(--gold);
+  display:flex;align-items:center;gap:8px;transition:gap .25s;
+}
+.lj-card:hover .lj-foot{gap:12px;}
+.lj-foot svg{width:11px;height:11px;stroke:var(--gold);fill:none;stroke-width:2;}
+/* Scroll indicator row */
+.lj-scroll-row{
+  padding:16px var(--pad);border-top:.5px solid var(--line);
+  display:flex;align-items:center;gap:14px;
+}
+.lj-track{flex:1;max-width:130px;height:.5px;background:var(--line2);}
+.lj-thumb{height:100%;background:var(--gold);width:0%;transition:width .08s;}
+.lj-hint{
+  font-family:'Oswald',sans-serif;font-size:9px;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--dim);
+}
+
+/* ══════════════════════════════════════════
+   PAKET REKOMENDASI — 3 cards
+══════════════════════════════════════════ */
+.paket{
+  background:var(--mid);
+  padding:80px var(--pad);
+  border-bottom:.5px solid var(--line);
+}
+.paket-header{margin-bottom:48px;}
+.paket-eyebrow{
+  font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:.20em;
+  text-transform:uppercase;color:var(--gold);font-weight:300;margin-bottom:12px;
+}
+.paket-heading{
+  font-family:'Oswald',sans-serif;
+  font-size:clamp(24px,3.2vw,38px);
+  letter-spacing:.04em;font-weight:400;text-transform:uppercase;color:var(--white);
+}
+/* 3-col card grid */
+.pkg-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:0;background:var(--line);border:.5px solid var(--line);
+}
+.pkg{
+  background:var(--dark);padding:36px 30px;
+  position:relative;transition:background .25s;
+}
+.pkg:hover{background:#131313;}
+/* Featured card — gold top line only */
+.pkg.feat{background:rgba(205,177,130,.04);}
+.pkg.feat:hover{background:rgba(205,177,130,.07);}
+.pkg.feat::before{
+  content:'';position:absolute;top:0;left:0;right:0;
+  height:1.5px;background:var(--gold);
+}
+.pkg-badge{
+  font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--gold);display:block;margin-bottom:16px;
+}
+.pkg-name{
+  font-family:'Oswald',sans-serif;
+  font-size:clamp(17px,1.8vw,21px);
+  letter-spacing:.04em;text-transform:uppercase;
+  color:var(--white);font-weight:400;margin-bottom:12px;
+}
+.pkg.feat .pkg-name{color:var(--gold);}
+.pkg-desc{
+  font-size:13px;color:var(--muted);font-weight:300;
+  line-height:1.7;margin-bottom:24px;max-width:34ch;
+}
+.pkg-specs{border-top:.5px solid var(--line);margin-bottom:22px;}
+.pkg-spec{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 0;border-bottom:.5px solid var(--line);
+}
+.pkg-spec:last-child{border-bottom:none;}
+.pkg-spec svg{width:12px;height:12px;stroke:var(--gold);fill:none;stroke-width:2;flex-shrink:0;}
+.pkg-spec-lbl{
+  font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--dim);min-width:90px;
+}
+.pkg-spec-val{
+  font-family:'Oswald',sans-serif;font-size:12px;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--ash);
+}
+.pkg-more{
+  font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--gold);
+  display:flex;align-items:center;gap:8px;
+  transition:gap .25s;cursor:pointer;
+}
+.pkg:hover .pkg-more{gap:12px;}
+.pkg-more svg{width:11px;height:11px;stroke:var(--gold);fill:none;stroke-width:2;}
+
+/* ══════════════════════════════════════════
+   FOOTER
+══════════════════════════════════════════ */
+.footer{
+  background:var(--black);
+  border-top:.5px solid var(--line);
+  padding:64px var(--pad) 32px;
+}
+.footer-grid{display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr;gap:56px;margin-bottom:52px;}
+.footer-logo{
+  font-family:'Oswald',sans-serif;font-size:16px;letter-spacing:.28em;
+  color:var(--gold);font-weight:400;margin-bottom:12px;
+}
+.footer-tag{font-size:13px;color:var(--dim);line-height:1.65;max-width:200px;font-weight:300;}
+/* Style guide: ExtraLight 200 for column titles */
+.footer-col-title{
+  font-family:'Oswald',sans-serif;font-size:18px;letter-spacing:.06em;
+  color:var(--ash);font-weight:200;margin-bottom:18px;
+}
+.footer-link{
+  font-family:'Oswald',sans-serif;font-size:12px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--dim);display:block;
+  margin-bottom:10px;transition:color .25s;text-decoration:none;font-weight:400;
+}
+.footer-link:hover,.footer-link.active{color:var(--gold);}
+.footer-bottom{
+  border-top:.5px solid var(--line);padding-top:24px;
+  display:flex;justify-content:space-between;align-items:center;
+  gap:16px;flex-wrap:wrap;
+}
+.footer-copy{font-size:11px;color:#2a2a2a;font-weight:300;}
+.footer-social{display:flex;gap:10px;}
+.soc-btn{
+  width:34px;height:34px;border-radius:50%;
+  border:.5px solid var(--line2);display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:border-color .25s;
+}
+.soc-btn:hover{border-color:var(--gold);}
+.soc-btn svg{width:13px;height:13px;stroke:var(--dim);fill:none;stroke-width:1.5;transition:stroke .25s;}
+.soc-btn:hover svg{stroke:var(--gold);}
+
+/* ══════════════════════════════════════════
+   SCROLL FADE-UP
+══════════════════════════════════════════ */
+.fade-up{
+  opacity:0;transform:translateY(24px);
+  transition:opacity .65s var(--ease),transform .65s var(--ease);
+}
+.fade-up.visible{opacity:1;transform:translateY(0);}
+
+/* ══════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════ */
+@media(max-width:1100px){
+  :root{--pad:36px;}
+  .nav-links,.nav-right{display:none;}
+  .nav-drawer{display:flex;}
+  .hero{grid-template-columns:1fr;min-height:auto;}
+  .hero-left{padding:56px var(--pad);}
+  .hero-right{min-height:60vw;}
+  .nyaman{grid-template-columns:1fr;gap:48px;padding:64px var(--pad);}
+  .app-grid{grid-template-columns:1fr 1fr;}
+  .garansi{grid-template-columns:1fr;}
+  .gar-left{border-right:none;border-bottom:.5px solid var(--line);padding:48px var(--pad);}
+  .gar-right{border-left:none;border-top:.5px solid var(--line);padding:48px var(--pad);}
+  .pkg-grid{grid-template-columns:1fr;}
+  .footer-grid{grid-template-columns:1fr 1fr;gap:40px;}
+}
+@media(max-width:640px){
+  :root{--pad:22px;--nav-h:56px;}
+  .nav{padding:0 22px;}
+  .nav-logo{font-size:14px;}
+  .stats{grid-template-columns:repeat(2,1fr);}
+  .stat:nth-child(2){border-right:none;}
+  .stat:nth-child(3){border-top:.5px solid var(--line);}
+  .stat:nth-child(4){border-right:none;border-top:.5px solid var(--line);}
+  .app-grid{grid-template-columns:1fr 1fr;}
+  .lj-card{width:260px;}
+  .footer-grid{grid-template-columns:1fr;gap:32px;}
+  .footer-bottom{flex-direction:column;align-items:flex-start;gap:16px;}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important;}
+  .fade-up{opacity:1;transform:none;}
+}
+/* ══════════════════════════════════════════
+   BEFORE / AFTER SLIDER
+══════════════════════════════════════════ */
+.ba-section{padding:80px var(--pad);}
+.ba-header{margin-bottom:40px;}
+.ba-wrap{
+  position:relative;width:100%;height:480px;
+  overflow:hidden;cursor:ew-resize;
+  border:.5px solid var(--line2);
+  user-select:none;
+}
+/* Before — full width underneath */
+.ba-before,.ba-after{
+  position:absolute;inset:0;
+  background-size:cover;background-position:center;
+}
+/* After — clipped from left, starts at 50% */
+.ba-after{clip-path:inset(0 50% 0 0);transition:none;}
+
+/* Labels */
+.ba-label{
+  position:absolute;top:20px;
+  font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:.16em;
+  text-transform:uppercase;font-weight:400;
+  background:rgba(10,10,10,.75);color:var(--ash);
+  padding:5px 14px;backdrop-filter:blur(4px);
+}
+.ba-label-before{left:20px;}
+.ba-label-after{right:20px;}
+
+/* Drag handle */
+.ba-handle{
+  position:absolute;top:0;bottom:0;left:50%;
+  transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;
+  z-index:20;cursor:ew-resize;width:44px;
+}
+.ba-handle-line{flex:1;width:1.5px;background:var(--gold);}
+.ba-handle-btn{
+  width:40px;height:40px;border-radius:50%;
+  background:var(--gold);
+  display:flex;align-items:center;justify-content:center;gap:2px;
+  flex-shrink:0;box-shadow:0 2px 16px rgba(0,0,0,.5);
+}
+.ba-handle-btn svg{width:12px;height:12px;stroke:var(--black);flex-shrink:0;}
+
+/* Stats row */
+.ba-stats{
+  display:flex;align-items:center;justify-content:center;
+  gap:0;margin-top:0;
+  border:.5px solid var(--line2);border-top:none;
+  background:var(--dark);
+}
+.ba-stat{
+  flex:1;padding:20px 16px;text-align:center;
+  transition:background .3s var(--ease);
+}
+.ba-stat:hover{background:rgba(205,177,130,.04);}
+.ba-stat-val{
+  font-family:'Oswald',sans-serif;font-size:22px;
+  color:var(--gold);font-weight:300;letter-spacing:.04em;
+  display:block;line-height:1;margin-bottom:5px;
+}
+.ba-stat-lbl{font-size:10px;color:var(--dim);letter-spacing:.10em;text-transform:uppercase;}
+.ba-stat-sep{width:.5px;height:48px;background:var(--line);flex-shrink:0;}
+
+@media(max-width:768px){
+  .ba-wrap{height:280px;}
+  .ba-stats{flex-wrap:wrap;}
+  .ba-stat{flex:1 1 40%;}
+  .ba-stat-sep{display:none;}
+}
+</style>
+</head>
+<body data-page="otomotif">
+
+<!-- ══════ NAV ══════ -->
+<div id="nav-placeholder"></div>
+
+<div class="breadcrumb">
+  <span class="bc"><a href="index.html">Home</a></span>
+  <span class="bc-sep" style="color:#555555;">—</span>
+  <span class="bc"><a href="vkool_otomotif.html">Otomotif</a></span>
+  <span class="bc-sep" style="color:#555555;">—</span>
+  <span class="bc bc-cur">VK-40</span>
+</div>
+
+<!-- ══════ HERO ══════ -->
+<section class="hero" aria-label="VK-40 Product Hero">
+  <!-- Left: product name bottom-anchored -->
+  <div class="hero-left">
+    <h1 class="hero-name">VK-<span class="g">40</span></h1>
+    <p class="hero-tagline">Perpaduan ideal antara visibilitas, kenyamanan, dan privasi.<br>Tetap jernih dari dalam, stylish dari luar.</p>
+  </div>
+  <!-- Right: photo panel — floats on black, no border -->
+  <div class="hero-right" role="img" aria-label="Interior kendaraan premium dengan V-KOOL VK-40">
+    <div class="hero-texture"></div>
+    <div class="hero-glass-edge"></div>
+    <div class="hero-top-edge"></div>
+    <div class="hero-wm" aria-hidden="true">VK40</div>
+    <span class="hero-film-badge">Kaca Film Otomotif</span>
+    <div class="hero-vlt-tag" aria-hidden="true">
+      <span class="hero-vlt-val">40%</span>
+      <span class="hero-vlt-key">VLT</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ STATS STRIP ══════ -->
+<div class="stats fade-up" role="region" aria-label="Spesifikasi kunci VK-40">
+  <div class="stat">
+    <span class="stat-val">40%</span>
+    <span class="stat-key">VLT</span>
+    <span class="stat-name">Visible Light Transmission</span>
+  </div>
+  <div class="stat">
+    <span class="stat-val">80%</span>
+    <span class="stat-key">IRR</span>
+    <span class="stat-name">Infrared Rejection</span>
+  </div>
+  <div class="stat">
+    <span class="stat-val">99%</span>
+    <span class="stat-key">UVR</span>
+    <span class="stat-name">UV Rejection</span>
+  </div>
+  <div class="stat">
+    <span class="stat-val">58%</span>
+    <span class="stat-key">TSER</span>
+    <span class="stat-name">Total Solar Energy Reduction</span>
+  </div>
+</div>
+
+<!-- ══════ NYAMAN SECTION ══════ -->
+<section class="nyaman fade-up" aria-labelledby="nyaman-h">
+  <!-- Left: copy + VLT bar -->
+  <div>
+    <div class="eyebrow">
+      <span class="ey-line"></span>
+      <span class="ey-txt">VK40</span>
+    </div>
+    <h2 class="section-heading" id="nyaman-h">Nyaman dengan<br>Privasi Pas</h2>
+    <p class="section-body">VLT 40% berarti 40% cahaya tampak melewati kaca. Cukup gelap untuk memberikan privasi yang nyaman, cukup terang untuk keamanan pandangan berkendara di siang maupun malam hari.</p>
+
+    <!-- VLT bar — Gelap → VK-40 → Bening -->
+    <div class="vlt-bar-wrap">
+      <div class="vlt-axis-labels">
+        <span>Gelap<br>5%</span>
+        <span class="active">VK-40<br>40%</span>
+        <span style="text-align:right">Bening<br>70+%</span>
+      </div>
+      <div class="vlt-track" role="img" aria-label="VK-40 berada di posisi 40% pada skala kegelapan kaca">
+        <div class="vlt-fill" id="vltFill"></div>
+        <!-- Pin marker at ~57% of track (43% along 5–70% scale) -->
+        <div class="vlt-pin" style="left:54%" aria-hidden="true">
+          <div class="vlt-pin-line" style="height:10px;"></div>
+          <div class="vlt-pin-dot"></div>
+          <div class="vlt-pin-line" style="height:10px;"></div>
+        </div>
+      </div>
+      <div class="vlt-sub-labels">
+        <span>Gelap</span>
+        <span class="cur">VK-40</span>
+        <span>Bening</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right: full spec table -->
+  <div>
+    <div class="spec-table">
+      <div class="spec-row"><span class="spec-lbl">Visible Light Transmission (VLT)</span><span class="spec-val hi">40%</span></div>
+      <div class="spec-row"><span class="spec-lbl">Infrared Rejection (IRR)</span><span class="spec-val hi">80%</span></div>
+      <div class="spec-row"><span class="spec-lbl">UV Rejection (UVR)</span><span class="spec-val hi">99%</span></div>
+      <div class="spec-row"><span class="spec-lbl">Total Solar Energy Rejected (TSER)</span><span class="spec-val hi">58%</span></div>
+      <div class="spec-row"><span class="spec-lbl">Teknologi</span><span class="spec-val">XIR® Sputtered Metal</span></div>
+      <div class="spec-row"><span class="spec-lbl">Garansi</span><span class="spec-val">5 Tahun Resmi</span></div>
+      <div class="spec-row"><span class="spec-lbl">Ketebalan</span><span class="spec-val">~1.5 mil (38μm)</span></div>
+      <div class="spec-row"><span class="spec-lbl">Warna Reflektif</span><span class="spec-val">Netral / Natural</span></div>
+      <div class="spec-row"><span class="spec-lbl">Gangguan Sinyal</span><span class="spec-val">Tidak Ada</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ BEFORE / AFTER ══════ -->
+<section class="ba-section fade-up" aria-label="Before After Comparison">
+  <div class="ba-header">
+    <div class="eyebrow" style="margin-bottom:14px;">
+      <span class="ey-line"></span>
+      <span class="ey-txt">Perbandingan Nyata</span>
+    </div>
+    <h2 class="section-heading">Lihat Bedanya<br>Sendiri</h2>
+    <p class="section-body" style="max-width:52ch;">Geser pembatas untuk membandingkan tampilan kaca tanpa film vs. dengan VK-40 terpasang. Kejernihan tetap terjaga, panas berkurang drastis.</p>
+  </div>
+
+  <div class="ba-wrap">
+    <!-- BEFORE image — left side -->
+    <div class="ba-before" id="baBefore" aria-hidden="true"
+         style="background:url('images/vk40-before.jpg') center/cover no-repeat;">
+      <span class="ba-label ba-label-before">Sebelum</span>
+    </div>
+
+    <!-- AFTER image — right side, clipped by drag -->
+    <div class="ba-after" id="baAfter" aria-hidden="true"
+         style="background:url('images/vk40-after.jpg') center/cover no-repeat;">
+      <span class="ba-label ba-label-after">Sesudah VK-40</span>
+    </div>
+
+    <!-- Drag handle -->
+    <div class="ba-handle" id="baHandle" role="slider" aria-label="Geser untuk membandingkan" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" tabindex="0">
+      <div class="ba-handle-line"></div>
+      <div class="ba-handle-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="15 18 9 12 15 6"/>
+        </svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="9 18 15 12 9 6"/>
+        </svg>
+      </div>
+      <div class="ba-handle-line"></div>
+    </div>
+  </div>
+
+  <!-- Stats below -->
+  <div class="ba-stats">
+    <div class="ba-stat">
+      <span class="ba-stat-val">−58°C</span>
+      <span class="ba-stat-lbl">Reduksi Panas Kabin</span>
+    </div>
+    <div class="ba-stat-sep"></div>
+    <div class="ba-stat">
+      <span class="ba-stat-val">80%</span>
+      <span class="ba-stat-lbl">Infrared Tertolak</span>
+    </div>
+    <div class="ba-stat-sep"></div>
+    <div class="ba-stat">
+      <span class="ba-stat-val">99%</span>
+      <span class="ba-stat-lbl">UV Tertolak</span>
+    </div>
+    <div class="ba-stat-sep"></div>
+    <div class="ba-stat">
+      <span class="ba-stat-val">40%</span>
+      <span class="ba-stat-lbl">VLT — Tetap Jernih</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ APLIKASI ══════ -->
+<section class="aplikasi fade-up" aria-labelledby="app-h">
+  <div class="eyebrow" style="margin-bottom:14px;">
+    <span class="ey-line"></span>
+    <span class="ey-txt">Aplikasi</span>
+  </div>
+  <h2 class="section-heading" id="app-h">Rekomendasi<br>Aplikasi VK40</h2>
+  <p class="app-intro">VK-40 dirancang untuk diaplikasikan pada semua posisi kaca kendaraan, dengan performa optimal pada kaca depan dan samping. Kompatibel dengan seluruh jenis kendaraan penumpang.</p>
+
+  <div class="app-grid">
+    <!-- Kaca Depan -->
+    <div class="app-card rec">
+      <div class="app-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/></svg></div>
+      <div class="app-name">Kaca Depan</div>
+      <div class="app-status yes"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> Direkomendasikan</div>
+    </div>
+    <!-- Kaca Samping -->
+    <div class="app-card rec">
+      <div class="app-icon"><svg viewBox="0 0 24 24"><path d="M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v5a2 2 0 0 1-2 2h-2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg></div>
+      <div class="app-name">Kaca Samping</div>
+      <div class="app-status yes"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> Direkomendasikan</div>
+    </div>
+    <!-- Kaca Belakang -->
+    <div class="app-card">
+      <div class="app-icon"><svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/></svg></div>
+      <div class="app-name">Kaca Belakang</div>
+      <div class="app-status avail" style="color:#6B9E78;"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" stroke="#6B9E78"/></svg> Tersedia</div>
+    </div>
+    <!-- Sunroof -->
+    <div class="app-card">
+      <div class="app-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/></svg></div>
+      <div class="app-name">Sunroof</div>
+      <div class="app-status avail" style="color:#6B9E78;"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" stroke="#6B9E78"/></svg> Tersedia</div>
+    </div>
+  </div>
+
+  <p class="vehicle-lbl">Cocok untuk semua jenis kendaraan</p>
+  <div class="chips" role="list">
+    <span class="chip" role="listitem">Sedan</span>
+    <span class="chip" role="listitem">SUV</span>
+    <span class="chip" role="listitem">MPV</span>
+    <span class="chip" role="listitem">Hatchback</span>
+    <span class="chip" role="listitem">Sports</span>
+    <span class="chip" role="listitem">Pick-Up</span>
+    <span class="chip" role="listitem">Van</span>
+    <span class="chip" role="listitem">Luxury</span>
+  </div>
+</section>
+
+<!-- ══════ GARANSI ══════ -->
+<section class="garansi fade-up" aria-labelledby="gar-h">
+  <!-- Giant 5 -->
+  <div class="gar-left">
+    <span class="gar-num">5</span>
+    <span class="gar-num-label">Tahun<br>Garansi Resmi</span>
+  </div>
+
+  <!-- Info -->
+  <div class="gar-body">
+    <h2 class="gar-title" id="gar-h">Garansi Terjamin</h2>
+    <p class="gar-desc">Setiap instalasi VK-40 oleh dealer resmi dilengkapi kartu garansi yang dapat diverifikasi secara digital kapan saja melalui sistem Garansi Elektronik V-KOOL.</p>
+    <div class="gar-items" role="list">
+      <div class="gar-item" role="listitem">
+        <div class="gar-dot"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <span class="gar-item-txt">Yellowing / perubahan warna film</span>
+      </div>
+      <div class="gar-item" role="listitem">
+        <div class="gar-dot"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <span class="gar-item-txt">Delamination / pengelupasan lapisan</span>
+      </div>
+      <div class="gar-item" role="listitem">
+        <div class="gar-dot"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <span class="gar-item-txt">Cracking / retak pada material</span>
+      </div>
+      <div class="gar-item" role="listitem">
+        <div class="gar-dot"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <span class="gar-item-txt">Penurunan performa penolakan panas</span>
+      </div>
+      <div class="gar-item" role="listitem">
+        <div class="gar-dot"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <span class="gar-item-txt">Cacat instalasi oleh teknisi resmi</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="gar-right">
+    <div class="gar-cta-title">Cek Status Garansi</div>
+    <p class="gar-cta-desc">Masukkan kode dari kartu garansi fisik Anda untuk verifikasi instan.</p>
+    <a class="btn-gold" href="vkool_cek_garansi.html">
+      CEK GARANSI
+      <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </a>
+    <a class="btn-outline" href="vkool_dealers.html">TEMUKAN DEALER</a>
+  </div>
+</section>
+
+<!-- ══════ LIHAT JUGA ══════ -->
+<section class="lihat-juga fade-up">
+  <div class="lj-header">
+    <div>
+      <div class="eyebrow" style="margin-bottom:10px;">
+        <span class="ey-line"></span>
+        <span class="ey-txt">Produk Lainnya</span>
+      </div>
+      <h2 class="lj-heading">Lihat Juga</h2>
+    </div>
+    <a class="lj-all" href="vkool_otomotif.html">
+      Semua Produk
+      <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </a>
+  </div>
+
+  <div class="lj-rail" id="ljRail" aria-label="Produk lainnya — geser untuk melihat lebih">
+    <div class="lj-row">
+
+      <!-- VK-70 -->
+      <a class="lj-card" href="#">
+        <div class="lj-photo"><span class="lj-photo-lbl">VK-70</span></div>
+        <div class="lj-body">
+          <div class="lj-name">VK-70</div>
+          <div class="lj-tag">Jernihnya Sempurna, Panasnya Tertolak</div>
+          <div class="lj-specs">
+            <div class="lj-spec"><span class="lj-spec-val">70%</span><span class="lj-spec-key">VLT</span></div>
+            <div class="lj-spec"><span class="lj-spec-val">60%</span><span class="lj-spec-key">IRR</span></div>
+            <div class="lj-spec"><span class="lj-spec-val">99%</span><span class="lj-spec-key">UVR</span></div>
+            <div class="lj-spec"><span class="lj-spec-val">40%</span><span class="lj-spec-key">TSER</span></div>
+          </div>
+        </div>
+        <div class="lj-foot">MORE DETAILS <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+      </a>
+
+      <!-- VK-30 -->
+      <a class="lj-card" href="#">
+        <div class="lj-photo"><span class="lj-photo-lbl">VK-30</span></div>
+        <div class="lj-body">
+          <div class="lj-name">VK-30</div>
+          <div class="lj-tag">Jernih &amp; Tetap Sejuk</div>
+          <div class="lj-specs">
+            <div class="lj-spec"><span class="lj-spec-val">30%</span><span class="lj-spec-key">VLT</span></div>
+            <div class="lj-spec"><span class="lj-spec-val">85%</span><span class="lj-spec-key">IRR</span></div>
+            <div class="lj-spec"><span class="lj-spec-val">99%</span><span class="lj-spec-key">UVR</span></div>
+            <div class="lj-spec"><span class="lj-spec-val">62%</span><span class="lj-spec-key">TSER</span></div>
+          </div>
+        </div>
+        <div class="lj-foot">MORE DETAILS <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+      </a>
+
+      <!-- VIP -->
+      <a class="lj-card" href="#">
+        <div class="lj-photo"><span class="lj-photo-lbl">VIP</span></div>
+        <div class="lj-body">
+          <div class="lj-name">VIP</div>
+          <div class="lj-tag">Perlindungan Prestige Total</div>
+          <div class="lj-specs">
+            <div class="lj-spec"><span class="lj-spec-val">20%</span><span class="lj-spec-key">VLT</span></div>
+            <div class="lj-spec"><span class="lj-spec-val">90%</span><span class="lj-spec-key">IRR</span></div>
+            <div class="lj-spec"><span class="lj-spec-val">99%</span><span class="lj-spec-key">UVR</span></div>
+            <div class="lj-spec"><span class="lj-spec-val">68%</span><span class="lj-spec-key">TSER</span></div>
+          </div>
+        </div>
+        <div class="lj-foot">MORE DETAILS <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+      </a>
+
+      <!-- X15 -->
+      <a class="lj-card" href="#">
+        <div class="lj-photo"><span class="lj-photo-lbl">X15</span></div>
+        <div class="lj-body">
+          <div class="lj-name">X15</div>
+          <div class="lj-tag">Privasi Maksimal, Panas Minimum</div>
+          <div class="lj-specs">
+            <div class="lj-spec"><span class="lj-spec-val">15%</span><span class="lj-spec-key">VLT</span></div>
+            <div class="lj-spec"><span class="lj-spec-val">92%</span><span class="lj-spec-key">IRR</span></div>
+            <div class="lj-spec"><span class="lj-spec-val">99%</span><span class="lj-spec-key">UVR</span></div>
+            <div class="lj-spec"><span class="lj-spec-val">70%</span><span class="lj-spec-key">TSER</span></div>
+          </div>
+        </div>
+        <div class="lj-foot">MORE DETAILS <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+      </a>
+
+      <!-- X05 -->
+      <a class="lj-card" href="#">
+        <div class="lj-photo"><span class="lj-photo-lbl">X05</span></div>
+        <div class="lj-body">
+          <div class="lj-name">X05</div>
+          <div class="lj-tag">Privasi Absolut, Performa Ekstrem</div>
+          <div class="lj-specs">
+            <div class="lj-spec"><span class="lj-spec-val">5%</span><span class="lj-spec-key">VLT</span></div>
+            <div class="lj-spec"><span class="lj-spec-val">95%</span><span class="lj-spec-key">IRR</span></div>
+            <div class="lj-spec"><span class="lj-spec-val">99%</span><span class="lj-spec-key">UVR</span></div>
+            <div class="lj-spec"><span class="lj-spec-val">74%</span><span class="lj-spec-key">TSER</span></div>
+          </div>
+        </div>
+        <div class="lj-foot">MORE DETAILS <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+      </a>
+
+      <!-- VK-40 PRO -->
+      <a class="lj-card" href="#">
+        <div class="lj-photo"><span class="lj-photo-lbl">VK-40 PRO</span></div>
+        <div class="lj-body">
+          <div class="lj-name">VK-40 PRO</div>
+          <div class="lj-tag">Generasi Terbaru, Performa Lebih Tinggi</div>
+          <div class="lj-specs">
+            <div class="lj-spec"><span class="lj-spec-val">40%</span><span class="lj-spec-key">VLT</span></div>
+            <div class="lj-spec"><span class="lj-spec-val">88%</span><span class="lj-spec-key">IRR</span></div>
+            <div class="lj-spec"><span class="lj-spec-val">99%</span><span class="lj-spec-key">UVR</span></div>
+            <div class="lj-spec"><span class="lj-spec-val">66%</span><span class="lj-spec-key">TSER</span></div>
+          </div>
+        </div>
+        <div class="lj-foot">MORE DETAILS <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+      </a>
+
+      <!-- BLACK SERIES -->
+      <a class="lj-card" href="#">
+        <div class="lj-photo"><span class="lj-photo-lbl">BLACK SERIES</span></div>
+        <div class="lj-body">
+          <div class="lj-name">BLACK SERIES</div>
+          <div class="lj-tag">Darkest Yet, Clearest View</div>
+          <div class="lj-specs">
+            <div class="lj-spec"><span class="lj-spec-val">10%</span><span class="lj-spec-key">VLT</span></div>
+            <div class="lj-spec"><span class="lj-spec-val">98%</span><span class="lj-spec-key">IRR</span></div>
+            <div class="lj-spec"><span class="lj-spec-val">99%</span><span class="lj-spec-key">UVR</span></div>
+            <div class="lj-spec"><span class="lj-spec-val">76%</span><span class="lj-spec-key">TSER</span></div>
+          </div>
+        </div>
+        <div class="lj-foot">MORE DETAILS <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+      </a>
+
+    </div>
+  </div>
+
+  <div class="lj-scroll-row">
+    <div class="lj-track"><div class="lj-thumb" id="ljThumb"></div></div>
+    <span class="lj-hint">Geser untuk melihat lebih</span>
+  </div>
+</section>
+
+<!-- ══════ PAKET REKOMENDASI ══════ -->
+<section class="paket fade-up" aria-labelledby="paket-h">
+  <div class="paket-header">
+    <div class="paket-eyebrow">— Rekomendasi</div>
+    <h2 class="paket-heading" id="paket-h">Paket Rekomendasi untuk VK-40</h2>
+  </div>
+
+  <div class="pkg-grid">
+
+    <!-- Ultimate Solitaire -->
+    <div class="pkg">
+      <h3 class="pkg-name">Ultimate Solitaire</h3>
+      <p class="pkg-desc">Paket terbaik untuk Anda yang sering berkendara di bawah panas ekstrem. Dengan performa tolak panas maksimal, kabin tetap sejuk, AC bekerja lebih ringan, dan konsumsi bahan bakar lebih efisien.</p>
+      <div class="pkg-specs">
+        <div class="pkg-spec">
+          <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/></svg>
+          <span class="pkg-spec-lbl">Kaca Depan</span>
+          <span class="pkg-spec-val">VK30</span>
+        </div>
+        <div class="pkg-spec">
+          <svg viewBox="0 0 24 24"><path d="M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v5a2 2 0 0 1-2 2h-2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>
+          <span class="pkg-spec-lbl">Kaca Samping</span>
+          <span class="pkg-spec-val">VK10</span>
+        </div>
+        <div class="pkg-spec">
+          <svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/></svg>
+          <span class="pkg-spec-lbl">Kaca Belakang</span>
+          <span class="pkg-spec-val">VK10</span>
+        </div>
+      </div>
+      <button class="pkg-more">More Details <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+    </div>
+
+    <!-- Diamond Series — featured -->
+    <div class="pkg feat">
+      <span class="pkg-badge">Most Recommended</span>
+      <h3 class="pkg-name">Diamond Series</h3>
+      <p class="pkg-desc">Paket favorit pelanggan V-KOOL sepanjang masa. Menghadirkan keseimbangan terbaik antara kenyamanan, perlindungan panas, dan tampilan elegan. Kabin tetap sejuk, pandangan jernih, dan mobil tampil lebih mewah.</p>
+      <div class="pkg-specs">
+        <div class="pkg-spec">
+          <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/></svg>
+          <span class="pkg-spec-lbl">Kaca Depan</span>
+          <span class="pkg-spec-val">VK70 / VK40</span>
+        </div>
+        <div class="pkg-spec">
+          <svg viewBox="0 0 24 24"><path d="M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v5a2 2 0 0 1-2 2h-2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>
+          <span class="pkg-spec-lbl">Kaca Samping</span>
+          <span class="pkg-spec-val">VIP</span>
+        </div>
+        <div class="pkg-spec">
+          <svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/></svg>
+          <span class="pkg-spec-lbl">Kaca Belakang</span>
+          <span class="pkg-spec-val">X15</span>
+        </div>
+      </div>
+      <button class="pkg-more">More Details <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+    </div>
+
+    <!-- The Darkest Set -->
+    <div class="pkg">
+      <h3 class="pkg-name">The Darkest Set</h3>
+      <p class="pkg-desc">Untuk Anda yang mengutamakan privasi total. Kaca depan tetap jernih untuk visibilitas optimal, sementara samping dan belakang tampil super gelap, menghadirkan kabin yang lebih sejuk dan nyaman tanpa gangguan pandangan luar.</p>
+      <div class="pkg-specs">
+        <div class="pkg-spec">
+          <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/></svg>
+          <span class="pkg-spec-lbl">Kaca Depan</span>
+          <span class="pkg-spec-val">VK30</span>
+        </div>
+        <div class="pkg-spec">
+          <svg viewBox="0 0 24 24"><path d="M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v5a2 2 0 0 1-2 2h-2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>
+          <span class="pkg-spec-lbl">Kaca Samping</span>
+          <span class="pkg-spec-val">X05</span>
+        </div>
+        <div class="pkg-spec">
+          <svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/></svg>
+          <span class="pkg-spec-lbl">Kaca Belakang</span>
+          <span class="pkg-spec-val">X05</span>
+        </div>
+      </div>
+      <button class="pkg-more">More Details <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════ FOOTER ══════ -->
+<div id="footer-placeholder"></div>
+
+<script>
+(function(){
+'use strict';
+
+/* ── Lihat Juga drag rail ── */
+const rail = document.getElementById('ljRail');
+const thumb = document.getElementById('ljThumb');
+if (rail) {
+  let isDown = false, startX, scrollL;
+
+  const onDown = e => {
+    isDown = true;
+    rail.classList.add('grabbing');
+    startX = (e.touches ? e.touches[0].pageX : e.pageX) - rail.offsetLeft;
+    scrollL = rail.scrollLeft;
+  };
+  const onUp = () => { isDown = false; rail.classList.remove('grabbing'); };
+  const onMove = e => {
+    if (!isDown) return;
+    if (e.cancelable) e.preventDefault();
+    const x = (e.touches ? e.touches[0].pageX : e.pageX) - rail.offsetLeft;
+    rail.scrollLeft = scrollL - (x - startX) * 1.2;
+  };
+
+  rail.addEventListener('mousedown', onDown);
+  rail.addEventListener('mouseleave', onUp);
+  rail.addEventListener('mouseup', onUp);
+  rail.addEventListener('mousemove', onMove);
+  rail.addEventListener('touchstart', onDown, { passive: true });
+  rail.addEventListener('touchend', onUp, { passive: true });
+  rail.addEventListener('touchmove', onMove, { passive: false });
+
+  rail.addEventListener('scroll', () => {
+    if (!thumb) return;
+    const pct = (rail.scrollLeft / (rail.scrollWidth - rail.clientWidth)) * 100;
+    thumb.style.width = Math.min(Math.max(pct, 0), 100) + '%';
+  }, { passive: true });
+}
+
+/* ── Scroll reveal + VLT bar animation ── */
+const vltFill = document.getElementById('vltFill');
+let vltAnimated = false;
+
+const io = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    entry.target.classList.add('visible');
+
+    // Trigger VLT bar when nyaman section comes into view
+    if (!vltAnimated && entry.target.classList.contains('nyaman')) {
+      vltAnimated = true;
+      setTimeout(() => {
+        if (vltFill) vltFill.style.width = '54%'; /* position on 5%–70% scale for 43% VLT */
+      }, 280);
+    }
+
+    io.unobserve(entry.target);
+  });
+}, { threshold: 0.06, rootMargin: '0px 0px -20px 0px' });
+
+document.querySelectorAll('.fade-up').forEach(el => io.observe(el));
+
+})();
+</script>
+<script>
+/* ── Before/After Drag Slider ── */
+(function(){
+  const wrap   = document.querySelector('.ba-wrap');
+  const after  = document.getElementById('baAfter');
+  const handle = document.getElementById('baHandle');
+  if(!wrap || !after || !handle) return;
+
+  let dragging = false;
+
+  function setPos(x) {
+    const rect = wrap.getBoundingClientRect();
+    let pct = ((x - rect.left) / rect.width) * 100;
+    pct = Math.min(Math.max(pct, 2), 98);
+    after.style.clipPath = `inset(0 ${100 - pct}% 0 0)`;
+    handle.style.left = pct + '%';
+    handle.setAttribute('aria-valuenow', Math.round(pct));
+  }
+
+  /* Mouse */
+  handle.addEventListener('mousedown', e => { dragging = true; e.preventDefault(); });
+  window.addEventListener('mousemove', e => { if(dragging) setPos(e.clientX); });
+  window.addEventListener('mouseup',   () => { dragging = false; });
+
+  /* Touch */
+  handle.addEventListener('touchstart', e => { dragging = true; }, {passive:true});
+  window.addEventListener('touchmove',  e => { if(dragging) setPos(e.touches[0].clientX); }, {passive:true});
+  window.addEventListener('touchend',   () => { dragging = false; });
+
+  /* Click anywhere on wrap */
+  wrap.addEventListener('click', e => setPos(e.clientX));
+
+  /* Keyboard */
+  handle.addEventListener('keydown', e => {
+    const rect = wrap.getBoundingClientRect();
+    const cur = parseFloat(handle.style.left) || 50;
+    if(e.key === 'ArrowLeft')  setPos(rect.left + (cur - 5) / 100 * rect.width);
+    if(e.key === 'ArrowRight') setPos(rect.left + (cur + 5) / 100 * rect.width);
+  });
+})();
+</script>
+<script src="nav-footer.js"></script>
+</body>
+</html>
