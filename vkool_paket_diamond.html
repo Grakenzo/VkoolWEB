@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diamond Series — Paket Kaca Film V-KOOL</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --black:#0a0a0a;--dark:#111111;--mid:#1a1a1a;--line:#222222;--line2:#2e2e2e;
+  --gold:#CDB182;--gold2:#b89a6a;--ash:#EBEBEB;--muted:#888888;--dim:#555555;--white:#fff;
+  --green:#6B9E78;--radius:2px;--nav-h:68px;--pad:56px;--ease:cubic-bezier(.25,0,.1,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Roboto',sans-serif;background:var(--black);color:var(--ash);overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+a{text-decoration:none;color:inherit;}
+button{font-family:inherit;cursor:pointer;border:none;background:none;}
+a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offset:3px;}
+
+/* ══ HERO ══ */
+.hero{
+  position:relative;width:100%;
+  min-height:520px;
+  margin-top:var(--nav-h);
+  background:var(--dark);
+  display:grid;grid-template-columns:1fr 1fr;
+  border-bottom:.5px solid var(--line);
+  overflow:hidden;
+}
+/* grid texture */
+.hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(205,177,130,.02) .5px,transparent .5px),linear-gradient(90deg,rgba(205,177,130,.02) .5px,transparent .5px);background-size:72px 72px;pointer-events:none;}
+
+.hero-left{
+  position:relative;z-index:2;
+  padding:64px var(--pad) 64px;
+  display:flex;flex-direction:column;justify-content:center;
+  border-right:.5px solid var(--line);
+}
+.hero-breadcrumb{display:flex;align-items:center;gap:10px;margin-bottom:28px;}
+.bc{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:.14em;color:var(--dim);text-transform:uppercase;}
+.bc-sep{color:#555555;}
+.bc-cur{color:var(--gold);}
+
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(205,177,130,.1);border:.5px solid rgba(205,177,130,.3);
+  padding:5px 14px;border-radius:var(--radius);
+  font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--gold);
+  margin-bottom:20px;width:fit-content;
+}
+.hero-badge-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);}
+
+.hero-title{
+  font-family:'Oswald',sans-serif;font-size:clamp(40px,5.5vw,72px);
+  letter-spacing:.04em;font-weight:400;text-transform:uppercase;
+  color:var(--white);line-height:1.0;margin-bottom:16px;
+}
+.hero-sub{font-size:15px;color:var(--muted);font-weight:300;line-height:1.75;max-width:44ch;margin-bottom:40px;}
+
+.hero-ctas{display:flex;gap:12px;flex-wrap:wrap;}
+.btn-primary{
+  font-family:'Oswald',sans-serif;font-size:13px;letter-spacing:.12em;text-transform:uppercase;font-weight:400;
+  background:var(--gold);color:var(--black);padding:15px 32px;border-radius:var(--radius);
+  min-height:52px;display:inline-flex;align-items:center;gap:10px;
+  transition:background .25s,transform .2s;cursor:pointer;border:none;text-decoration:none;
+}
+.btn-primary:hover{background:var(--gold2);transform:translateY(-1px);}
+.btn-primary svg{width:13px;height:13px;stroke:var(--black);fill:none;stroke-width:2;}
+.btn-secondary{
+  font-family:'Oswald',sans-serif;font-size:13px;letter-spacing:.12em;text-transform:uppercase;font-weight:300;
+  background:transparent;color:var(--ash);padding:14px 32px;border-radius:var(--radius);
+  min-height:52px;display:inline-flex;align-items:center;
+  border:.5px solid rgba(235,235,235,.25);
+  transition:border-color .25s,color .25s;cursor:pointer;text-decoration:none;
+}
+.btn-secondary:hover{border-color:var(--ash);color:var(--white);}
+
+/* Hero right — package visual summary */
+.hero-right{
+  position:relative;z-index:2;
+  padding:64px 44px;
+  display:flex;flex-direction:column;justify-content:center;gap:0;
+}
+.hero-right-title{
+  font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--gold);margin-bottom:24px;
+  display:flex;align-items:center;gap:12px;
+}
+.hero-right-title::before{content:'';width:16px;height:.5px;background:var(--gold);}
+
+/* Window rows */
+.window-row{
+  display:flex;align-items:stretch;
+  border-bottom:.5px solid var(--line);
+}
+.window-row:last-of-type{border-bottom:none;}
+.window-pos{
+  width:140px;flex-shrink:0;
+  padding:20px 16px;
+  border-right:.5px solid var(--line);
+  display:flex;align-items:center;gap:10px;
+}
+.window-pos-icon{width:24px;height:24px;flex-shrink:0;display:flex;align-items:center;justify-content:center;opacity:.45;}
+.window-pos-icon svg{width:16px;height:16px;stroke:var(--ash);fill:none;stroke-width:1.5;}
+.window-pos-lbl{font-size:12px;color:var(--dim);font-weight:300;}
+.window-product{flex:1;padding:20px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.window-product-name{font-family:'Oswald',sans-serif;font-size:18px;letter-spacing:.06em;color:var(--gold);font-weight:400;}
+.window-product-specs{display:flex;gap:12px;}
+.wps{text-align:right;}
+.wps-val{font-family:'Oswald',sans-serif;font-size:14px;color:var(--white);font-weight:300;display:block;line-height:1;}
+.wps-key{font-size:9px;color:var(--dim);letter-spacing:.12em;text-transform:uppercase;}
+
+/* Ghost number */
+.hero-ghost{
+  position:absolute;bottom:-20px;right:40px;
+  font-family:'Oswald',sans-serif;font-size:160px;font-weight:200;
+  color:rgba(205,177,130,.03);letter-spacing:-.04em;line-height:1;
+  pointer-events:none;user-select:none;
+}
+
+/* ══ STATS STRIP ══ */
+.stats-strip{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  border-bottom:.5px solid var(--line);
+}
+.stat-item{
+  padding:28px var(--pad);border-right:.5px solid var(--line);
+  text-align:center;transition:background .3s var(--ease);
+}
+.stat-item:last-child{border-right:none;}
+.stat-item:hover{background:rgba(205,177,130,.03);}
+.stat-val{font-family:'Oswald',sans-serif;font-size:32px;color:var(--gold);font-weight:300;letter-spacing:.02em;display:block;line-height:1;margin-bottom:6px;}
+.stat-lbl{font-size:10px;color:var(--dim);letter-spacing:.12em;text-transform:uppercase;display:block;}
+.stat-sub{font-size:11px;color:var(--dim);font-weight:300;margin-top:3px;display:block;}
+
+/* ══ PRODUCT SPECS SECTION ══ */
+.specs-section{padding:72px var(--pad);}
+.specs-eyebrow{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.ey-line{width:20px;height:.5px;background:var(--gold);}
+.ey-txt{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:.22em;color:var(--gold);text-transform:uppercase;font-weight:300;}
+.specs-title{font-family:'Oswald',sans-serif;font-size:clamp(22px,2.8vw,36px);letter-spacing:.05em;font-weight:400;text-transform:uppercase;color:var(--white);margin-bottom:48px;line-height:1.1;}
+
+/* 3 product spec cards */
+.spec-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:.5px solid var(--line);}
+.spec-card{
+  background:var(--dark);border-right:.5px solid var(--line);
+  position:relative;overflow:hidden;
+  transition:background .4s var(--ease);
+}
+.spec-card:last-child{border-right:none;}
+.spec-card:hover{background:#131313;}
+.spec-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:1px;background:linear-gradient(90deg,var(--gold),var(--gold2),transparent);transform:scaleX(0);transform-origin:left;transition:transform .55s var(--ease);}
+.spec-card:hover::before{transform:scaleX(1);}
+
+.spec-card-top{padding:28px 24px 20px;border-bottom:.5px solid var(--line);}
+.spec-card-window{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.spec-card-window svg{width:12px;height:12px;stroke:var(--dim);fill:none;stroke-width:1.5;}
+.spec-card-name{font-family:'Oswald',sans-serif;font-size:28px;letter-spacing:.06em;font-weight:400;color:var(--gold);margin-bottom:6px;}
+.spec-card-tagline{font-size:12px;color:var(--dim);font-weight:300;line-height:1.5;}
+
+/* Spec rows */
+.spec-rows{padding:0 24px;}
+.spec-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:13px 0;border-bottom:.5px solid var(--line);gap:12px;
+}
+.spec-row:last-child{border-bottom:none;}
+.spec-row-lbl{font-size:12px;color:var(--muted);font-weight:300;}
+.spec-row-val{font-family:'Oswald',sans-serif;font-size:14px;color:var(--white);font-weight:400;letter-spacing:.04em;}
+.spec-row-val.hi{color:var(--gold);}
+
+/* VLT mini bar */
+.vlt-mini{margin:20px 24px;padding-top:4px;}
+.vlt-mini-label{font-size:10px;color:var(--dim);letter-spacing:.10em;text-transform:uppercase;margin-bottom:8px;display:flex;justify-content:space-between;}
+.vlt-mini-track{height:3px;background:rgba(235,235,235,.08);border-radius:2px;position:relative;}
+.vlt-mini-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:2px;transition:width 1.2s var(--ease);}
+.vlt-mini-pin{position:absolute;top:50%;transform:translate(-50%,-50%);width:8px;height:8px;border-radius:50%;background:var(--gold);border:1.5px solid var(--black);transition:left 1.2s var(--ease);}
+
+/* ══ BENEFITS SECTION ══ */
+.benefits-section{padding:0 var(--pad) 72px;}
+.benefits-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;border:.5px solid var(--line);}
+.benefit-item{
+  padding:32px 28px;border-right:.5px solid var(--line);border-bottom:.5px solid var(--line);
+  position:relative;overflow:hidden;transition:background .35s var(--ease);
+}
+.benefit-item:nth-child(2n){border-right:none;}
+.benefit-item:nth-last-child(-n+2){border-bottom:none;}
+.benefit-item:hover{background:rgba(205,177,130,.03);}
+.benefit-item::before{content:'';position:absolute;top:0;left:0;width:100%;height:1px;background:linear-gradient(90deg,var(--gold),transparent);transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease);}
+.benefit-item:hover::before{transform:scaleX(1);}
+.benefit-icon{width:36px;height:36px;border:.5px solid rgba(205,177,130,.25);background:rgba(205,177,130,.05);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;margin-bottom:16px;transition:border-color .3s,background .3s;}
+.benefit-item:hover .benefit-icon{border-color:rgba(205,177,130,.5);background:rgba(205,177,130,.1);}
+.benefit-icon svg{width:15px;height:15px;stroke:var(--gold);fill:none;stroke-width:1.5;}
+.benefit-title{font-family:'Oswald',sans-serif;font-size:15px;letter-spacing:.05em;font-weight:400;text-transform:uppercase;color:var(--white);margin-bottom:8px;line-height:1.2;}
+.benefit-body{font-size:13px;color:var(--muted);font-weight:300;line-height:1.7;}
+
+/* ══ WHO IS IT FOR ══ */
+.who-section{
+  background:var(--mid);border-top:.5px solid var(--line);border-bottom:.5px solid var(--line);
+  padding:64px var(--pad);
+  display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;
+}
+.who-left .section-title{font-family:'Oswald',sans-serif;font-size:clamp(22px,2.8vw,36px);letter-spacing:.05em;font-weight:400;text-transform:uppercase;color:var(--white);line-height:1.1;margin-bottom:0;}
+.who-list{display:flex;flex-direction:column;gap:14px;}
+.who-item{display:flex;align-items:flex-start;gap:14px;padding:16px 0;border-bottom:.5px solid var(--line);}
+.who-item:last-child{border-bottom:none;}
+.who-check{width:20px;height:20px;border-radius:50%;border:.5px solid var(--green);background:rgba(107,158,120,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.who-check svg{width:10px;height:10px;stroke:var(--green);fill:none;stroke-width:2.5;}
+.who-txt{font-size:14px;color:var(--muted);font-weight:300;line-height:1.6;}
+.who-txt strong{color:var(--ash);font-weight:400;}
+
+/* ══ BOTTOM CTA ══ */
+.bottom-cta{
+  background:var(--gold);padding:64px var(--pad);
+  display:grid;grid-template-columns:1fr auto;align-items:center;gap:40px;
+  position:relative;overflow:hidden;
+}
+.bottom-cta::before{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(90deg,rgba(0,0,0,.03) 0,rgba(0,0,0,.03) 1px,transparent 1px,transparent 48px);pointer-events:none;}
+.cta-ey{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:.22em;color:rgba(0,0,0,.4);text-transform:uppercase;margin-bottom:10px;}
+.cta-title{font-family:'Oswald',sans-serif;font-size:clamp(20px,3vw,36px);letter-spacing:.05em;text-transform:uppercase;color:var(--black);font-weight:500;line-height:1.1;margin-bottom:8px;}
+.cta-sub{font-size:14px;color:rgba(0,0,0,.55);font-weight:300;max-width:46ch;line-height:1.65;}
+.cta-btns{display:flex;gap:12px;flex-shrink:0;flex-wrap:wrap;}
+.btn-cta-dark{font-family:'Oswald',sans-serif;font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:400;background:var(--black);color:var(--gold);padding:15px 28px;border-radius:var(--radius);min-height:50px;display:inline-flex;align-items:center;gap:10px;transition:background .25s;white-space:nowrap;text-decoration:none;}
+.btn-cta-dark:hover{background:#1a1a1a;}
+.btn-cta-dark svg{width:12px;height:12px;stroke:var(--gold);fill:none;stroke-width:2;}
+.btn-cta-ghost{font-family:'Oswald',sans-serif;font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:300;background:transparent;color:rgba(0,0,0,.6);padding:14px 28px;border-radius:var(--radius);min-height:50px;display:inline-flex;align-items:center;border:.5px solid rgba(0,0,0,.25);transition:border-color .25s,color .25s;white-space:nowrap;text-decoration:none;}
+.btn-cta-ghost:hover{border-color:rgba(0,0,0,.5);color:var(--black);}
+
+/* ══ BACK LINK ══ */
+.back-link{display:inline-flex;align-items:center;gap:8px;padding:24px var(--pad);font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);transition:color .25s;}
+.back-link:hover{color:var(--gold);}
+.back-link svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2;}
+
+/* ══ FADE UP ══ */
+.fade-up{opacity:0;transform:translateY(24px);transition:opacity .7s var(--ease),transform .7s var(--ease);}
+.fade-up.visible{opacity:1;transform:translateY(0);}
+
+/* ══ RESPONSIVE ══ */
+@media(max-width:1023px){
+  .hero{grid-template-columns:1fr;}
+  .hero-right{border-top:.5px solid var(--line);}
+  .hero-ghost{display:none;}
+  .stats-strip{grid-template-columns:repeat(2,1fr);}
+  .stat-item:nth-child(2){border-right:none;}
+  .stat-item:nth-child(3){border-top:.5px solid var(--line);}
+  .spec-cards{grid-template-columns:1fr;}
+  .spec-card{border-right:none;border-bottom:.5px solid var(--line);}
+  .spec-card:last-child{border-bottom:none;}
+  .benefits-grid{grid-template-columns:1fr;}
+  .benefit-item{border-right:none;border-bottom:.5px solid var(--line);}
+  .benefit-item:nth-last-child(-n+2){border-bottom:.5px solid var(--line);}
+  .benefit-item:last-child{border-bottom:none;}
+  .who-section{grid-template-columns:1fr;}
+  .bottom-cta{grid-template-columns:1fr;}
+}
+@media(max-width:639px){
+  :root{--pad:20px;}
+  .hero-left{padding:48px var(--pad);}
+  .stats-strip{grid-template-columns:repeat(2,1fr);}
+}
+</style>
+</head>
+<body data-page="otomotif">
+
+<div id="nav-placeholder"></div>
+
+<!-- Back link -->
+<a class="back-link" href="vkool_otomotif.html#paket-section">
+  <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+  Semua Paket
+</a>
+
+<!-- ══ HERO ══ -->
+<section class="hero" aria-label="Diamond Series Package">
+  <div class="hero-left">
+    <nav class="hero-breadcrumb" aria-label="Breadcrumb">
+      <a class="bc" href="index.html">Home</a>
+      <span class="bc-sep">&mdash;</span>
+      <a class="bc" href="vkool_otomotif.html">Otomotif</a>
+      <span class="bc-sep">&mdash;</span>
+      <a class="bc" href="vkool_otomotif.html#paket-section">Paket</a>
+      <span class="bc-sep">&mdash;</span>
+      <span class="bc bc-cur">Diamond Series</span>
+    </nav>
+
+    <div class="hero-badge">
+      <span class="hero-badge-dot"></span>
+      Most Recommended
+    </div>
+
+    <h1 class="hero-title">Diamond<br>Series</h1>
+    <p class="hero-sub">Keseimbangan sempurna antara kenyamanan, perlindungan panas, dan privasi. Pilihan terlaris pelanggan V-KOOL — karena ia menjawab semua kebutuhan dalam satu paket.</p>
+
+    <div class="hero-ctas">
+      <a class="btn-primary" href="vkool_cek_harga.html">
+        Cek Harga Paket
+        <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+      <a class="btn-secondary" href="vkool_dealers.html">Temukan Dealer</a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-right-title">Konfigurasi Paket</div>
+
+    <div class="window-row">
+      <div class="window-pos">
+        <div class="window-pos-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/></svg></div>
+        <span class="window-pos-lbl">Kaca Depan</span>
+      </div>
+      <div class="window-product">
+        <span class="window-product-name">VK-70 / VK-40</span>
+        <div class="window-product-specs">
+          <div class="wps"><span class="wps-val">70%</span><span class="wps-key">VLT</span></div>
+          <div class="wps"><span class="wps-val">60%</span><span class="wps-key">IRR</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="window-row">
+      <div class="window-pos">
+        <div class="window-pos-icon"><svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></div>
+        <span class="window-pos-lbl">Kaca Samping</span>
+      </div>
+      <div class="window-product">
+        <span class="window-product-name">VIP</span>
+        <div class="window-product-specs">
+          <div class="wps"><span class="wps-val">20%</span><span class="wps-key">VLT</span></div>
+          <div class="wps"><span class="wps-val">90%</span><span class="wps-key">IRR</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="window-row">
+      <div class="window-pos">
+        <div class="window-pos-icon"><svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/></svg></div>
+        <span class="window-pos-lbl">Kaca Belakang</span>
+      </div>
+      <div class="window-product">
+        <span class="window-product-name">X15</span>
+        <div class="window-product-specs">
+          <div class="wps"><span class="wps-val">15%</span><span class="wps-key">VLT</span></div>
+          <div class="wps"><span class="wps-val">92%</span><span class="wps-key">IRR</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-ghost" aria-hidden="true">DS</div>
+</section>
+
+<!-- ══ STATS STRIP ══ -->
+<div class="stats-strip fade-up" role="region" aria-label="Performa paket Diamond Series">
+  <div class="stat-item">
+    <span class="stat-val">92%</span>
+    <span class="stat-lbl">IRR Maksimum</span>
+    <span class="stat-sub">Infrared Rejection</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-val">70%</span>
+    <span class="stat-lbl">TSER Maksimum</span>
+    <span class="stat-sub">Total Solar Energy Rejected</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-val">99%</span>
+    <span class="stat-lbl">UV Rejection</span>
+    <span class="stat-sub">Semua posisi kaca</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-val">5 Thn</span>
+    <span class="stat-lbl">Garansi Resmi</span>
+    <span class="stat-sub">Seluruh produk dalam paket</span>
+  </div>
+</div>
+
+<!-- ══ PRODUCT SPECS ══ -->
+<section class="specs-section fade-up" aria-label="Spesifikasi produk dalam paket">
+  <div class="specs-eyebrow"><span class="ey-line"></span><span class="ey-txt">Spesifikasi Lengkap</span></div>
+  <h2 class="specs-title">3 Produk, 3 Fungsi,<br>1 Paket Sempurna</h2>
+
+  <div class="spec-cards">
+
+    <!-- VK-70 / VK-40 -->
+    <div class="spec-card">
+      <div class="spec-card-top">
+        <div class="spec-card-window">
+          <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/></svg>
+          Kaca Depan
+        </div>
+        <div class="spec-card-name">VK-70 / VK-40</div>
+        <div class="spec-card-tagline">Jernihnya Sempurna, Panasnya Tertolak — visibilitas optimal untuk keamanan berkendara</div>
+      </div>
+      <div class="spec-rows">
+        <div class="spec-row"><span class="spec-row-lbl">VLT</span><span class="spec-row-val hi">70% / 40%</span></div>
+        <div class="spec-row"><span class="spec-row-lbl">IRR</span><span class="spec-row-val hi">60% / 80%</span></div>
+        <div class="spec-row"><span class="spec-row-lbl">UVR</span><span class="spec-row-val hi">99%</span></div>
+        <div class="spec-row"><span class="spec-row-lbl">TSER</span><span class="spec-row-val">40% / 58%</span></div>
+        <div class="spec-row"><span class="spec-row-lbl">Teknologi</span><span class="spec-row-val">XIR® Sputtered</span></div>
+        <div class="spec-row"><span class="spec-row-lbl">Gangguan Sinyal</span><span class="spec-row-val">Tidak Ada</span></div>
+      </div>
+      <div class="vlt-mini">
+        <div class="vlt-mini-label"><span>Gelap 5%</span><span>Bening 70%</span></div>
+        <div class="vlt-mini-track">
+          <div class="vlt-mini-fill" style="width:85%;"></div>
+          <div class="vlt-mini-pin" style="left:85%;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIP -->
+    <div class="spec-card">
+      <div class="spec-card-top">
+        <div class="spec-card-window">
+          <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+          Kaca Samping
+        </div>
+        <div class="spec-card-name">VIP</div>
+        <div class="spec-card-tagline">Perlindungan Prestige Total — privasi tinggi dengan performa infrared terdepan</div>
+      </div>
+      <div class="spec-rows">
+        <div class="spec-row"><span class="spec-row-lbl">VLT</span><span class="spec-row-val hi">20%</span></div>
+        <div class="spec-row"><span class="spec-row-lbl">IRR</span><span class="spec-row-val hi">90%</span></div>
+        <div class="spec-row"><span class="spec-row-lbl">UVR</span><span class="spec-row-val hi">99%</span></div>
+        <div class="spec-row"><span class="spec-row-lbl">TSER</span><span class="spec-row-val">68%</span></div>
+        <div class="spec-row"><span class="spec-row-lbl">Teknologi</span><span class="spec-row-val">XIR® Sputtered</span></div>
+        <div class="spec-row"><span class="spec-row-lbl">Gangguan Sinyal</span><span class="spec-row-val">Tidak Ada</span></div>
+      </div>
+      <div class="vlt-mini">
+        <div class="vlt-mini-label"><span>Gelap 5%</span><span>Bening 70%</span></div>
+        <div class="vlt-mini-track">
+          <div class="vlt-mini-fill" style="width:23%;"></div>
+          <div class="vlt-mini-pin" style="left:23%;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- X15 -->
+    <div class="spec-card">
+      <div class="spec-card-top">
+        <div class="spec-card-window">
+          <svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/></svg>
+          Kaca Belakang
+        </div>
+        <div class="spec-card-name">X15</div>
+        <div class="spec-card-tagline">Privasi Maksimal, Panas Minimum — penampilan gelap elegan di bagian belakang</div>
+      </div>
+      <div class="spec-rows">
+        <div class="spec-row"><span class="spec-row-lbl">VLT</span><span class="spec-row-val hi">15%</span></div>
+        <div class="spec-row"><span class="spec-row-lbl">IRR</span><span class="spec-row-val hi">92%</span></div>
+        <div class="spec-row"><span class="spec-row-lbl">UVR</span><span class="spec-row-val hi">99%</span></div>
+        <div class="spec-row"><span class="spec-row-lbl">TSER</span><span class="spec-row-val">70%</span></div>
+        <div class="spec-row"><span class="spec-row-lbl">Teknologi</span><span class="spec-row-val">XIR® Sputtered</span></div>
+        <div class="spec-row"><span class="spec-row-lbl">Gangguan Sinyal</span><span class="spec-row-val">Tidak Ada</span></div>
+      </div>
+      <div class="vlt-mini">
+        <div class="vlt-mini-label"><span>Gelap 5%</span><span>Bening 70%</span></div>
+        <div class="vlt-mini-track">
+          <div class="vlt-mini-fill" style="width:15%;"></div>
+          <div class="vlt-mini-pin" style="left:15%;"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ BENEFITS ══ -->
+<section class="benefits-section fade-up" aria-label="Keunggulan Diamond Series">
+  <div class="specs-eyebrow" style="margin-bottom:14px;"><span class="ey-line"></span><span class="ey-txt">Mengapa Diamond Series</span></div>
+  <h2 class="specs-title" style="margin-bottom:32px;">Dirancang untuk<br>Berkendara Lebih Baik</h2>
+
+  <div class="benefits-grid">
+    <div class="benefit-item">
+      <div class="benefit-icon"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 1 0 20A10 10 0 0 1 12 2z"/><path d="M12 6v6l4 2"/></svg></div>
+      <h3 class="benefit-title">Kabin Lebih Sejuk, Konsumsi BBM Lebih Hemat</h3>
+      <p class="benefit-body">Dengan IRR hingga 92%, panas yang masuk ke kabin berkurang drastis. AC tidak perlu bekerja terlalu keras — menghemat konsumsi bahan bakar hingga 8% dalam kondisi siang hari.</p>
+    </div>
+    <div class="benefit-item">
+      <div class="benefit-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+      <h3 class="benefit-title">Perlindungan UV untuk Seluruh Penumpang</h3>
+      <p class="benefit-body">UVR 99% di semua posisi kaca melindungi kulit dari paparan sinar ultraviolet berbahaya — penting untuk perjalanan panjang bersama keluarga.</p>
+    </div>
+    <div class="benefit-item">
+      <div class="benefit-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+      <h3 class="benefit-title">Privasi Optimal Tanpa Mengorbankan Visibilitas</h3>
+      <p class="benefit-body">Kaca depan tetap terang untuk keamanan berkendara. Kaca samping dan belakang gelap untuk privasi — keseimbangan yang tidak ditemukan di produk tunggal manapun.</p>
+    </div>
+    <div class="benefit-item">
+      <div class="benefit-icon"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+      <h3 class="benefit-title">Tampilan Lebih Premium dan Elegan</h3>
+      <p class="benefit-body">Gradasi kegelapan dari depan ke belakang memberikan kesan sporty dan mewah. Mobil terlihat lebih mahal — dari luar maupun dari dalam.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ WHO IS IT FOR ══ -->
+<section class="who-section fade-up" aria-label="Siapa yang cocok">
+  <div class="who-left">
+    <div class="specs-eyebrow" style="margin-bottom:14px;"><span class="ey-line"></span><span class="ey-txt">Cocok Untuk</span></div>
+    <h2 class="section-title">Diamond Series<br>untuk Siapa?</h2>
+  </div>
+  <div class="who-list" role="list">
+    <div class="who-item" role="listitem">
+      <div class="who-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <p class="who-txt"><strong>Pengguna harian</strong> yang ingin kenyamanan kabin tanpa mengorbankan visibilitas berkendara</p>
+    </div>
+    <div class="who-item" role="listitem">
+      <div class="who-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <p class="who-txt"><strong>Keluarga dengan anak-anak</strong> yang membutuhkan perlindungan UV maksimal untuk penumpang belakang</p>
+    </div>
+    <div class="who-item" role="listitem">
+      <div class="who-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <p class="who-txt"><strong>Pengguna kendaraan premium</strong> yang ingin tampilan lebih elegan tanpa modifikasi bodi</p>
+    </div>
+    <div class="who-item" role="listitem">
+      <div class="who-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <p class="who-txt"><strong>Komuter perkotaan</strong> yang sering terjebak macet di bawah sinar matahari langsung</p>
+    </div>
+    <div class="who-item" role="listitem">
+      <div class="who-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <p class="who-txt"><strong>Semua jenis kendaraan penumpang</strong> — sedan, SUV, MPV, hatchback</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ BOTTOM CTA ══ -->
+<div class="bottom-cta fade-up">
+  <div>
+    <div class="cta-ey">Siap Pasang Diamond Series?</div>
+    <h2 class="cta-title">Temukan Dealer<br>Terdekat Anda.</h2>
+    <p class="cta-sub">Installer tersertifikasi V-KOOL siap melayani instalasi Diamond Series dengan standar presisi tertinggi. Garansi resmi 5 tahun.</p>
+  </div>
+  <div class="cta-btns">
+    <a class="btn-cta-dark" href="vkool_dealers.html">
+      Temukan Dealer
+      <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </a>
+    <a class="btn-cta-ghost" href="vkool_cek_harga.html">Cek Harga</a>
+  </div>
+</div>
+
+<div id="footer-placeholder"></div>
+
+<script>
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target);} });
+},{threshold:0.07,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.fade-up').forEach(el=>io.observe(el));
+</script>
+<script src="nav-footer.js"></script>
+</body>
+</html>
